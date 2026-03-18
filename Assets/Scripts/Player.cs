@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagable
 {
+    private Animator animator;
     private PlayerController controller;
     private Combat combat;
 
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour, IDamagable
         controller = GetComponent<PlayerController>();
         combat = GetComponent<Combat>();
         levelSystem = GetComponent<LevelSystem>();
+        animator = GetComponent<Animator>();
     }
 
     //read joystick's inputActions and return to player(gameObject),
@@ -43,7 +45,9 @@ public class Player : MonoBehaviour, IDamagable
     }
 
     public void Hurt(int damageAmount)
-    {
+    {  
+       animator.SetTrigger("trGetHit");  
+       Debug.Log("hurt!");
        combat.GetHit(damageAmount);
     }
     
