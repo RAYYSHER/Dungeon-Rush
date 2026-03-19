@@ -24,7 +24,7 @@ public class Movement : MonoBehaviour
     {
         float currentSpeed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
         
-        Debug.Log($"isSprinting: {isSprinting} | moveSpeed: {moveSpeed} | multiplier: {speedMultiplier} | currentSpeed: {currentSpeed}");
+        // Debug.Log($"isSprinting: {isSprinting} | moveSpeed: {moveSpeed} | multiplier: {speedMultiplier} | currentSpeed: {currentSpeed}");
         
         body.MovePosition(transform.position + direction * currentSpeed * Time.deltaTime);
     }
@@ -38,12 +38,12 @@ public class Movement : MonoBehaviour
     public void Jump(InputAction.CallbackContext context)
     {
         body.AddForce(Vector3.up * jumpForce);   //add push force in Y axis, making player can jump.
-        Debug.Log("jumped");                    //check in console if player already jump or not.
+        // Debug.Log("jumped");                    //check in console if player already jump or not.
     }
 
     public void Dash(InputAction.CallbackContext context)
     {
         body.AddForce(transform.forward * dashForce);   //add push force in x axis, making player can dash.
-        Debug.Log("dashed");                            //check in console if player already jump or not.
+        // Debug.Log("dashed");                            //check in console if player already jump or not.
     }
 }

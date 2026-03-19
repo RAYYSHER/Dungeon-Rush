@@ -58,11 +58,6 @@ public class Combat : MonoBehaviour
 
     public void GetHit(int damageAmount)
     {
-        if (iFrameTimer.IsRunning() && iFrameTimer.GetTimeRemaining() > 0)
-        {
-            return;
-        }
-
         //calculate damage
         int totaldamage = damageAmount * (1 - (damageReduction / 100)); //current damage after reduction
         if (totaldamage > 0 && health.healthPoint > 0)
@@ -78,6 +73,12 @@ public class Combat : MonoBehaviour
                 iFrameTimer.Start();
             }
         }
+    }
+
+    public bool IsIFrameEnable()
+    {
+        bool isIframeEnabled = iFrameTimer.IsRunning() && iFrameTimer.GetTimeRemaining() > 0;
+        return isIframeEnabled;
     }
 
 

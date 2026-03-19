@@ -5,7 +5,7 @@ public class Player : MonoBehaviour, IDamagable
     private Animator animator;
     private PlayerController controller;
     private Combat combat;
-
+    private HurtEffect hurtEffect;
     private LevelSystem levelSystem;
 
     void Awake()
@@ -14,6 +14,7 @@ public class Player : MonoBehaviour, IDamagable
         combat = GetComponent<Combat>();
         levelSystem = GetComponent<LevelSystem>();
         animator = GetComponent<Animator>();
+        hurtEffect = GetComponent<HurtEffect>();
     }
 
     //read joystick's inputActions and return to player(gameObject),
@@ -31,7 +32,7 @@ public class Player : MonoBehaviour, IDamagable
     public void IncreaseMainStat()
     {
         
-        combat.HealMissingHealth(0.05);     //heal missing health
+        combat.HealMissingHealth(0.05);    //heal missing health
         combat.UpgradeMaxHealth();         //increase maxhealth
         combat.UpgradeCombatDMG();         //increase combatdamage
         combat.UpgradeDMGReduction();      //increase damage reduction
@@ -46,9 +47,13 @@ public class Player : MonoBehaviour, IDamagable
 
     public void Hurt(int damageAmount)
     {  
-       animator.SetTrigger("trGetHit");  
-       Debug.Log("hurt!");
-       combat.GetHit(damageAmount);
+       if (combat.IsIFrameEnable() == false)
+       {
+            animator.SetTrigger("trGetHit");
+            hurtEffect.TriggerHurt();  
+            Debug.Log("hurt!");
+            combat.GetHit(damageAmount);
+       } 
     }
     
     public void Die()
