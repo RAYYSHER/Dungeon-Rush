@@ -14,6 +14,7 @@ public class Zombie : MonoBehaviour, IDamagable
     private Rigidbody rb;
     public int exp;
     public static List<Zombie> zombieLists = new List<Zombie>(); 
+    private HurtEffect hurtEffect;
     
     void Awake()
     {
@@ -23,6 +24,7 @@ public class Zombie : MonoBehaviour, IDamagable
         ac = GetComponent<AnimatorController>();
         combat = GetComponent<Combat>();
         rb = GetComponent<Rigidbody>();
+        hurtEffect = GetComponent<HurtEffect>();
     }
 
     void Start()
@@ -66,15 +68,11 @@ public class Zombie : MonoBehaviour, IDamagable
         combat.attackDamage = ZombieGlobalStat.attackDamage;
         exp = ZombieGlobalStat.exp;
     }
-    public void Upgrade()
-    {
-        
 
-    }
     public void Hurt(int damageAmount)
     {
         combat.GetHit(damageAmount);
-
+        hurtEffect.TriggerHurt();  
     }
     public void Die()
     {

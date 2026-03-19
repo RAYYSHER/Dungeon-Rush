@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 8925683953309754766}
   - component: {fileID: 4432391231170335131}
   - component: {fileID: 6177930097711939580}
+  - component: {fileID: 4932160270571978979}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -407,6 +408,7 @@ MonoBehaviour:
   look: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jump: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   dash: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  sprint: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   skill01: {fileID: -8994577616534683375, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   meleeAttack: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!114 &3152925770640857682
@@ -422,6 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   moveSpeed: 7
+  speedMultiplier: 2
   jumpForce: 1000
   dashForce: 10000
 --- !u!114 &4337818757802970760
@@ -495,6 +498,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f47c4ce0f7e2b4c8532d84797caa65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skill
+--- !u!114 &4932160270571978979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478225697116208144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 709f41fee938afd47b32dae225b69256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HurtEffect
+  hurtColor: {r: 1, g: 0, b: 0, a: 1}
+  blinkSpeed: 10
+  blinkCount: 1
 --- !u!1 &7478225697116208148
 GameObject:
   m_ObjectHideFlags: 0
