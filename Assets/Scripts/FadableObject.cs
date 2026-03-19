@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FadableObject : MonoBehaviour
 {
-    public float fadeAlpha = 0.3f;
+    public float fadeAlpha = 0.7f;
     public float fadeSpeed = 10f;
     private List<Material> materials = new List<Material>();
     public float targetAlpha = 1f;

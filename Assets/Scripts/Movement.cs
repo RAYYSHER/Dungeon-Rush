@@ -1,22 +1,34 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
     private Rigidbody body;                     //add player's physic (from Rigidbody's component in Inspector)
-    public int moveSpeed;                       //add player's movement speed (adjustable, use for increase velocity.)
+    public float moveSpeed;                     //add player's movement speed (adjustable, use for increase velocity.)
+    public float speedMultiplier = 2f;
+    private float currentSpeed;                  
     public int jumpForce;
     public int dashForce;
+    private PlayerController controls;
 
     void Awake()
     {
         body = GetComponent<Rigidbody>();
+        controls = GetComponent<PlayerController>();
+        currentSpeed = moveSpeed;
     }
 
-    public void Walk(Vector3 direction)
+
+    public void Walk(Vector3 direction, bool isSprinting)
     {
-        body.MovePosition(body.position + (direction * moveSpeed * Time.fixedDeltaTime));
+        float currentSpeed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
+        
+        Debug.Log($"isSprinting: {isSprinting} | moveSpeed: {moveSpeed} | multiplier: {speedMultiplier} | currentSpeed: {currentSpeed}");
+        
+        body.MovePosition(transform.position + direction * currentSpeed * Time.deltaTime);
     }
+
     public void Rotate(Vector2 InputJoystick)
     {
         float angle = Mathf.Atan2(InputJoystick.x, InputJoystick.y) * Mathf.Rad2Deg;

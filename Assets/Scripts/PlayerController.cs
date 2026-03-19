@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,19 +13,41 @@ public class PlayerController : MonoBehaviour
     public InputActionReference move;           //add move keybind (from InputAction)
     public InputActionReference look;           //add look keybind (from InputAction)
     public InputActionReference jump;           //add jump keybind (from InputAction)
-    public InputActionReference dash;
-    public InputActionReference skill01;        //add skill01 keybind (from InputAction)           //add dash keybind (from InputAction)
+    public InputActionReference dash;           //add dash keybind (from InputAction)
+    public InputActionReference sprint;         //add sprint keybind (from InputAction)
+    public InputActionReference skill01;        //add skill01 keybind (from InputAction)          
     public InputActionReference meleeAttack;    //add melee attack keybind (from InputAction)
     private Movement movement;
     private Skill skill;
     private AnimatorController playerAC;
+    bool sprinting;
 
     void Awake()
     {
         playerAC = GetComponent<AnimatorController>();
         movement = GetComponent<Movement>();
         skill = GetComponent<Skill>();
+
+        //Sprint button (hold)
+        sprint.action.performed += SprintPerformed;
+        sprint.action.canceled += SprintCanceled;
     }
+    
+
+    //Sprint
+    public bool GetSprint()
+    {
+        return sprinting;
+    }
+    private void SprintPerformed(InputAction.CallbackContext context)
+    {
+        sprinting = true;
+    }
+    private void SprintCanceled(InputAction.CallbackContext context)
+    {
+        sprinting = false;
+    }
+
 
     public void Control()
     {
@@ -40,7 +63,7 @@ public class PlayerController : MonoBehaviour
         InputJoystickRight = look.action.ReadValue<Vector2>();
     }
 
-    private void Move()
+    public void Move()
     {
         //3D world movement -> Joystick only have 2D spaces(X for left/right and Y for up/down).
         //but we need Z-axis in case of moving front/back in the 3D space (X, Y, Z).
@@ -58,7 +81,7 @@ public class PlayerController : MonoBehaviour
             ,0
             ,InputJoystickLeft.y
         );
-        movement.Walk(moveDirection);
+        movement.Walk(moveDirection, sprinting);
         
         // Auto rotate while walking
         if(InputJoystickLeft.magnitude != 0)
