@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, IDamagable
     private Combat combat;
     private HurtEffect hurtEffect;
     private LevelSystem levelSystem;
+    private Stress stressSystem;
 
     void Awake()
     {
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour, IDamagable
         levelSystem = GetComponent<LevelSystem>();
         animator = GetComponent<Animator>();
         hurtEffect = GetComponent<HurtEffect>();
+        stressSystem = GetComponent<Stress>();
     }
 
     //read joystick's inputActions and return to player(gameObject),
@@ -32,11 +34,13 @@ public class Player : MonoBehaviour, IDamagable
     public void IncreaseMainStat()
     {
         
-        combat.HealMissingHealth(0.05);    //heal missing health
-        combat.UpgradeMaxHealth();         //increase maxhealth
-        combat.UpgradeCombatDMG();         //increase combatdamage
-        combat.UpgradeDMGReduction();      //increase damage reduction
+        combat.HealMissingHealth(0.05);             //heal missing health
+        combat.UpgradeMaxHealth();                  //increase maxhealth
+        combat.UpgradeCombatDMG();                  //increase combatdamage
+        combat.UpgradeBaseDMGReduction();           //increase damage reduction       
         //increase health regen
+        stressSystem.ApplySTStoDMGReduction();      // applying to combat
+        stressSystem.DecreaseSTSPercent(0.20f);     // Decrease flat amount of STS immediately
 
     }
 

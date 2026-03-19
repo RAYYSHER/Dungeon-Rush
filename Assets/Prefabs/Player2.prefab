@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 4432391231170335131}
   - component: {fileID: 6177930097711939580}
   - component: {fileID: 4932160270571978979}
+  - component: {fileID: 9176178099255871226}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -486,6 +487,7 @@ MonoBehaviour:
   level: 0
   exp: 0
   nextlevelExp: 0
+  levelBar: {fileID: 0}
 --- !u!114 &6177930097711939580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,6 +515,25 @@ MonoBehaviour:
   hurtColor: {r: 1, g: 0, b: 0, a: 1}
   blinkSpeed: 10
   blinkCount: 1
+--- !u!114 &9176178099255871226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478225697116208144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5075630ce54bb8742993d95a180efbaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stress
+  sts: 0
+  maxSts: 100
+  timeStressRate: 20
+  timeStressRegenRate: 22
+  stressBar: {fileID: 0}
+  combat: {fileID: 0}
+  baseDMGReduction: 0
 --- !u!1 &7478225697116208148
 GameObject:
   m_ObjectHideFlags: 0

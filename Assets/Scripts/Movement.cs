@@ -10,12 +10,14 @@ public class Movement : MonoBehaviour
     private float currentSpeed;                  
     public int jumpForce;
     public int dashForce;
+    private Stress stressSystem;
     private PlayerController controls;
 
     void Awake()
     {
         body = GetComponent<Rigidbody>();
         controls = GetComponent<PlayerController>();
+        stressSystem = GetComponent<Stress>();
         currentSpeed = moveSpeed;
     }
 
@@ -27,6 +29,14 @@ public class Movement : MonoBehaviour
         // Debug.Log($"isSprinting: {isSprinting} | moveSpeed: {moveSpeed} | multiplier: {speedMultiplier} | currentSpeed: {currentSpeed}");
         
         body.MovePosition(transform.position + direction * currentSpeed * Time.deltaTime);
+
+        if (isSprinting == true)
+        {
+            // sprinting = stress, let Update() handle it
+            // walking — do nothing, passive regen in Update() handles decrease
+            stressSystem.SetUnderStress();
+        }
+        
     }
 
     public void Rotate(Vector2 InputJoystick)
@@ -44,6 +54,8 @@ public class Movement : MonoBehaviour
     public void Dash(InputAction.CallbackContext context)
     {
         body.AddForce(transform.forward * dashForce);   //add push force in x axis, making player can dash.
-        // Debug.Log("dashed");                            //check in console if player already jump or not.
+        // Debug.Log("dashed");
+
+        stressSystem.IncreaseSTS(10f);
     }
 }
