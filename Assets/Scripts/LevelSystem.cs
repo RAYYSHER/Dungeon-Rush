@@ -7,23 +7,34 @@ public class LevelSystem : MonoBehaviour
     public int exp;
     public int nextlevelExp;
     private Player player;
+    [SerializeField] private LevelBar levelBar;
 
     void Awake()
     {
         player = GetComponent<Player>();
+        
     } 
     void Start()
     {
         level = 1;
         exp = 0;
         nextlevelExp = 10;
+        if (levelBar != null)
+        {
+            levelBar.UpdateLevelBar(exp, nextlevelExp, level);
+        }
     }
 
     public void GainXP(int xp)
     {
         //exp = exp + xp;
         exp += xp;
-        
+
+        if (levelBar != null)
+        {
+            levelBar.UpdateLevelBar(exp, nextlevelExp, level);
+        }
+
         if (exp >= nextlevelExp)
         {
             LevelUp();
@@ -38,6 +49,11 @@ public class LevelSystem : MonoBehaviour
 
         //increase levelUpExp needed
         nextlevelExp *= 2;              //nextLevelExp = nextlevelExp * 2;
+
+        if (levelBar != null)
+        {
+            levelBar.UpdateLevelBar(exp, nextlevelExp, level);
+        }
 
         player.IncreaseMainStat();
     } 
