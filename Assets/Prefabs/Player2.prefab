@@ -471,6 +471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Combat
   attackDamage: 50
   damageReduction: 5
+  baseDMGReduction: 5
   iFrameDuration: 1
 --- !u!114 &4432391231170335131
 MonoBehaviour:
@@ -533,7 +534,6 @@ MonoBehaviour:
   timeStressRegenRate: 22
   stressBar: {fileID: 0}
   combat: {fileID: 0}
-  baseDMGReduction: 0
 --- !u!1 &7478225697116208148
 GameObject:
   m_ObjectHideFlags: 0
