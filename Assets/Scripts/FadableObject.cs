@@ -22,6 +22,25 @@ public class FadableObject : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        // Force alpha to 1 on start, overriding whatever the material has
+        
+        // Debug.Log($"[FadableObject] Found {materials.Count} materials");
+        foreach (var mat in materials)
+        {
+            Color c = mat.GetColor("_BaseColor");
+            // Debug.Log($"[FadableObject] Mat: {mat.name} | Alpha before: {c.a}");
+
+            c.a = 1f;
+
+
+            mat.SetColor("_BaseColor", c);
+            // Debug.Log($"[FadableObject] Mat: {mat.name} | Alpha after: {c.a}");
+
+        }
+    }
+
     void Update()
     {
         foreach (var mat in materials)
