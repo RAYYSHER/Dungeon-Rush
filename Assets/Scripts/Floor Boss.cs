@@ -61,6 +61,13 @@ public class FloorBoss : MonoBehaviour, IDamagable
 
     #region Method
 
+    public void SetStatToGlobal()
+    {
+        combat.SetMaxHealth(BossGlobalStat.maxHealth);
+        combat.attackDamage = BossGlobalStat.attackDamage;
+        exp = BossGlobalStat.exp;
+    }
+
     public void Hurt(int damageAmount)
     {
         combat.GetHit(damageAmount);

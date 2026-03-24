@@ -17,6 +17,7 @@ public class BaseballBat : MonoBehaviour
             IDamagable enemy = other.GetComponent<IDamagable>();
 
             enemy.Hurt(attackDamage + combat.attackDamage);
+            Debug.Log("attacked");
         }
     }
 }

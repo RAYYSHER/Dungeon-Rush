@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class Zombie : MonoBehaviour, IDamagable
 {
+    #region Attributes
     private Animator animator;
     private Player player;
     private NavMeshAgent agent;
@@ -16,6 +17,9 @@ public class Zombie : MonoBehaviour, IDamagable
     public static List<Zombie> zombieLists = new List<Zombie>(); 
     private HurtEffect hurtEffect;
     
+    #endregion
+
+    #region Build-in Function
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -56,11 +60,10 @@ public class Zombie : MonoBehaviour, IDamagable
         }
 
     }
-    // private void FacingToPlayer(Vector2 playerDirection)
-    // {
-    //     float angle = Mathf.Atan2(playerDirection.x, playerDirection.y) * Mathf.Rad2Deg;
-    //     transform.rotation = Quaternion.Euler(0, angle, 0);
-    // }
+    
+    #endregion
+
+    #region Method
 
     public void SetStatToGlobal()
     {
@@ -80,9 +83,9 @@ public class Zombie : MonoBehaviour, IDamagable
         enabled = false;
         GetComponent<Weapon>().enabled = false;
 
-        rb.constraints |= RigidbodyConstraints.FreezeRotationY 
-                        | RigidbodyConstraints.FreezePositionX 
-                        | RigidbodyConstraints.FreezePositionZ;
+        rb.constraints  |= RigidbodyConstraints.FreezeRotationY 
+                        |  RigidbodyConstraints.FreezePositionX 
+                        |  RigidbodyConstraints.FreezePositionZ;
 
         player.GetXP(exp);
     }
@@ -97,4 +100,7 @@ public class Zombie : MonoBehaviour, IDamagable
     {
         zombieLists.Remove(this);
     }
+
+    #endregion
+
 }
