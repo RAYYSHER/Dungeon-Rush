@@ -29,12 +29,14 @@ public class Zombie : MonoBehaviour, IDamagable
         combat = GetComponent<Combat>();
         rb = GetComponent<Rigidbody>();
         hurtEffect = GetComponent<HurtEffect>();
+
     }
 
     void Start()
     {
         agent.speed = 2.5f;
         agent.angularSpeed = 100;
+        agent.stoppingDistance = 1.2f; //ระยะหยุดเดินของ Zombie
     }
     void Update()
     {
