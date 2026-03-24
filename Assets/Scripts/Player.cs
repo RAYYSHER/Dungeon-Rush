@@ -5,9 +5,11 @@ public class Player : MonoBehaviour, IDamagable
     private Animator animator;
     private PlayerController controller;
     private Combat combat;
+    private bool isAttacking = false;
     private HurtEffect hurtEffect;
     private LevelSystem levelSystem;
     private Stress stressSystem;
+    
 
     void Awake()
     {
@@ -44,6 +46,16 @@ public class Player : MonoBehaviour, IDamagable
 
     }
 
+    public void SetAttacking(bool value)
+    {
+        isAttacking = value;
+    }
+
+    public void OnAttackEnd()
+    {
+        isAttacking = false;
+    }
+
     public void GetXP(int xp)
     {
         levelSystem.GainXP(xp);
@@ -53,9 +65,11 @@ public class Player : MonoBehaviour, IDamagable
     {  
        if (combat.IsIFrameEnable() == false)
        {
-            animator.SetTrigger("trGetHit");
+            if (!isAttacking)
+            {
+                animator.SetTrigger("trGetHit");  
+            }
             hurtEffect.TriggerHurt();  
-            Debug.Log("hurt!");
             combat.GetHit(damageAmount);
        } 
     }

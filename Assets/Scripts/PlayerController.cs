@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private Movement movement;
     private Skill skill;
     private AnimatorController playerAC;
+    private Player player;
     bool sprinting;
 
     void Awake()
@@ -27,12 +28,12 @@ public class PlayerController : MonoBehaviour
         playerAC = GetComponent<AnimatorController>();
         movement = GetComponent<Movement>();
         skill = GetComponent<Skill>();
+        player = GetComponent<Player>();
 
         //Sprint button (hold)
         sprint.action.performed += SprintPerformed;
         sprint.action.canceled += SprintCanceled;
     }
-    
 
     //Sprint
     public bool GetSprint()
@@ -102,6 +103,7 @@ public class PlayerController : MonoBehaviour
     private void Attack(InputAction.CallbackContext context)
     {
         playerAC.TriggerAttack();
+        player.SetAttacking(true);
     }
 
 

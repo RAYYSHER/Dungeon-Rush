@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 6177930097711939580}
   - component: {fileID: 4932160270571978979}
   - component: {fileID: 9176178099255871226}
+  - component: {fileID: 3570667083700236197}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -295,6 +296,7 @@ Transform:
   m_Children:
   - {fileID: 7478225697115775444}
   - {fileID: 7478225697115775480}
+  - {fileID: 4787101880492990691}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!95 &7478225697108807222
@@ -424,9 +426,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280c03c8ae423154989ae115a790bdbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement
+  groundCheck: {fileID: 4787101880492990691}
+  groundCheckRadius: 0.2
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 128
   moveSpeed: 7
   speedMultiplier: 2
-  jumpForce: 1000
+  jumpForce: 20
   dashForce: 10000
 --- !u!114 &4337818757802970760
 MonoBehaviour:
@@ -534,6 +541,24 @@ MonoBehaviour:
   timeStressRegenRate: 22
   stressBar: {fileID: 0}
   combat: {fileID: 0}
+--- !u!114 &3570667083700236197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478225697116208144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32f9d2e5caf51014c807921155e1da4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PositiveEffect
+  levelUpColor: {r: 1, g: 0, b: 1, a: 1}
+  levelUpBlinkCount: 3
+  healColor: {r: 0, g: 1, b: 0, a: 1}
+  healBlinkCount: 1
+  blinkDuration: 1
+  blinkSpeed: 10
 --- !u!1 &7478225697116208148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1471,4 +1496,35 @@ Transform:
   m_Children:
   - {fileID: 7478225697115775426}
   m_Father: {fileID: 7478225697115775484}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9017867500910087480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4787101880492990691}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4787101880492990691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9017867500910087480}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7478225697115775088}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
