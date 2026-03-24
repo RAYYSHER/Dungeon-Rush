@@ -4,6 +4,18 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+
+    #region Groundcheck (Jump only ground)
+
+    [Header ("Groundcheck")]
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.2f;
+    public LayerMask groundMask;
+    private bool isGrounded;
+
+    #endregion
+
+    #region Attributes
     private Rigidbody body;                     //add player's physic (from Rigidbody's component in Inspector)
     public float moveSpeed;                     //add player's movement speed (adjustable, use for increase velocity.)
     public float speedMultiplier = 2f;
@@ -13,6 +25,10 @@ public class Movement : MonoBehaviour
     private Stress stressSystem;
     private PlayerController controls;
 
+    #endregion
+
+    #region Build-in Function
+
     void Awake()
     {
         body = GetComponent<Rigidbody>();
@@ -21,7 +37,15 @@ public class Movement : MonoBehaviour
         currentSpeed = moveSpeed;
     }
 
+    void Update()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
 
+    }
+
+    #endregion
+
+    #region Method
     public void Walk(Vector3 direction, bool isSprinting)
     {
         float currentSpeed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
@@ -47,8 +71,13 @@ public class Movement : MonoBehaviour
       //Jump keybind
     public void Jump(InputAction.CallbackContext context)
     {
-        body.AddForce(Vector3.up * jumpForce);   //add push force in Y axis, making player can jump.
-        // Debug.Log("jumped");                    //check in console if player already jump or not.
+        if (isGrounded == false)
+        {
+            return;
+        }
+
+        body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);   //add push force in Y axis, making player can jump.
+        
     }
 
     public void Dash(InputAction.CallbackContext context)
@@ -58,4 +87,6 @@ public class Movement : MonoBehaviour
 
         stressSystem.IncreaseSTS(10f);
     }
+
+    #endregion
 }
