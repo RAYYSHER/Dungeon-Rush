@@ -6,10 +6,12 @@ public class Skill : MonoBehaviour
     private Health health;
     private Timer cooldown;
     private int timeDuration = 15;
+    private PositiveEffect positiveEffect;
     void Awake()
     {
         health = GetComponent<Health>();
         cooldown= new Timer(timeDuration);
+        positiveEffect = GetComponent<PositiveEffect>();
     }
     public void Heal(InputAction.CallbackContext context)
     {
@@ -19,6 +21,7 @@ public class Skill : MonoBehaviour
         }
 
         health.IncreaseHealth(health.maxHealth * 30/100);
+        positiveEffect?.TriggerHeal();
         cooldown.Start();
         
     }

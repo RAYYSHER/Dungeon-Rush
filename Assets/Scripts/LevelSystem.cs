@@ -8,11 +8,12 @@ public class LevelSystem : MonoBehaviour
     public int nextlevelExp;
     private Player player;
     [SerializeField] private LevelBar levelBar;
+    private PositiveEffect positiveEffect;
 
     void Awake()
     {
         player = GetComponent<Player>();
-        
+        positiveEffect = GetComponent<PositiveEffect>();
     } 
     void Start()
     {
@@ -55,6 +56,7 @@ public class LevelSystem : MonoBehaviour
             levelBar.UpdateLevelBar(exp, nextlevelExp, level);
         }
 
+        positiveEffect?.TriggerLevelUp();
         player.IncreaseMainStat();
     } 
 
