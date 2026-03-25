@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
         animator = GetComponentInParent<Animator>();
         attackTimer = new Timer(attackCooldown);
 
-        var combat = GetComponentInParent<Combat>();
+        combat = GetComponentInParent<Combat>();
         if (combat != null)
         {
             enemyRoot = combat.transform;
@@ -43,8 +43,6 @@ public class Weapon : MonoBehaviour
 
         float distance = Vector3.Distance(enemyRoot.position , player.transform.position);
         
-         
-
         if (distance <= attackRange && !attackTimer.IsRunning())
         {
             attackTimer.Start();
@@ -57,8 +55,10 @@ public class Weapon : MonoBehaviour
             int totalDamage = attackDamage + (combat != null ? combat.attackDamage : 0 );
 
             IDamagable enemy = player.GetComponent<IDamagable>();
+
             enemy.Hurt(totalDamage);
             Debug.Log($"Hit for {totalDamage} (weapon: {attackDamage} + combat: {(combat != null ? combat.attackDamage : 0)})");
+            Debug.Log($"[Weapon] combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
         }
     }
 }

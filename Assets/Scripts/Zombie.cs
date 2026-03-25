@@ -13,7 +13,7 @@ public class Zombie : MonoBehaviour, IDamagable
     private AnimatorController ac;
     private Combat combat;
     private Rigidbody rb;
-    public int exp;
+    private int exp;
     public static List<Zombie> zombieLists = new List<Zombie>(); 
     private HurtEffect hurtEffect;
     
@@ -37,7 +37,9 @@ public class Zombie : MonoBehaviour, IDamagable
     {
         agent.speed = 2.5f;
         agent.angularSpeed = 100;
-        // agent.stoppingDistance = stoppingDistance; //ระยะหยุดเดินของ Zombie
+        
+        SetStatToGlobal();
+        Debug.Log($"[Zombie] SetStatToGlobal → combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
     }
     void Update()
     {

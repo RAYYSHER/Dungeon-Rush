@@ -9,7 +9,7 @@ public class Combat : MonoBehaviour
 
     public int attackDamage;
     public int damageReduction;
-    public int baseDMGReduction = 5;
+    public int baseDMGReduction;
     private Timer iFrameTimer;
     public float iFrameDuration = 1;
 
@@ -66,7 +66,7 @@ public class Combat : MonoBehaviour
     public void GetHit(int damageAmount)
     {
         //calculate damage
-        int totaldamage = damageAmount * (1 - (damageReduction / 100)); //current damage after reduction
+        int totaldamage = (int) (damageAmount * (1f - (damageReduction / 100f))); //current damage after reduction
         if (totaldamage > 0 && health.healthPoint > 0)
         {
             //decrease health
