@@ -17,6 +17,7 @@ public class Zombie : MonoBehaviour, IDamagable
     public static List<Zombie> zombieLists = new List<Zombie>(); 
     private HurtEffect hurtEffect;
     
+    
     #endregion
 
     #region Build-in Function
@@ -36,7 +37,7 @@ public class Zombie : MonoBehaviour, IDamagable
     {
         agent.speed = 2.5f;
         agent.angularSpeed = 100;
-        agent.stoppingDistance = 1.2f; //ระยะหยุดเดินของ Zombie
+        // agent.stoppingDistance = stoppingDistance; //ระยะหยุดเดินของ Zombie
     }
     void Update()
     {

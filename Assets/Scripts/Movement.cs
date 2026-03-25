@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,6 +36,8 @@ public class Movement : MonoBehaviour
         controls = GetComponent<PlayerController>();
         stressSystem = GetComponent<Stress>();
         currentSpeed = moveSpeed;
+
+        body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
     }
 
     void Update()
@@ -76,8 +79,10 @@ public class Movement : MonoBehaviour
             return;
         }
 
+        body.constraints = RigidbodyConstraints.FreezeRotation;
         body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);   //add push force in Y axis, making player can jump.
-        
+        StartCoroutine(LockYAfterjump());
+
     }
 
     public void Dash(InputAction.CallbackContext context)
@@ -89,4 +94,16 @@ public class Movement : MonoBehaviour
     }
 
     #endregion
+
+    #region Coroutine
+
+    IEnumerator LockYAfterjump()
+    {
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitUntil (() => isGrounded);
+        body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+    }
+
+    #endregion
+
 }
