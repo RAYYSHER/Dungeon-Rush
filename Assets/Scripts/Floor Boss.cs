@@ -5,6 +5,8 @@ using UnityEngine.AI;
 public class FloorBoss : MonoBehaviour, IDamagable
 {
     #region Attributes
+
+    [SerializeField] private BossHealthBar bossHealthBar;
     private Animator animator;
     private Player player;
     private NavMeshAgent agent;
@@ -34,6 +36,11 @@ public class FloorBoss : MonoBehaviour, IDamagable
     {
         agent.speed = 1.5f;
         agent.angularSpeed = 60;
+
+        if (bossHealthBar != null)
+        {
+            bossHealthBar.SetBoss(this);
+        }
     }
 
     void Update()
@@ -66,12 +73,23 @@ public class FloorBoss : MonoBehaviour, IDamagable
         combat.SetMaxHealth(BossGlobalStat.maxHealth);
         combat.attackDamage = BossGlobalStat.attackDamage;
         exp = BossGlobalStat.exp;
+
+        if (bossHealthBar != null)
+        {
+            bossHealthBar.UpdateBossHealthBar(combat.GetCurrentHealth(), BossGlobalStat.maxHealth);
+        }
     }
 
     public void Hurt(int damageAmount)
     {
         combat.GetHit(damageAmount);
         hurtEffect.TriggerHurt();
+        
+        if (bossHealthBar != null)
+        {
+            bossHealthBar.UpdateBossHealthBar(combat.GetCurrentHealth(), combat.GetMaxHealth());   
+        }
+
     }
 
     public void Die()

@@ -477,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combat
   attackDamage: 50
-  damageReduction: 5
+  damageReduction: 0
   baseDMGReduction: 5
   iFrameDuration: 1
 --- !u!114 &4432391231170335131

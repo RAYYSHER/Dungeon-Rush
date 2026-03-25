@@ -293,7 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c62b9805019a4234696ab5a69833fc61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NpcZombie
-  exp: 1
 --- !u!195 &6602556329164799800
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -358,6 +357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Combat
   attackDamage: 0
   damageReduction: 0
+  baseDMGReduction: 5
   iFrameDuration: 0.25
 --- !u!114 &-7633958944241051262
 MonoBehaviour:
@@ -372,6 +372,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieWeapon
   attackDamage: 10
+  attackRange: 1
+  attackCooldown: 1.5
   animator: {fileID: 0}
 --- !u!114 &8334116854626974494
 MonoBehaviour:

@@ -34,18 +34,29 @@ public class Combat : MonoBehaviour
 
      #endregion
 
-    #region health
+    #region Upgrade stats
     public void UpgradeMaxHealth()
     {
         health.maxHealth = (int) Math.Ceiling(health.maxHealth * 1.5f);
     }
-
-    
     public void SetMaxHealth(int newMaxHealth)
     {
         health.maxHealth = newMaxHealth;
         health.IncreaseHealth(newMaxHealth);
     }
+    public void UpgradeCombatDMG()
+    {
+        attackDamage = (int) Math.Ceiling(attackDamage * 1.25f);
+    }
+    public void UpgradeBaseDMGReduction()
+    {
+        baseDMGReduction = (int) Math.Ceiling(baseDMGReduction * 2.5f);
+        if (baseDMGReduction > 60)
+        {
+            baseDMGReduction = 60;
+        }
+    }
+    #endregion
 
     public void HealMissingHealth(double percent)
     {
@@ -54,14 +65,7 @@ public class Combat : MonoBehaviour
         health.IncreaseHealth((int) (missingHealth * percent));
     }
 
-    #endregion
-
-    #region combat
-
-    public void UpgradeCombatDMG()
-    {
-        attackDamage = (int) Math.Ceiling(attackDamage * 1.1f);
-    }
+    #region Combat
 
     public void GetHit(int damageAmount)
     {
@@ -82,24 +86,13 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public void UpgradeBaseDMGReduction()
-    {
-        baseDMGReduction = (int) Math.Ceiling(baseDMGReduction * 2.5f);
-        if (baseDMGReduction > 100)
-        {
-            baseDMGReduction = 100;
-        }
-    }
-
-
-
+    #endregion
     public void ApplyStresModifier(float stressRatio)
     {
-        damageReduction = Mathf.RoundToInt(baseDMGReduction * stressRatio);
-        
+        damageReduction = Mathf.RoundToInt(baseDMGReduction * stressRatio);    
     }
 
-    #endregion
+ 
 
     #region I-Frame
 
@@ -110,5 +103,15 @@ public class Combat : MonoBehaviour
     }
 
     #endregion
+
+    public int GetCurrentHealth()
+    {
+        return health.healthPoint;
+    }
+
+    public int GetMaxHealth()
+    {
+        return health.maxHealth;
+    }
 
 }

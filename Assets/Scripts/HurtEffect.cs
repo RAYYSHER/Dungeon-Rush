@@ -6,12 +6,12 @@ using UnityEngine;
 public class HurtEffect : MonoBehaviour
 {
     [Header("Hurt Effect Setting")]
-    public Color hurtColor = new Color(1f, 0f, 0f, 1f);         //Red Tint
+    public Color hurtColor = new Color(1f, 0f, 0f, 1f);         // Red Tint
     public float blinkSpeed = 10f;                              // How fast it blinks
-    private float hurtDuration;                           // Total hurt effect duration
+    private float hurtDuration;                                 // Total hurt effect duration
     public int   blinkCount = 3;     
     
-    private Combat combat;                           // How many blinks
+    private Combat combat;                                      // Blink amounts
 
     private List<Material> materials = new List<Material>();
     private List<Color> originalColors = new List<Color>();

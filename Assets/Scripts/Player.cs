@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IDamagable
     public void IncreaseMainStat()
     {
         
-        combat.HealMissingHealth(0.05);             //heal missing health
+        combat.HealMissingHealth(0.1);             //heal missing health
         combat.UpgradeMaxHealth();                  //increase maxhealth
         combat.UpgradeCombatDMG();                  //increase combatdamage
         combat.UpgradeBaseDMGReduction();           //increase damage reduction       

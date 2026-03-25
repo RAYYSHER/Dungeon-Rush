@@ -3,7 +3,7 @@ using UnityEngine;
 public class ZombieGlobalStat
 {
     public static int maxHealth = 100;
-    public static int exp = 10;
+    public static int exp = 5;
     public static int attackDamage = 5;
 
 public static void IncreaseStat()
