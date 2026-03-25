@@ -3,6 +3,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public int attackDamage;
+    private int totalDamageAmount;
     public float attackRange = 1f;
     public float attackCooldown = 1.5f;
     private Player player;
@@ -27,6 +28,8 @@ public class Weapon : MonoBehaviour
             Debug.LogError("[Weapon] ไม่เจอ Combat เลย!");
             enemyRoot = transform;
         }
+
+        totalDamageAmount = attackDamage + combat.attackDamage;
     }
 
     void Start()
@@ -40,6 +43,8 @@ public class Weapon : MonoBehaviour
 
         float distance = Vector3.Distance(enemyRoot.position , player.transform.position);
         
+         
+
         if (distance <= attackRange && !attackTimer.IsRunning())
         {
             attackTimer.Start();
@@ -50,7 +55,7 @@ public class Weapon : MonoBehaviour
             }
 
             IDamagable enemy = player.GetComponent<IDamagable>();
-            enemy.Hurt(attackDamage);
+            enemy.Hurt(totalDamageAmount);
             Debug.Log("Hit");
         }
     }
