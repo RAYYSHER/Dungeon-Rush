@@ -8,12 +8,15 @@ public class ZombieSpawner : MonoBehaviour
 
     void Start()
     {
-
-    for (int i = 0; i < spawnAmount ; i++)
-    {
-        SpawnRandomPosition(spawnRadius);
+        SpawnWave();
     }
 
+    public void SpawnWave()
+    {
+        for (int i = 0; i < spawnAmount ; i++)
+        {
+            SpawnRandomPosition(spawnRadius);
+        }
     }
 
     void SpawnRandomPosition(int radius)

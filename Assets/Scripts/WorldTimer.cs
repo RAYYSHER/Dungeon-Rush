@@ -10,15 +10,24 @@ public class WorldTimer : MonoBehaviour
     private bool timerEnded = false;
     public Transform bossRoomSpawnPoint;
 
+    [Header("Zombie Spawning")]
+    public ZombieSpawner[] zombieSpawners;
+    public float spawnInterval = 30f;
+    private float spawnTimer = 0f;
+
     void Awake()
     {
         timer = new Timer(timerDurationInMinutes * 60);
         lastMinuteRecorded = timerDurationInMinutes;
+
+        zombieSpawners = FindObjectsByType<ZombieSpawner>(FindObjectsSortMode.None);
+        Debug.Log($"[WorldTimer] Found {zombieSpawners.Length} ZombieSpawners");
     }
 
     void Start()
     {
         timer.Start();
+        spawnTimer = spawnInterval;
 
     }
 
@@ -33,6 +42,20 @@ public class WorldTimer : MonoBehaviour
         {
             timerEnded = true;
             TeleportPlayerToBoss();
+        }
+
+        //Spawn Zombie wave every 30 secs (stop at World timer ended)
+        if (!timerEnded)
+        {
+            spawnTimer -= Time.deltaTime;
+            if (spawnTimer <= 0f)
+            {
+                spawnTimer = spawnInterval;
+                foreach (var spawner in zombieSpawners)
+                {
+                    spawner.SpawnWave();
+                }
+            }
         }
 
 
