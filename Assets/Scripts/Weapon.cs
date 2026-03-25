@@ -3,13 +3,13 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public int attackDamage;
-    private int totalDamageAmount;
     public float attackRange = 1f;
     public float attackCooldown = 1.5f;
     private Player player;
     public Animator animator;
     private Transform enemyRoot;
     public Timer attackTimer;
+    private Combat combat;
 
     void Awake()
     {
@@ -29,7 +29,7 @@ public class Weapon : MonoBehaviour
             enemyRoot = transform;
         }
 
-        totalDamageAmount = attackDamage + combat.attackDamage;
+        
     }
 
     void Start()
@@ -54,9 +54,11 @@ public class Weapon : MonoBehaviour
                 animator.SetTrigger("trAttack");    
             }
 
+            int totalDamage = attackDamage + (combat != null ? combat.attackDamage : 0 );
+
             IDamagable enemy = player.GetComponent<IDamagable>();
-            enemy.Hurt(totalDamageAmount);
-            Debug.Log("Hit");
+            enemy.Hurt(totalDamage);
+            Debug.Log($"Hit for {totalDamage} (weapon: {attackDamage} + combat: {(combat != null ? combat.attackDamage : 0)})");
         }
     }
 }
