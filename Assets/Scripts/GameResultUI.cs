@@ -18,7 +18,7 @@ public class GameResultUI : MonoBehaviour
 
     public void ShowResult(bool isWin)
     {
-        Time.timeScale = 0f;
+        // Time.timeScale = 0f;
 
         gameResultPanel.SetActive(true);
 
@@ -37,8 +37,8 @@ public class GameResultUI : MonoBehaviour
 
     private void RestartGame()
     {
-        Time.timeScale = 1f;
-        
+        // Time.timeScale = 1f;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
