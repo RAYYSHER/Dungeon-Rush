@@ -103,6 +103,9 @@ public class FloorBoss : MonoBehaviour, IDamagable
                         | RigidbodyConstraints.FreezePositionZ;
 
         player.GetXP(exp);
+
+        //Result panel showed
+        FindFirstObjectByType<GameResultUI>().ShowResult(true);
     }
 
     void OnEnable()

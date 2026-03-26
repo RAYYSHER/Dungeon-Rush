@@ -78,7 +78,12 @@ public class Player : MonoBehaviour, IDamagable
     {
         // wait for anination
 
+        //Panel result showed
+        FindFirstObjectByType<GameResultUI>().ShowResult(false);
+
         // close the player code
         gameObject.SetActive(false);
+
+
     }
 }
