@@ -6,6 +6,12 @@ public class BossGlobalStat
     public static int exp = 100;
     public static int attackDamage = 50;
 
+public static void Reset()
+{
+    maxHealth = 500;
+    exp = 100;
+    attackDamage = 50;
+}
 public static void IncreaseStat()
 {
     maxHealth += 100;

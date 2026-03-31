@@ -5,6 +5,7 @@ public class ZombieSpawner : MonoBehaviour
     public GameObject prefabChar;
     public int spawnAmount;
     public int spawnRadius;
+    public int maxZombies = 100;
 
     void Start()
     {
@@ -15,6 +16,11 @@ public class ZombieSpawner : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount ; i++)
         {
+            // if (Zombie.zombieLists.Count >= maxZombies)
+            // {
+            //     Debug.Log($"[ZombieSpawner] Max zombies reached ({maxZombies}), skipping spawn.");
+            //     break;
+            // }
             SpawnRandomPosition(spawnRadius);
         }
     }

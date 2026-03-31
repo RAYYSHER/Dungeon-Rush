@@ -37,8 +37,8 @@ public class GameResultUI : MonoBehaviour
 
     private void RestartGame()
     {
-        // Time.timeScale = 1f;
-
+        ZombieGlobalStat.Reset();
+        BossGlobalStat.Reset();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
