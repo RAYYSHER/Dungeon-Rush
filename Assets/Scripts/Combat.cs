@@ -98,6 +98,9 @@ public class Combat : MonoBehaviour
 
     public bool IsIFrameEnable()
     {
+
+        // bool isIframeEnabled = (iFrameTimer.IsTimeUp() == false);           //read in () first
+        
         bool isIframeEnabled = iFrameTimer.IsRunning() && iFrameTimer.GetTimeRemaining() > 0;
         return isIframeEnabled;
     }

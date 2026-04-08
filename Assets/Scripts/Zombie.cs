@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,8 +12,8 @@ public class Zombie : MonoBehaviour, IDamagable
     private Combat combat;
     private Rigidbody rb;
     private int exp;
-    public static List<Zombie> zombieLists = new List<Zombie>(); 
     private HurtEffect hurtEffect;
+    public static ZombieSpawner[] zombieSpawners;
     
     
     #endregion
@@ -31,6 +29,7 @@ public class Zombie : MonoBehaviour, IDamagable
         rb = GetComponent<Rigidbody>();
         hurtEffect = GetComponent<HurtEffect>();
 
+        zombieSpawners = FindObjectsByType<ZombieSpawner>(FindObjectsSortMode.None);
     }
 
     void Start()
@@ -94,16 +93,16 @@ public class Zombie : MonoBehaviour, IDamagable
 
         player.GetXP(exp);
     }
-
-    void OnEnable()
-    {
-        zombieLists.Add(this);
-        Debug.Log(zombieLists);    
-    }
-
     void OnDisable()
     {
-        zombieLists.Remove(this);
+        foreach (ZombieSpawner zombieSpawner in zombieSpawners)
+        {
+            if (zombieSpawner.zombieLists.Contains(this))
+            {
+                zombieSpawner.zombieLists.Remove(this);
+                break;
+            }
+        }
     }
 
     #endregion

@@ -20,6 +20,7 @@ public class Skill : MonoBehaviour
             return;
         }
 
+
         health.IncreaseHealth(health.maxHealth * 30/100);
         positiveEffect?.TriggerHeal();
         cooldown.Start();

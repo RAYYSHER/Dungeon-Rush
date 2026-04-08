@@ -1,15 +1,24 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ZombieSpawner : MonoBehaviour
 {
-    public GameObject prefabChar;
+    public Zombie zombiePrefab;
     public int spawnAmount;
     public int spawnRadius;
-    public int maxZombies = 100;
+    public int spawnerCooldown = 15;
+    public Timer spawnTimer;
+    public List<Zombie> zombieLists = new List<Zombie>(); 
+
     
     void Start()
     {
-        // SpawnWave();
+        spawnTimer = new Timer(spawnerCooldown);
+    }
+
+    void Update()
+    {
+        spawnTimer.Update(Time.deltaTime);
     }
 
     public void SpawnWave()
@@ -27,14 +36,26 @@ public class ZombieSpawner : MonoBehaviour
 
         Vector3 position = transform.position + new Vector3(x, 0, z);
 
-        Instantiate(prefabChar, position, Quaternion.identity, this.transform);
+        Zombie zombie = Instantiate(zombiePrefab, position, Quaternion.identity, this.transform);
+        zombieLists.Add(zombie);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") == true)
         {
-            SpawnWave();
+            if ( !(spawnTimer.IsRunning() && spawnTimer.GetTimeRemaining() > 0) )
+            {
+                SpawnWave();
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") == true)
+        {
+            spawnTimer.Start();
         }
     }
 }

@@ -11,7 +11,7 @@ public class WorldTimer : MonoBehaviour
     public Transform bossRoomSpawnPoint;
 
     [Header("Zombie Spawning")]
-    public ZombieSpawner[] zombieSpawners;
+    
     public float spawnInterval = 30f;
     private float spawnTimer = 0f;
 
@@ -20,8 +20,8 @@ public class WorldTimer : MonoBehaviour
         timer = new Timer(timerDurationInMinutes * 60);
         lastMinuteRecorded = timerDurationInMinutes;
 
-        zombieSpawners = FindObjectsByType<ZombieSpawner>(FindObjectsSortMode.None);
-        Debug.Log($"[WorldTimer] Found {zombieSpawners.Length} ZombieSpawners");
+        
+        // Debug.Log($"[WorldTimer] Found {zombieSpawners.Length} ZombieSpawners");
     }
 
     void Start()
@@ -67,9 +67,12 @@ public class WorldTimer : MonoBehaviour
 
             //update status every minute passed
             ZombieGlobalStat.IncreaseStat();
-            foreach (var zombie in Zombie.zombieLists)
+            foreach (var spawner in Zombie.zombieSpawners)
             {   
-                zombie.SetStatToGlobal();
+                foreach (var zombie in spawner.zombieLists)
+                {
+                    zombie.SetStatToGlobal();
+                }
             } 
             BossGlobalStat.IncreaseStat();
             foreach (var boss in FloorBoss.bossLists)

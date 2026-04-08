@@ -36,6 +36,10 @@ public class Timer
             isRunning = false;
         }
     }
+    public bool IsTimeUp()
+    {
+        return timeRemaining <= 0f;
+    }
 
     public float GetTimeRemaining()
     {
