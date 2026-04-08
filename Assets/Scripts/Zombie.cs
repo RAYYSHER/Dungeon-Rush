@@ -35,7 +35,7 @@ public class Zombie : MonoBehaviour, IDamagable
 
     void Start()
     {
-        agent.speed = 2.5f;
+        agent.speed = 3.5f;
         agent.angularSpeed = 100;
         
         SetStatToGlobal();
@@ -46,7 +46,7 @@ public class Zombie : MonoBehaviour, IDamagable
         // Vector3 lookDirection = player.transform.position - transform.position;
         // FacingToPlayer(new Vector2(lookDirection.x, lookDirection.z)); 
         
-        if (Vector3.Distance(agent.transform.position , player.transform.position) <= 10)
+        if (Vector3.Distance(agent.transform.position , player.transform.position) <= 15)
         {
             agent.destination = player.transform.position;    
         }

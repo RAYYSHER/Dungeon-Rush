@@ -37,7 +37,7 @@ public class Combat : MonoBehaviour
     #region Upgrade stats
     public void UpgradeMaxHealth()
     {
-        health.maxHealth = (int) Math.Ceiling(health.maxHealth * 1.1f);
+        health.maxHealth = (int) Math.Ceiling(health.maxHealth * 1.05f);
     }
     public void SetMaxHealth(int newMaxHealth)
     {

@@ -6,21 +6,16 @@ public class ZombieSpawner : MonoBehaviour
     public int spawnAmount;
     public int spawnRadius;
     public int maxZombies = 100;
-
+    
     void Start()
     {
-        SpawnWave();
+        // SpawnWave();
     }
 
     public void SpawnWave()
     {
         for (int i = 0; i < spawnAmount ; i++)
         {
-            // if (Zombie.zombieLists.Count >= maxZombies)
-            // {
-            //     Debug.Log($"[ZombieSpawner] Max zombies reached ({maxZombies}), skipping spawn.");
-            //     break;
-            // }
             SpawnRandomPosition(spawnRadius);
         }
     }
@@ -33,5 +28,13 @@ public class ZombieSpawner : MonoBehaviour
         Vector3 position = transform.position + new Vector3(x, 0, z);
 
         Instantiate(prefabChar, position, Quaternion.identity, this.transform);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") == true)
+        {
+            SpawnWave();
+        }
     }
 }

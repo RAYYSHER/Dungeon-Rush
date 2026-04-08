@@ -14,9 +14,9 @@ public static void Reset()
 }
 public static void IncreaseStat()
 {
-    maxHealth += 50;
+    maxHealth += 75;
     exp += 10;
-    attackDamage += 5;
+    attackDamage += 15;
 }
 
 }
