@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private AnimatorController playerAC;
     private Player player;
     bool sprinting;
+    private List<GameObject> nearbyEnemies;
 
     void Awake()
     {
@@ -33,6 +35,8 @@ public class PlayerController : MonoBehaviour
         //Sprint button (hold)
         sprint.action.performed += SprintPerformed;
         sprint.action.canceled += SprintCanceled;
+
+        nearbyEnemies = new List<GameObject>();
     }
 
     //Sprint
@@ -87,7 +91,10 @@ public class PlayerController : MonoBehaviour
         // Auto rotate while walking
         if(InputJoystickLeft.magnitude != 0)
         {
-            movement.Rotate(InputJoystickLeft);
+            if (!player.IsAttacking())
+            {
+                movement.Rotate(InputJoystickLeft);
+            }
             playerAC.SetWalk();
         }
         else if(InputJoystickLeft.magnitude == 0) // Idle/ not moving
@@ -97,13 +104,48 @@ public class PlayerController : MonoBehaviour
     }
     private void ManualRotate()
     {
-        movement.Rotate(InputJoystickRight);
+        if (!player.IsAttacking())
+        {
+            movement.Rotate(InputJoystickRight);
+        }
+       
     }
    
     private void Attack(InputAction.CallbackContext context)
     {
+        //Rotate auto
+        Transform nearestEnemy = FindNearestEnemy();
+        if (nearestEnemy != null)
+        {
+            movement.RotateTo(nearestEnemy.position - this.transform.position);
+        }
         playerAC.TriggerAttack();
         player.SetAttacking(true);
+    }
+
+    Transform FindNearestEnemy()
+    {
+        Transform nearestEnemy = null;
+        float minDistance = float.MaxValue;
+
+        foreach (var enemy in nearbyEnemies)
+        {
+            if (enemy == null)
+            {
+                nearbyEnemies.Remove(enemy);
+                continue;
+            }
+            
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestEnemy = enemy.transform;
+            }
+        }
+
+        return nearestEnemy;
+    
     }
 
 
@@ -122,4 +164,20 @@ public class PlayerController : MonoBehaviour
         skill01.action.started -= skill.Heal;
     }
 
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            nearbyEnemies.Add(other.gameObject);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            nearbyEnemies.Remove(other.gameObject);
+        }
+    }
 }

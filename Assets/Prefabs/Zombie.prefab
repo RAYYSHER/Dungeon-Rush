@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 6817202670105550127}
   - component: {fileID: -7633958944241051262}
   - component: {fileID: 8334116854626974494}
+  - component: {fileID: 3834144070455047083}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -390,6 +391,19 @@ MonoBehaviour:
   hurtColor: {r: 0, g: 0.29451847, b: 1, a: 1}
   blinkSpeed: 10
   blinkCount: 1
+--- !u!114 &3834144070455047083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856601670117699726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f811bc623433ef4196de66da8025ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDespawnBody
+  bodyTimeRemaining: 5
 --- !u!1 &856601670117699840
 GameObject:
   m_ObjectHideFlags: 0

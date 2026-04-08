@@ -248,8 +248,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.62, y: 0.14, z: 1}
-  m_Center: {x: -1.1, y: 0.001125934, z: 0.0016955552}
+  m_Size: {x: 1, y: 0.5, z: 1}
+  m_Center: {x: -0.77, y: 0.001125934, z: 0.0016955552}
 --- !u!1 &7478225697116208144
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,10 +476,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478be904edf886a449997db4fad398b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combat
-  attackDamage: 50
+  attackDamage: 30
   damageReduction: 0
   baseDMGReduction: 5
-  iFrameDuration: 1
+  iFrameDuration: 0.5
 --- !u!114 &4432391231170335131
 MonoBehaviour:
   m_ObjectHideFlags: 0

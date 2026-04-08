@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +15,7 @@ public class Zombie : MonoBehaviour, IDamagable
     private int exp;
     private HurtEffect hurtEffect;
     public static ZombieSpawner[] zombieSpawners;
+    private EnemyDespawnBody despawnBody;
     
     
     #endregion
@@ -28,6 +30,7 @@ public class Zombie : MonoBehaviour, IDamagable
         combat = GetComponent<Combat>();
         rb = GetComponent<Rigidbody>();
         hurtEffect = GetComponent<HurtEffect>();
+        despawnBody = GetComponent<EnemyDespawnBody>();
 
         zombieSpawners = FindObjectsByType<ZombieSpawner>(FindObjectsSortMode.None);
     }
@@ -84,14 +87,15 @@ public class Zombie : MonoBehaviour, IDamagable
     public void Die()
     {
         animator.SetTrigger("Dead");
-        enabled = false;
         GetComponent<Weapon>().enabled = false;
 
         rb.constraints  |= RigidbodyConstraints.FreezeRotationY 
                         |  RigidbodyConstraints.FreezePositionX 
                         |  RigidbodyConstraints.FreezePositionZ;
-
         player.GetXP(exp);
+
+        despawnBody.Despawn();
+        enabled = false;
     }
     void OnDisable()
     {

@@ -51,6 +51,11 @@ public class Player : MonoBehaviour, IDamagable
         isAttacking = value;
     }
 
+    public bool IsAttacking()
+    {
+      return isAttacking;   
+    }
+
     public void OnAttackEnd()
     {
         isAttacking = false;

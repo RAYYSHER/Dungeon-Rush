@@ -70,6 +70,12 @@ public class Movement : MonoBehaviour
         float angle = Mathf.Atan2(InputJoystick.x, InputJoystick.y) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, angle, 0);
     }
+
+    public void RotateTo(Vector3 position)
+    {
+        float angle = Mathf.Atan2(position.x, position.z) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, angle, 0);
+    }
       //Jump keybind
     public void Jump(InputAction.CallbackContext context)
     {
