@@ -8,7 +8,8 @@ public class ZombieSpawner : MonoBehaviour
     public int spawnRadius;
     public int spawnerCooldown = 15;
     public Timer spawnTimer;
-    public List<Zombie> zombieLists = new List<Zombie>(); 
+    public List<Zombie> zombieLists = new List<Zombie>();
+    public int maxAmount = 30; 
 
     
     void Start()
@@ -25,7 +26,10 @@ public class ZombieSpawner : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount ; i++)
         {
-            SpawnRandomPosition(spawnRadius);
+            if (zombieLists.Count < maxAmount)
+            {
+                SpawnRandomPosition(spawnRadius);
+            }
         }
     }
 
