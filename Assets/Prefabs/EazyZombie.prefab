@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 856601670124978856}
   - component: {fileID: 9025431662229415130}
   - component: {fileID: -1047869470910245299}
+  - component: {fileID: 8409797918484935826}
   - component: {fileID: 6602556329164799800}
   - component: {fileID: 5168381551280591781}
   - component: {fileID: 6492734890453752405}
@@ -281,6 +282,18 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!114 &8409797918484935826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856601670117699726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 314d3253fda9f654e85c71e61e308b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EazyZombie
 --- !u!195 &6602556329164799800
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1125,7 +1138,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8fd192304df88db499eedb3456dc6d67, type: 2}
+  - {fileID: 2100000, guid: 508e84678f42c4b43b158f8039a00be3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1241,7 +1254,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8fd192304df88db499eedb3456dc6d67, type: 2}
+  - {fileID: 2100000, guid: 508e84678f42c4b43b158f8039a00be3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1533,7 +1546,7 @@ RectTransform:
   m_Father: {fileID: 1988875203559048122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

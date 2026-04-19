@@ -10,7 +10,7 @@ public class EazyZombie : MonoBehaviour, IDamagable
     private AnimatorController ac;
     private Combat combat;
     private Rigidbody rb;
-    private int exp;
+    public int exp = 5;
     private HurtEffect hurtEffect;
     public static EazyZombieSpawner[] eazyZombieSpawners;
     private EnemyDespawnBody despawnBody;

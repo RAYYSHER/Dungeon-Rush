@@ -46,8 +46,13 @@ public class EazyZombieSpawner : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"[EazyZombieSpawner] OnTriggerEnter fired! Tag: {other.tag}");
+
         if (other.CompareTag("Player") == true)
         {
+
+            Debug.Log($"[EazyZombieSpawner] Player detected! Timer running: {spawnTimer.IsRunning()}, spawnAmount: {spawnAmount}");
+            
             if ( !(spawnTimer.IsRunning() && spawnTimer.GetTimeRemaining() > 0) )
             {
                 SpawnWave();
