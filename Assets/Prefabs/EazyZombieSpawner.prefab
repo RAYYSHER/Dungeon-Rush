@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EazyZombieSpawner
   eazyZombiePrefab: {fileID: 0}
-  spawnAmount: 0
-  spawnRadius: 0
+  spawnAmount: 100
+  spawnRadius: 12
   spawnerCooldown: 15
   zombieLists: []
   maxAmount: 5
