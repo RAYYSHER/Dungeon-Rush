@@ -38,7 +38,7 @@ public class EazyZombie : MonoBehaviour, IDamagable
         agent.speed = 3.5f;
         agent.angularSpeed = 100;
         
-        SetStatToGlobal();
+        // SetStatToGlobal();
         Debug.Log($"[Zombie] SetStatToGlobal → combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
     }
     void Update()
@@ -70,12 +70,12 @@ public class EazyZombie : MonoBehaviour, IDamagable
 
     #region Method
 
-    public void SetStatToGlobal()
-    {
-        combat.SetMaxHealth(ZombieGlobalStat.maxHealth);
-        combat.attackDamage = ZombieGlobalStat.attackDamage;
-        exp = ZombieGlobalStat.exp;
-    }
+    // public void SetStatToGlobal()
+    // {
+    //     combat.SetMaxHealth(ZombieGlobalStat.maxHealth);
+    //     combat.attackDamage = ZombieGlobalStat.attackDamage;
+    //     exp = ZombieGlobalStat.exp;
+    // }
 
     public void Hurt(int damageAmount)
     {
