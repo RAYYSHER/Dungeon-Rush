@@ -125,22 +125,25 @@ public class PlayerController : MonoBehaviour
 
     Transform FindNearestEnemy()
     {
+        float aimRange = 5f;
+        Collider[] hits = Physics.OverlapSphere(transform.position, aimRange); 
+
+
         Transform nearestEnemy = null;
         float minDistance = float.MaxValue;
 
-        foreach (var enemy in nearbyEnemies)
+        foreach (var hit in hits)
         {
-            if (enemy == null)
+            if (!hit.CompareTag("Enemy"))
             {
-                nearbyEnemies.Remove(enemy);
                 continue;
             }
             
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            float distance = Vector3.Distance(transform.position, hit.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;
-                nearestEnemy = enemy.transform;
+                nearestEnemy = hit.transform;
             }
         }
 
