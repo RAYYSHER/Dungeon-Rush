@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2}
+  m_AnchoredPosition: {x: 0, y: 1.843}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1543736960227617832
@@ -177,7 +177,6 @@ GameObject:
   - component: {fileID: 856601670124978856}
   - component: {fileID: 9025431662229415130}
   - component: {fileID: -1047869470910245299}
-  - component: {fileID: 8409797918484935826}
   - component: {fileID: 6602556329164799800}
   - component: {fileID: 5168381551280591781}
   - component: {fileID: 6492734890453752405}
@@ -185,6 +184,7 @@ GameObject:
   - component: {fileID: -7633958944241051262}
   - component: {fileID: 8334116854626974494}
   - component: {fileID: 3834144070455047083}
+  - component: {fileID: 1960852644535559116}
   m_Layer: 0
   m_Name: TankZombie
   m_TagString: Enemy
@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856601670117699726}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.1657925, y: 0.118200496, z: -7.5751743}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
@@ -278,23 +278,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.7
+  m_Radius: 0.3
+  m_Height: 1.5
   m_Direction: 1
-  m_Center: {x: 0, y: 0.8, z: 0}
---- !u!114 &8409797918484935826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856601670117699726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 314d3253fda9f654e85c71e61e308b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EazyZombie
-  exp: 5
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!195 &6602556329164799800
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -343,7 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   healthbar: {fileID: 0}
   healthPoint: 100
-  maxHealth: 50
+  maxHealth: 400
   healthRegenPercent: 0
 --- !u!114 &6817202670105550127
 MonoBehaviour:
@@ -373,7 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81cb989ff2da7c458de90552b78ef43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieWeapon
-  attackDamage: 10
+  attackDamage: 20
   attackRange: 1
   attackCooldown: 1.5
   animator: {fileID: 0}
@@ -405,6 +392,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDespawnBody
   bodyTimeRemaining: 5
+--- !u!114 &1960852644535559116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856601670117699726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be71629c7964214fba23852ff8efdae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TankZombie
+  exp: 20
 --- !u!1 &856601670117699840
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,8 +463,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.000002080476, y: 0.000000693676, z: -0.000398159, w: 0.99999994}
   m_LocalPosition: {x: -0.08668395, y: -0.0003778294, z: 0.00000012073723}
-  m_LocalScale: {x: 1, y: 0.99999994, z: 0.99999994}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 856601670117272896}
   - {fileID: 856601670117272926}
@@ -529,8 +529,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7068252, y: -0.000000005266258, z: -0.000000005270453, w: 0.7073882}
   m_LocalPosition: {x: -0.1380071, y: 0, z: 0.00000009689331}
-  m_LocalScale: {x: 1, y: 0.99999994, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 856601670117272800}
   m_Father: {fileID: 856601670117272936}
@@ -657,8 +657,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.0000000051264695, y: -0.00000007698254, z: -0.067478254, w: 0.9977208}
   m_LocalPosition: {x: -0.10479825, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.99999994, z: 0.99999994}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 856601670117272922}
   m_Father: {fileID: 856601670117272910}
@@ -721,8 +721,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7068252, y: -0.000000010540906, z: -0.000000010532516, w: 0.7073882}
   m_LocalPosition: {x: -0.13800707, y: 0, z: -0.00000009689331}
-  m_LocalScale: {x: 1, y: 0.99999994, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 856601670117272900}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -819,7 +819,7 @@ Transform:
   m_LocalRotation: {x: 2.1740764e-14, y: 1.6203627e-14, z: 0.08872142, w: 0.9960565}
   m_LocalPosition: {x: -0.21324629, y: -0.000000004541874, z: 0}
   m_LocalScale: {x: 0.9999999, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 856601670117272898}
   m_Father: {fileID: 856601670117272920}
@@ -948,8 +948,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -7.726713e-10, y: -0.000000010241, z: -0.067478254, w: 0.9977208}
   m_LocalPosition: {x: -0.10479823, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.99999994, z: 0.99999994}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 856601670117272942}
   m_Father: {fileID: 856601670117272914}
@@ -981,7 +981,7 @@ Transform:
   m_LocalRotation: {x: -0.021307006, y: 0.99977297, z: -0.00000067674466, w: -0.00000078515063}
   m_LocalPosition: {x: 0.00000024223328, y: 0.0000002664566, z: 0.17689882}
   m_LocalScale: {x: 1.0000001, y: 1, z: 0.99999994}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 856601670117272910}
   m_Father: {fileID: 856601670117272912}
@@ -1139,7 +1139,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 508e84678f42c4b43b158f8039a00be3, type: 2}
+  - {fileID: 2100000, guid: d23bc867ad31f8b4692c297936b71532, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1255,7 +1255,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 508e84678f42c4b43b158f8039a00be3, type: 2}
+  - {fileID: 2100000, guid: d23bc867ad31f8b4692c297936b71532, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1306,7 +1306,7 @@ Transform:
   m_LocalRotation: {x: 9.553441e-16, y: 1.75553e-30, z: 1, w: -1.8375893e-15}
   m_LocalPosition: {x: -0.006900354, y: 0, z: 0}
   m_LocalScale: {x: -0.99999994, y: -1, z: -0.99999994}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 856601670117272922}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
