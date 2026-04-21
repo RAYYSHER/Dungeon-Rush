@@ -14,6 +14,8 @@ public class EazyZombie : MonoBehaviour, IDamagable
     private HurtEffect hurtEffect;
     public static EazyZombieSpawner[] eazyZombieSpawners;
     private EnemyDespawnBody despawnBody;
+
+    [SerializeField] private AudioClip damageSoundClip;
     
     
     #endregion
@@ -81,6 +83,9 @@ public class EazyZombie : MonoBehaviour, IDamagable
     {
         combat.GetHit(damageAmount);
         hurtEffect.TriggerHurt();  
+
+        // play sound FX
+        SoundFXManager.instance.PlaySoundFXClip(damageSoundClip, transform, 1f);  
     }
     public void Die()
     {

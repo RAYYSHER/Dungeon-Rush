@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     bool sprinting;
     private List<GameObject> nearbyEnemies;
 
+    [SerializeField] private AudioClip[] attackSoundClips;
+
     void Awake()
     {
         playerAC = GetComponent<AnimatorController>();
@@ -113,6 +115,9 @@ public class PlayerController : MonoBehaviour
    
     private void Attack(InputAction.CallbackContext context)
     {
+        // play sound FX at random
+        SoundFXManager.instance.PlayRandomSoundFXClip(attackSoundClips, transform, 1f);
+
         //Rotate auto
         Transform nearestEnemy = FindNearestEnemy();
         if (nearestEnemy != null)

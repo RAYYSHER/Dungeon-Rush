@@ -14,6 +14,8 @@ public class Zombie : MonoBehaviour, IDamagable
     private HurtEffect hurtEffect;
     public static ZombieSpawner[] zombieSpawners;
     private EnemyDespawnBody despawnBody;
+
+    [SerializeField] private AudioClip damageSoundClip;
     
     
     #endregion
@@ -80,7 +82,10 @@ public class Zombie : MonoBehaviour, IDamagable
     public void Hurt(int damageAmount)
     {
         combat.GetHit(damageAmount);
-        hurtEffect.TriggerHurt();  
+        hurtEffect.TriggerHurt();
+
+        // play sound FX
+        SoundFXManager.instance.PlaySoundFXClip(damageSoundClip, transform, 1f);  
     }
     public void Die()
     {
