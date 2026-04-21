@@ -13,9 +13,17 @@ public class MenuManager : MonoBehaviour
     [Header("First Selected Options")]
     [SerializeField] private GameObject _mainMenuFirst;
     [SerializeField] private GameObject _settingsMenuFirst;
+    [SerializeField] private GameObject _audioMenuFirst;
 
     private bool isPaused;
+    private UISelectionGuard _selectionGuard;
+    private PlayerController _playerController;
 
+    void Awake()
+    {
+        _selectionGuard = FindFirstObjectByType<UISelectionGuard>();
+        _playerController = FindFirstObjectByType<PlayerController>();
+    }
     void Start()
     {
         _mainMenuCanvasGO.SetActive(false);
@@ -43,6 +51,7 @@ public class MenuManager : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;
+        if (_playerController != null) _playerController.enabled = false;
 
         OpenMainMenu();
     }
@@ -51,6 +60,7 @@ public class MenuManager : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
+        if (_playerController != null) _playerController.enabled = true;
 
         CloseAllMenus();
     }
@@ -79,7 +89,9 @@ public class MenuManager : MonoBehaviour
     {
         _mainMenuCanvasGO.SetActive(false);
         _settingMenuCanvasGO.SetActive(false);
-        _AudioMenuCanvasGO.SetActive(true);  
+        _AudioMenuCanvasGO.SetActive(true);
+
+        StartCoroutine(SelectAfterFrame(_audioMenuFirst)); 
     }
 
     private void CloseAllMenus()
@@ -88,6 +100,7 @@ public class MenuManager : MonoBehaviour
         _settingMenuCanvasGO.SetActive(false);
         _AudioMenuCanvasGO.SetActive(false);   
 
+        _selectionGuard?.ClearLastSelected();  
         EventSystem.current.SetSelectedGameObject(null);
     }
 
