@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,21 +7,22 @@ using UnityEngine.UI;
 
 public class GameResultUI : MonoBehaviour
 {
-    [SerializeField] private GameObject gameResultPanel;
+    [SerializeField] private GameObject _gameResultPanel;
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private Button restartButton;
 
+    [SerializeField] private GameObject _gameResultFirst;
+
     void Start()
     {
-        gameResultPanel.SetActive(false);
-        restartButton.onClick.AddListener(RestartGame);
+        _gameResultPanel.SetActive(false);
     }
 
     public void ShowResult(bool isWin)
     {
         // Time.timeScale = 0f;
 
-        gameResultPanel.SetActive(true);
+        _gameResultPanel.SetActive(true);
 
         if (isWin)
         {
@@ -31,15 +33,23 @@ public class GameResultUI : MonoBehaviour
             resultText.text = "DEFEAT";
         }
 
-        //Controller(Joystick) automatically highlights RESTART button
-        EventSystem.current.SetSelectedGameObject(restartButton.gameObject);
+        // Controller(Joystick) automatically highlights RESTART button
+        // EventSystem.current.SetSelectedGameObject(_gameResultFirst);
+        StartCoroutine(SelectAfterFrame(_gameResultFirst));
     }
 
-    private void RestartGame()
+    public void RestartGame()
     {
         ZombieGlobalStat.Reset();
         BossGlobalStat.Reset();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private IEnumerator SelectAfterFrame(GameObject target)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(target);
     }
 
 }
