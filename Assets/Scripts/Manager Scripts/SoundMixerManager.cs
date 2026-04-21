@@ -8,7 +8,7 @@ public class SoundMixerManager : MonoBehaviour
     private float sfxVolume = 1f;
     private float musicVolume = 1f;
 
-    public float volumeStep = 0.01f;
+    public float volumeStep = 0.1f;
 
     #region Master Volume -------------------------------------------------------------------------------------------------------------------------
 
