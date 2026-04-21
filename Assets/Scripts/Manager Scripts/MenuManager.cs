@@ -7,6 +7,7 @@ public class MenuManager : MonoBehaviour
     [Header("Menu Objects")]
     [SerializeField] private GameObject _mainMenuCanvasGO;
     [SerializeField] private GameObject _settingMenuCanvasGO;
+    [SerializeField] private GameObject _AudioMenuCanvasGO;
 
 
     [Header("First Selected Options")]
@@ -19,6 +20,7 @@ public class MenuManager : MonoBehaviour
     {
         _mainMenuCanvasGO.SetActive(false);
         _settingMenuCanvasGO.SetActive(false); 
+        _AudioMenuCanvasGO.SetActive(false);
 
     }
 
@@ -57,6 +59,7 @@ public class MenuManager : MonoBehaviour
     {
         _mainMenuCanvasGO.SetActive(true);
         _settingMenuCanvasGO.SetActive(false);
+        _AudioMenuCanvasGO.SetActive(false); 
 
         // EventSystem.current.SetSelectedGameObject(_mainMenuFirst);
         StartCoroutine(SelectAfterFrame(_mainMenuFirst));
@@ -66,15 +69,24 @@ public class MenuManager : MonoBehaviour
     {
         _mainMenuCanvasGO.SetActive(false);
         _settingMenuCanvasGO.SetActive(true);
+        _AudioMenuCanvasGO.SetActive(false); 
 
         // EventSystem.current.SetSelectedGameObject(_settingsMenuFirst);
         StartCoroutine(SelectAfterFrame(_settingsMenuFirst));
     }
 
+    private void OpenAudioMenus()
+    {
+        _mainMenuCanvasGO.SetActive(false);
+        _settingMenuCanvasGO.SetActive(false);
+        _AudioMenuCanvasGO.SetActive(true);  
+    }
+
     private void CloseAllMenus()
     {
         _mainMenuCanvasGO.SetActive(false);
-        _settingMenuCanvasGO.SetActive(false);  
+        _settingMenuCanvasGO.SetActive(false);
+        _AudioMenuCanvasGO.SetActive(false);   
 
         EventSystem.current.SetSelectedGameObject(null);
     }
@@ -99,5 +111,10 @@ public class MenuManager : MonoBehaviour
     public void OnSettingsBackPress()
     {
         OpenMainMenu();
+    }
+
+    public void OnAudioPress()
+    {
+        OpenAudioMenus();
     }
 }
