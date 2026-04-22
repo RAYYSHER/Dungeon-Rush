@@ -1,0 +1,44 @@
+:root {
+}
+
+.header {
+    color: rgb(255, 255, 255);
+    font-size: 200px;
+    -unity-font-definition: url("project://database/Assets/Materials/TextMesh%20Pro/Fonts/Inter_28pt-SemiBold.ttf?fileID=12800000&guid=41bce7cd6b472da46b26c48017727f9c&type=3#Inter_28pt-SemiBold");
+    margin-top: 375px;
+    margin-bottom: 75px;
+    margin-right: 75px;
+}
+
+.button {
+    font-size: 40px;
+    width: 220px;
+    height: 60px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    transition-duration: 0.05s;
+}
+
+.button:hover {
+    scale: 1 1.05;
+    -unity-font-definition: url("project://database/Assets/Materials/TextMesh%20Pro/Fonts/Inter_28pt-MediumItalic.ttf?fileID=12800000&guid=1b94366a5e7b3bf4ea77ba3d3bcd5e46&type=3#Inter_28pt-MediumItalic");
+    font-size: 40px;
+    width: 250px;
+}
+
+.button:active {
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/Materials/TextMesh%20Pro/Fonts/Inter_28pt-MediumItalic.ttf?fileID=12800000&guid=1b94366a5e7b3bf4ea77ba3d3bcd5e46&type=3#Inter_28pt-MediumItalic");
+    color: rgb(255, 255, 255);
+    width: 220px;
+    background-color: rgb(0, 0, 0);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}

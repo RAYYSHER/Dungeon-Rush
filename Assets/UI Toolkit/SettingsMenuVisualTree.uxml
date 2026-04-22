@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/SettingsMenuStyle.uss?fileID=7433441132597879392&amp;guid=7bac35b343f44f241875045d265a297b&amp;type=3#SettingsMenuStyle"/>
+    <ui:VisualElement name="SettingMenu" style="flex-grow: 1; width: 960px; height: 1080px; align-self: flex-start; align-items: center;">
+        <ui:Label text="SETTINGS" name="Label" class="header" style="-unity-font-definition: url(&quot;project://database/Assets/Materials/TextMesh%20Pro/Fonts/Inter_28pt-SemiBold.ttf?fileID=12800000&amp;guid=41bce7cd6b472da46b26c48017727f9c&amp;type=3#Inter_28pt-SemiBold&quot;); font-size: 150px; -unity-text-align: upper-left; align-self: center; width: 750px; left: 0;"/>
+        <ui:GroupBox name="_button" style="height: 300px; width: 700px; margin-right: 85px;">
+            <ui:Button text="AUDIO" name="AudioButton" class="button"/>
+            <ui:Button text="BACK" name="SettingsBackButton" class="button"/>
+        </ui:GroupBox>
+    </ui:VisualElement>
+</ui:UXML>
