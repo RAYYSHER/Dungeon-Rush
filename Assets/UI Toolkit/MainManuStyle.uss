@@ -1,0 +1,44 @@
+:root {
+}
+
+.header {
+    color: rgb(255, 255, 255);
+    left: 80px;
+}
+
+.button {
+    font-size: 40px;
+    width: 220px;
+    height: 60px;
+    background-color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/Materials/TextMesh%20Pro/Fonts/Inter_28pt-Regular.ttf?fileID=12800000&guid=f4dd6530c430e3646b29aeccfc9936cd&type=3#Inter_28pt-Regular");
+    -unity-font-style: normal;
+    left: 100px;
+    position: absolute;
+    top: 600px;
+    transition-duration: 0.05s;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.button:hover {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(255, 49, 150, 0);
+    border-right-color: rgba(255, 49, 150, 0);
+    border-top-color: rgba(255, 49, 150, 0);
+    border-bottom-color: rgba(255, 49, 150, 0);
+    scale: 1.05 1.05 1.05;
+}
+
+.button:active {
+    scale: 1 1;
+}

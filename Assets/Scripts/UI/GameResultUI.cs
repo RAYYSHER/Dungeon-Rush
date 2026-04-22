@@ -10,6 +10,8 @@ public class GameResultUI : MonoBehaviour
     [SerializeField] private GameObject _gameResultPanel;
     [SerializeField] private TMP_Text resultText;
     [SerializeField] private Button restartButton;
+    
+    [SerializeField] private string mainMenuScene = "MainMenuScene";
 
     [SerializeField] private GameObject _gameResultFirst;
 
@@ -43,6 +45,11 @@ public class GameResultUI : MonoBehaviour
         ZombieGlobalStat.Reset();
         BossGlobalStat.Reset();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(mainMenuScene);
     }
 
     private IEnumerator SelectAfterFrame(GameObject target)

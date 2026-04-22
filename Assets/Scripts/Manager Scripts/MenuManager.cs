@@ -130,4 +130,10 @@ public class MenuManager : MonoBehaviour
     {
         OpenAudioMenus();
     }
+
+    public void OnSurrenderPress()
+    {
+        UnPause(); // ปิด menu ก่อน
+        FindFirstObjectByType<Player>()?.Die();
+    }
 }
