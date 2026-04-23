@@ -16,6 +16,12 @@ public class InputManager : MonoBehaviour
             instance = this;
         }
 
+        else
+        {
+            Destroy(gameObject); // เพิ่มบรรทัดนี้
+            return;
+        }
+
         _playerInput = GetComponent<PlayerInput>();
 
         Debug.Log($"PlayerInput null: {_playerInput == null}");
@@ -34,9 +40,19 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        // ดึงใหม่ทุก frame แทนที่จะใช้ cached reference
+        var action = _playerInput.actions["MenuOpenClose"];
+        action.Enable();
         MenuOpenCloseInput = _menuOpenCloseAction.WasPressedThisFrame(); 
 
         Debug.Log($"Action enabled: {_menuOpenCloseAction.enabled}");
         Debug.Log($"ActionMap: {_playerInput.currentActionMap?.name}");
+
+        // ชั่วคราว
+        var keyboard = UnityEngine.InputSystem.Keyboard.current;
+        if (keyboard != null)
+        {
+            Debug.Log($"Any key pressed: {keyboard.anyKey.isPressed}");
+        }
     }
 }
