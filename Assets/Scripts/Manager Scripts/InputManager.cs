@@ -17,12 +17,26 @@ public class InputManager : MonoBehaviour
         }
 
         _playerInput = GetComponent<PlayerInput>();
+
+        Debug.Log($"PlayerInput null: {_playerInput == null}");
+        Debug.Log($"PlayerInput enabled: {_playerInput?.enabled}");
+
+        _playerInput.actions.Enable();
         _menuOpenCloseAction = _playerInput.actions["MenuOpenClose"];
 
+    }
+
+    void Start()
+    {
+        _playerInput.actions.Enable();
+        Debug.Log($"[Start] Action enabled: {_menuOpenCloseAction.enabled}");
     }
 
     void Update()
     {
         MenuOpenCloseInput = _menuOpenCloseAction.WasPressedThisFrame(); 
+
+        Debug.Log($"Action enabled: {_menuOpenCloseAction.enabled}");
+        Debug.Log($"ActionMap: {_playerInput.currentActionMap?.name}");
     }
 }
