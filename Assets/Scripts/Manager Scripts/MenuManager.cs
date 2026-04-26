@@ -111,14 +111,16 @@ public class MenuManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(target);
     }
 
-    public void OnSettingPress()
-    {
-        OpenSettingsMenuHandle();
-    }
+    
 
     public void OnResumePress()
     {
         UnPause();   
+    }
+    
+    public void OnSettingPress()
+    {
+        OpenSettingsMenuHandle();
     }
 
     public void OnSettingsBackPress()
@@ -129,6 +131,11 @@ public class MenuManager : MonoBehaviour
     public void OnAudioPress()
     {
         OpenAudioMenus();
+    }
+
+    public void OnAudioBackPress()
+    {
+        OpenSettingsMenuHandle();
     }
 
     public void OnSurrenderPress()

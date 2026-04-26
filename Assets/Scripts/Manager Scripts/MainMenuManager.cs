@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -14,11 +16,14 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject _mainMenuFirst;
     [SerializeField] private GameObject _settingsFirst;
     [SerializeField] private GameObject _creditsFirst;
+    [SerializeField] private GameObject _audioSettingsFirst;
+    [SerializeField] private ButtonHighlight _creditsButtonHighlight;
 
     void Start()
     {
         _mainMenuPanel.SetActive(true);
         _settingsPanel.SetActive(false);
+        StartCoroutine(SelectAfterFrame(_mainMenuFirst));
     }
 
     // ปุ่ม PLAY
@@ -34,41 +39,42 @@ public class MainMenuManager : MonoBehaviour
         _settingsPanel.SetActive(true);
         _creditsPanel.SetActive(false);
 
-        EventSystem.current.SetSelectedGameObject(_settingsFirst);
+       StartCoroutine(SelectAfterFrame(_settingsFirst));
     }
 
     // ปุ่ม BACK ใน Settings
     public void OnSettingsBackPress()
     {
-        _settingsPanel.SetActive(false);
         // _mainMenuPanel.SetActive(true);
+        _settingsPanel.SetActive(false);
         _creditsPanel.SetActive(false);
-
-        EventSystem.current.SetSelectedGameObject(_mainMenuFirst);
+        StartCoroutine(SelectAfterFrame(_mainMenuFirst));
     }
 
+    // ปุ่ม Back
     public void OnAudioSettingsPress()
     {
         _settingsPanel.SetActive(false);
         _audioSettingsPanel.SetActive(true);
+        StartCoroutine(SelectAfterFrame(_audioSettingsFirst));
     }
 
     public void OnAudioSettingsBackPress()
     {
         _audioSettingsPanel.SetActive(false);
         _settingsPanel.SetActive(true);
+        StartCoroutine(SelectAfterFrame(_settingsFirst));
     }
 
     // ปุ่ม CREDITS
     public void OnCreditsPress()
     {
+
         _settingsPanel.SetActive(false);
         _mainMenuPanel.SetActive(false);
         _creditsPanel.SetActive(true);
 
-        Debug.Log("You are pressed the Credits Button");
-
-        EventSystem.current.SetSelectedGameObject(_creditsFirst);
+        StartCoroutine(SelectAfterFrame(_creditsFirst));
     }
 
     public void OnCreditsBackPress()
@@ -76,13 +82,24 @@ public class MainMenuManager : MonoBehaviour
         _creditsPanel.SetActive(false);
         _mainMenuPanel.SetActive(true);
         _creditsPanel.SetActive(false);
-
-        EventSystem.current.SetSelectedGameObject(_mainMenuFirst);
+        
+        StartCoroutine(SelectAfterFrame(_mainMenuFirst));
     }
+
+
 
     // ปุ่ม QUIT
     public void OnQuitPress()
     {
         Application.Quit();
+    }
+
+
+    // Controller Support (make button pre highlighted for controller)
+    private IEnumerator SelectAfterFrame(GameObject target)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(target);
     }
 }
