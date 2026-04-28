@@ -41,7 +41,7 @@ public class Zombie : MonoBehaviour, IDamagable
         agent.angularSpeed = 100;
         
         SetStatToGlobal();
-        Debug.Log($"[Zombie] SetStatToGlobal → combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
+        // Debug.Log($"[Zombie] SetStatToGlobal → combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
     }
     void Update()
     {
@@ -89,6 +89,8 @@ public class Zombie : MonoBehaviour, IDamagable
     }
     public void Die()
     {
+        GameStatTracker.Instance?.AddElimination();
+        
         animator.SetTrigger("Dead");
         GetComponent<Weapon>().enabled = false;
 

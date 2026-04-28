@@ -98,17 +98,17 @@ public class WorldTimer : MonoBehaviour
 
     void TeleportPlayerToBoss()
     {
-        Debug.Log("TeleportPlayerToBoss called");
+        // Debug.Log("TeleportPlayerToBoss called");
 
         Player player = FindFirstObjectByType<Player>();
-        Debug.Log($"Player found: {player != null}");
-        Debug.Log($"SpawnPoint assigned: {bossRoomSpawnPoint != null}");
+        // Debug.Log($"Player found: {player != null}");
+        // Debug.Log($"SpawnPoint assigned: {bossRoomSpawnPoint != null}");
 
         if (player != null && bossRoomSpawnPoint != null)
         {
             var rb = player.GetComponent<Rigidbody>();
             
-            Debug.Log($"Rigidbody found: {rb != null}");
+            // Debug.Log($"Rigidbody found: {rb != null}");
 
             if (rb != null)
             {

@@ -40,7 +40,7 @@ public class LevelSystem : MonoBehaviour
         {
             LevelUp();
         }
-        Debug.Log(exp + " exp gained");
+        // Debug.Log(exp + " exp gained");
     }
 
     void LevelUp()

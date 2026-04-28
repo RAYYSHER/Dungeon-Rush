@@ -23,7 +23,7 @@ public class CameraObstructDetect : MonoBehaviour
 
         if(hits.Length != 0)
         {
-            Debug.Log("Wall detected amount = " + hits.Length);
+            // Debug.Log("Wall detected amount = " + hits.Length);
         }
 
         HashSet<FadableObject> newFaded = new HashSet<FadableObject>();

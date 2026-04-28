@@ -45,14 +45,14 @@ public class InputManager : MonoBehaviour
         action.Enable();
         MenuOpenCloseInput = _menuOpenCloseAction.WasPressedThisFrame(); 
 
-        Debug.Log($"Action enabled: {_menuOpenCloseAction.enabled}");
-        Debug.Log($"ActionMap: {_playerInput.currentActionMap?.name}");
+        // Debug.Log($"Action enabled: {_menuOpenCloseAction.enabled}");
+        // Debug.Log($"ActionMap: {_playerInput.currentActionMap?.name}");
 
         // ชั่วคราว
-        var keyboard = UnityEngine.InputSystem.Keyboard.current;
-        if (keyboard != null)
-        {
-            Debug.Log($"Any key pressed: {keyboard.anyKey.isPressed}");
-        }
+        // var keyboard = UnityEngine.InputSystem.Keyboard.current;
+        // if (keyboard != null)
+        // {
+        //     Debug.Log($"Any key pressed: {keyboard.anyKey.isPressed}");
+        // }
     }
 }

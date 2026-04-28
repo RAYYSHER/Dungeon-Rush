@@ -20,12 +20,12 @@ public class Weapon : MonoBehaviour
         if (combat != null)
         {
             enemyRoot = combat.transform;
-            Debug.Log($"[Weapon] Combat found on: {enemyRoot.name}");
+            // Debug.Log($"[Weapon] Combat found on: {enemyRoot.name}");
         }
 
         else
         {
-            Debug.LogError("[Weapon] ไม่เจอ Combat เลย!");
+            // Debug.LogError("[Weapon] ไม่เจอ Combat เลย!");
             enemyRoot = transform;
         }
 
@@ -57,8 +57,8 @@ public class Weapon : MonoBehaviour
             IDamagable enemy = player.GetComponent<IDamagable>();
 
             enemy.Hurt(totalDamage);
-            Debug.Log($"Hit for {totalDamage} (weapon: {attackDamage} + combat: {(combat != null ? combat.attackDamage : 0)})");
-            Debug.Log($"[Weapon] combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
+            // Debug.Log($"Hit for {totalDamage} (weapon: {attackDamage} + combat: {(combat != null ? combat.attackDamage : 0)})");
+            // Debug.Log($"[Weapon] combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
         }
     }
 }

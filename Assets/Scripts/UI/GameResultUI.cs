@@ -15,6 +15,9 @@ public class GameResultUI : MonoBehaviour
 
     [SerializeField] private GameObject _gameResultFirst;
 
+    [Header("Freeze Setting")]
+    public float freezeDelay = 3f;
+
     void Start()
     {
         _gameResultPanel.SetActive(false);
@@ -29,6 +32,7 @@ public class GameResultUI : MonoBehaviour
         if (isWin)
         {
             resultText.text = "VICTORY";
+            StartCoroutine(FreezeAfterDelay());
         }
         else
         {
@@ -38,10 +42,12 @@ public class GameResultUI : MonoBehaviour
         // Controller(Joystick) automatically highlights RESTART button
         // EventSystem.current.SetSelectedGameObject(_gameResultFirst);
         StartCoroutine(SelectAfterFrame(_gameResultFirst));
+        
     }
 
     public void RestartGame()
     {
+        Time.timeScale = 1f;
         ZombieGlobalStat.Reset();
         BossGlobalStat.Reset();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -49,6 +55,7 @@ public class GameResultUI : MonoBehaviour
 
     public void GoToMainMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenuScene);
     }
 
@@ -57,6 +64,12 @@ public class GameResultUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         yield return null;
         EventSystem.current.SetSelectedGameObject(target);
+    }
+
+    private IEnumerator FreezeAfterDelay()
+    {
+        yield return new WaitForSeconds(freezeDelay);
+        Time.timeScale = 0f;
     }
 
 }

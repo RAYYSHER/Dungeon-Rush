@@ -54,12 +54,12 @@ public class FadableObject : MonoBehaviour
     public void FadeIn()
     {
         targetAlpha = 1f;
-        Debug.Log("Fading IN");
+        // Debug.Log("Fading IN");
     }
 
     public void FadeOut()
     {
         targetAlpha = fadeAlpha;
-        Debug.Log("fading out");
+        // Debug.Log("fading out");
     }    
 }

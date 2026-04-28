@@ -41,7 +41,7 @@ public class TankZombie : MonoBehaviour, IDamagable
         agent.angularSpeed = 100;
         
         // SetStatToGlobal();
-        Debug.Log($"[Zombie] SetStatToGlobal → combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
+        // Debug.Log($"[Zombie] SetStatToGlobal → combat ID: {combat.GetInstanceID()}, attackDamage: {combat.attackDamage}");
     }
     void Update()
     {

@@ -18,9 +18,9 @@ public class BossHealthBar : MonoBehaviour
         slider = GetComponentInChildren<Slider>();
         player = FindAnyObjectByType<Player>();
 
-        Debug.Log($"[BossHealthBar] slider: {slider}");  
-        Debug.Log($"[BossHealthBar] barUI: {barUI}");    
-        Debug.Log($"[BossHealthBar] player: {player}");
+        // Debug.Log($"[BossHealthBar] slider: {slider}");  
+        // Debug.Log($"[BossHealthBar] barUI: {barUI}");    
+        // Debug.Log($"[BossHealthBar] player: {player}");
     }
 
     void Start()
@@ -50,12 +50,12 @@ public class BossHealthBar : MonoBehaviour
     public void SetBoss(FloorBoss boss)
     {
         trackedBoss = boss;
-        Debug.Log($"[BossHealthBar] trackedBoss: {trackedBoss}"); 
+        // Debug.Log($"[BossHealthBar] trackedBoss: {trackedBoss}"); 
     }
 
     public void UpdateBossHealthBar(float currentHP , float maxHP)
     {
-        Debug.Log($"[BossHealthBar] UpdateBossHealthBar called: {currentHP}/{maxHP}");
+        // Debug.Log($"[BossHealthBar] UpdateBossHealthBar called: {currentHP}/{maxHP}");
         slider.value = currentHP / maxHP;
     }
 

@@ -94,6 +94,8 @@ public class FloorBoss : MonoBehaviour, IDamagable
 
     public void Die()
     {
+        GameStatTracker.Instance?.StopTimer();
+     GameStatTracker.Instance?.AddElimination(); 
         animator.SetTrigger("Dead");
         enabled = false;
         GetComponent<Weapon>().enabled = false;

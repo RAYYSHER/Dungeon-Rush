@@ -58,7 +58,7 @@ public class MainMenuEvents : MonoBehaviour
 
     private void OnStartClick(ClickEvent evt)
     {
-        Debug.Log("You Pressed the Start Button");
+        // Debug.Log("You Pressed the Start Button");
         Time.timeScale = 1f;
 
         _document.rootVisualElement.focusable = false;
@@ -70,17 +70,17 @@ public class MainMenuEvents : MonoBehaviour
 
     private void OnSettingsClick(ClickEvent evt)
     {
-        Debug.Log("You Pressed the Settings Button");
+        // Debug.Log("You Pressed the Settings Button");
     }
 
     private void OnCreditsClick(ClickEvent evt)
     {
-        Debug.Log("You Pressed the Credits Button");
+        // Debug.Log("You Pressed the Credits Button");
     }
 
     private void OnExitClick(ClickEvent evt)
     {
-        Debug.Log("You Pressed the Exit Button");
+        // Debug.Log("You Pressed the Exit Button");
         Application.Quit();
     }
 
