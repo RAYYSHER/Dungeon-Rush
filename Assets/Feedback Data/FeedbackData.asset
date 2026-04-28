@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99f5871884a9d74d9c948daa04e503a, type: 3}
+  m_Name: FeedbackData
+  m_EditorClassIdentifier: Assembly-CSharp::FeedbackData
+  stsPositivePool:
+  - Your mind was clear. The battlefield had no hold on you.
+  stsNegativePool:
+  - When it peaks, stop moving. Let it settle
+  timePositivePool:
+  - Efficient. Precise. You wasted nothing.
+  timeNegativePool:
+  - Move with purpose. Every extra second adds up
