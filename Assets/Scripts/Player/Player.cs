@@ -64,6 +64,7 @@ public class Player : MonoBehaviour, IDamagable
     public void GetXP(int xp)
     {
         levelSystem.GainXP(xp);
+        QuestManager.Instance?.NotifyEnemyKilled();
     }
 
     public void Hurt(int damageAmount)
