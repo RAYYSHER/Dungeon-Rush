@@ -84,6 +84,8 @@ public class Player : MonoBehaviour, IDamagable
     {
         // wait for anination
 
+        GameStatTracker.Instance?.StopTimer();
+
         //Panel result showed
         FindFirstObjectByType<GameResultUI>().ShowResult(false);
 

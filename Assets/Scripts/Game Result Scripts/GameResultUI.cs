@@ -20,6 +20,7 @@ public class GameResultUI : MonoBehaviour
     [Header("Rank")]
     [SerializeField] private TMP_Text rankLetterText;
     [SerializeField] private TMP_Text rankLabelText;
+    [SerializeField] private TMP_Text rankDescriptionText;
 
     [Header("Feedback")]
     [SerializeField] private TMP_Text positiveFeedback1Text;
@@ -59,23 +60,85 @@ public class GameResultUI : MonoBehaviour
             resultText.text = "DEFEAT";
         }
 
-        // // ดึงข้อมูลจาก GameStatTracker
-        // float stsScore  = GameStatTracker.Instance.GetSTSScore();
-        // float timeScore = GameStatTracker.Instance.GetTimeScore();
+        // ดึงข้อมูลจาก GameStatTracker
+        float stsScore  = GameStatTracker.Instance.GetSTSScore();
+        float timeScore = GameStatTracker.Instance.GetTimeScore();
 
-        // // คำนวณ Rank
-        // RankCalculator calculator = new RankCalculator();
-        // calculator.Calculate(timeScore, stsScore);
+        // คำนวณ Rank
+        RankCalculator calculator = new RankCalculator();
+        calculator.Calculate(timeScore, stsScore, isWin);
 
-        // // เลือก Feedback
-        // FeedbackSelector selector = new FeedbackSelector(feedbackData);
-        // selector.Select(calculator.RankLetter, stsScore, timeScore);
+        // เลือก Feedback
+        FeedbackSelector selector = new FeedbackSelector(feedbackData);
+        selector.Select(calculator.RankLetter, stsScore, timeScore);
         
+        // แสดง Rank
+        DisplayRank(calculator);
 
-        // Controller(Joystick) automatically highlights RESTART button
-        // EventSystem.current.SetSelectedGameObject(_gameResultFirst);
+        // แสดง Feedback
+        DisplayFeedback(selector);
+
+        // แสดง Stats
+        DisplayStats();
+
         StartCoroutine(SelectAfterFrame(_gameResultFirst));
         
+    }
+
+    private void DisplayRank(RankCalculator calculator)
+    {
+        if (rankLetterText != null)
+            rankLetterText.text = calculator.RankLetter;
+
+        if (rankLabelText != null)
+            rankLabelText.text = $"[{calculator.RankLabel}]";
+
+        if (rankDescriptionText != null)
+            rankDescriptionText.text = feedbackData.GetRankDescription(calculator.RankLetter);
+    }
+
+    private void DisplayFeedback(FeedbackSelector selector)
+    {
+        // Positive
+        if (positiveFeedback1Text != null)
+            positiveFeedback1Text.text = selector.PositiveFeedbacks.Count > 0
+                ? $"+ {selector.PositiveFeedbacks[0]}"
+                : "";
+
+        if (positiveFeedback2Text != null)
+            positiveFeedback2Text.text = selector.PositiveFeedbacks.Count > 1
+                ? $"+ {selector.PositiveFeedbacks[1]}"
+                : "";
+
+        // Negative
+        if (negativeFeedbackText != null)
+            negativeFeedbackText.text = selector.NegativeFeedbacks.Count > 0
+                ? $"- {selector.NegativeFeedbacks[0]}"
+                : "";
+    }
+
+    private void DisplayStats()
+    {
+        if (majorStatValueText != null)
+            majorStatValueText.text = 
+                $"{GameStatTracker.Instance.GetSTSScore():F1}";
+
+        // if (subStat1ValueText != null)
+        //     subStat1ValueText.text  =  $"{GameStatTracker.Instance.ClearTime / 60f:F2}";
+
+        if (subStat1ValueText != null)
+        subStat1ValueText.text = FormatTime(GameStatTracker.Instance.ClearTime);
+
+        if (subStat2ValueText != null)
+            subStat2ValueText.text  = 
+                $"{GameStatTracker.Instance.Eliminations}";
+    }
+
+    private string FormatTime(float seconds)
+    {
+        int minutes = Mathf.FloorToInt(seconds / 60f);
+        int secs    = Mathf.FloorToInt(seconds % 60f);
+        return $"{minutes:00}:{secs:00}";
     }
 
     public void RestartGame()

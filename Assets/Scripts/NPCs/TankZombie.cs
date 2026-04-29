@@ -89,6 +89,8 @@ public class TankZombie : MonoBehaviour, IDamagable
     }
     public void Die()
     {
+        GameStatTracker.Instance?.AddElimination();
+
         animator.SetTrigger("Dead");
         GetComponent<Weapon>().enabled = false;
 

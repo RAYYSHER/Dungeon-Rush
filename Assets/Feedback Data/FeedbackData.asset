@@ -14,9 +14,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FeedbackData
   stsPositivePool:
   - Your mind was clear. The battlefield had no hold on you.
+  - Exceptional mental resource management; your cognitive shield was virtually impenetrable.
+  - Solid focus through critical moments; your stress management was quite satisfactory.
+  - Consistent distraction filtering; you effectively recovered your flow state at
+    a steady rhythm.
+  - 'Focus capacity consistent with modern norms; your attention was adequate for
+    baseline performance.  '
+  - Standard concentration levels achieved; you maintained momentum despite occasional
+    lapses.
   stsNegativePool:
   - When it peaks, stop moving. Let it settle
+  - Hold your ground. Sprinting feeds the stress
+  - External stimuli are beginning to impact your focus; try a steadier rhythm to
+    lower your stress.
+  - Minor fluctuations in mental stability detected; a brief reset may improve your
+    next performance.
+  - 'High stress is making your character fragile; you are taking extra damage because
+    your mind is absent. '
+  - Your mind is too fragmented to survive; cease impulsive actions and regain self-control
+    immediately.
   timePositivePool:
   - Efficient. Precise. You wasted nothing.
+  - 'Moved with absolute purpose and speed; zero time was wasted on irrelevant stimuli. '
+  - 'Clear time reflects high efficiency; you managed all objectives systematically
+    and swiftly. '
+  - Time management is well above average; your progression remained steady throughout
+    the mission.
+  - Operational speed is typical for the digital age; objectives were cleared within
+    standard parameters.
+  - Baseline performance rhythm; you achieved the goal within the acceptable time
+    window.
   timeNegativePool:
   - Move with purpose. Every extra second adds up
+  - Dragging fights out costs more than losing them
+  - Floor duration is becoming excessive; consider ignoring secondary tasks to protect
+    your time resources.
+  - Procrastination is causing tactical disadvantage; dithering at obstacles kills
+    your focus momentum.
+  - You are lingering on non-essentials for too long; every wasted second costs you
+    survival odds.
+  - Chronic delay is leading to failure; lingering on trivialities will result in
+    immediate termination.
+  rankDescriptions:
+  - rankLetter: S
+    description: Demonstrates outstanding mental resource management and maintains
+      an exceptionally high level of concentration stability.
+  - rankLetter: A
+    description: Maintains consistent attentional control and exhibits rapid, systematic
+      recovery of the flow state.
+  - rankLetter: B
+    description: Sustains a steady operational rhythm and manages cognitive focus
+      effectively within standard performance benchmarks.
+  - rankLetter: C
+    description: Displays concentration levels typical of the digital era, with susceptibility
+      to frequent environmental distractions.
+  - rankLetter: D
+    description: Shows persistent goal tracking despite fragile focus and high vulnerability
+      to external stimuli.

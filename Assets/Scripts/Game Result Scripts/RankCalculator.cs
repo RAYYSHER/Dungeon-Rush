@@ -12,11 +12,17 @@ public class RankCalculator
 
     #region Public Methods
 
-    public void Calculate(float timeScore, float stsScore)
+    public void Calculate(float timeScore, float stsScore, bool isWin)
     {
         float levelMultiplier = 1.0f; // placeholder รอ skill system
 
         FinalScore = ((timeScore * 0.6f) + (stsScore * 0.4f)) * levelMultiplier;
+
+        if (!isWin)
+        {
+            FinalScore *= 0.5f;
+        }
+
         FinalScore = Mathf.Clamp(FinalScore, 0f, 100f);
 
         AssignRank(FinalScore);

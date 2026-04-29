@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameStatTracker : MonoBehaviour
 {
@@ -80,8 +81,13 @@ public class GameStatTracker : MonoBehaviour
 
         _timerRunning = false;
 
-        // Take one last snapshot at the moment of victory
-        TakeSTSSnapshot();
+        // snapshot ครั้งสุดท้ายเฉพาะเมื่อมีข้อมูลอยู่แล้ว
+        // ถ้าไม่มีเลย = เกมเพิ่งเริ่ม = ไม่มีข้อมูลพอ
+        if (_stsSnapshots.Count > 0)
+        {
+            TakeSTSSnapshot();
+        }
+
         CalculateAverageSTS();
 
         Debug.Log($"[GameStatTracker] Run ended → Time: {ClearTime:F1}s | AvgSTS: {AverageSTS:F1} | Eliminations: {Eliminations}");
@@ -91,6 +97,9 @@ public class GameStatTracker : MonoBehaviour
     public float GetSTSScore()
     {
         if (_stressSystem == null) return 100f;
+
+        if (_stsSnapshots.Count == 0) return 0f;
+        
         return (1f - (AverageSTS / _stressSystem.maxSts)) * 100f;
     }
 
@@ -143,5 +152,24 @@ public class GameStatTracker : MonoBehaviour
         AverageSTS = total / _stsSnapshots.Count;
     }
 
+    #endregion
+
+    #region reset scene
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _stressSystem = FindFirstObjectByType<Stress>(); // หา Stress ใหม่เพราะ object ถูก destroy
+        ResetStats();
+        StartTimer();
+    }
     #endregion
 }
