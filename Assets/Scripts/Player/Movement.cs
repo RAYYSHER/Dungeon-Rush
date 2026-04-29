@@ -50,9 +50,18 @@ public class Movement : MonoBehaviour
     #region Method
     public void Walk(Vector3 direction, bool isSprinting)
     {
-        float currentSpeed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
-        
-        // Debug.Log($"isSprinting: {isSprinting} | moveSpeed: {moveSpeed} | multiplier: {speedMultiplier} | currentSpeed: {currentSpeed}");
+        bool penaltyActive = stressSystem != null && stressSystem.IsInPenalty();
+ 
+        float currentSpeed;
+        if (penaltyActive)
+        {
+            // Penalty: ลด speed 50%, ไม่สามารถ sprint ได้
+            currentSpeed = moveSpeed * 0.5f;
+        }
+        else
+        {
+            currentSpeed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
+        }
         
         body.MovePosition(transform.position + direction * currentSpeed * Time.deltaTime);
 
@@ -92,6 +101,10 @@ public class Movement : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext context)
     {
+        // Penalty: ไม่สามารถ dash ได้
+        if (stressSystem != null && stressSystem.IsInPenalty())
+            return;
+
         body.AddForce(transform.forward * dashForce);   //add push force in x axis, making player can dash.
         // Debug.Log("dashed");
 
