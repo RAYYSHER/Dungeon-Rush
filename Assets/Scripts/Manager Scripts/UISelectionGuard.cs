@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class UISelectionGuard : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class UISelectionGuard : MonoBehaviour
 void Update()
 {
     if (EventSystem.current == null) return;
+
+    if (Mouse.current != null && (
+        Mouse.current.delta.ReadValue() != Vector2.zero ||
+        Mouse.current.leftButton.isPressed))
+        return;
 
     GameObject current = EventSystem.current.currentSelectedGameObject;
 
@@ -29,4 +35,6 @@ void Update()
     {
         _lastSelected = null;
     }
+
+    
 }

@@ -17,7 +17,8 @@ public class LevelBar : MonoBehaviour
         slider.value = currentExp / nextLevelExp;
         if (levelText != null)
         {
-            levelText.text = $"Lv.{level}";
+            // levelText.text = $"Lv.{level}";
+            levelText.text = level.ToString("D2");
         }
     }
   

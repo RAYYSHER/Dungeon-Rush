@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class ButtonHighlight : MonoBehaviour
 {
@@ -51,6 +52,10 @@ public class ButtonHighlight : MonoBehaviour
 
     public void OnNormal()
     {
+        // ถ้า mouse กำลัง click อยู่ ไม่ทำอะไร ป้องกันปุ่มหดตอน click
+        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+            return;
+
         // สี
         // buttonImage.color = Color.white;
         buttonText.color  = Color.black;

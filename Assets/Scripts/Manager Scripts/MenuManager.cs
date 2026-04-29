@@ -8,12 +8,16 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject _mainMenuCanvasGO;
     [SerializeField] private GameObject _settingMenuCanvasGO;
     [SerializeField] private GameObject _AudioMenuCanvasGO;
+    [SerializeField] private GameObject _GuidePanelCanvasGO;
+    
 
 
     [Header("First Selected Options")]
     [SerializeField] private GameObject _mainMenuFirst;
     [SerializeField] private GameObject _settingsMenuFirst;
     [SerializeField] private GameObject _audioMenuFirst;
+    [SerializeField] private GameObject _GuidePanelFirst;
+    
 
     private bool isPaused;
     private UISelectionGuard _selectionGuard;
@@ -29,6 +33,7 @@ public class MenuManager : MonoBehaviour
         _mainMenuCanvasGO.SetActive(false);
         _settingMenuCanvasGO.SetActive(false); 
         _AudioMenuCanvasGO.SetActive(false);
+        _GuidePanelCanvasGO.SetActive(false);
 
     }
 
@@ -70,6 +75,7 @@ public class MenuManager : MonoBehaviour
         _mainMenuCanvasGO.SetActive(true);
         _settingMenuCanvasGO.SetActive(false);
         _AudioMenuCanvasGO.SetActive(false); 
+        _GuidePanelCanvasGO.SetActive(false);
 
         // EventSystem.current.SetSelectedGameObject(_mainMenuFirst);
         StartCoroutine(SelectAfterFrame(_mainMenuFirst));
@@ -77,6 +83,8 @@ public class MenuManager : MonoBehaviour
 
     private void OpenSettingsMenuHandle()
     {
+        EventSystem.current.SetSelectedGameObject(null);
+
         _mainMenuCanvasGO.SetActive(false);
         _settingMenuCanvasGO.SetActive(true);
         _AudioMenuCanvasGO.SetActive(false); 
@@ -92,6 +100,17 @@ public class MenuManager : MonoBehaviour
         _AudioMenuCanvasGO.SetActive(true);
 
         StartCoroutine(SelectAfterFrame(_audioMenuFirst)); 
+    }
+
+    private void OpenGuidePanel()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        _mainMenuCanvasGO.SetActive(false);
+        _GuidePanelCanvasGO.SetActive(true);
+        _settingMenuCanvasGO.SetActive(false);
+
+        StartCoroutine(SelectAfterFrame(_GuidePanelFirst)); 
     }
 
     private void CloseAllMenus()
@@ -136,6 +155,16 @@ public class MenuManager : MonoBehaviour
     public void OnAudioBackPress()
     {
         OpenSettingsMenuHandle();
+    }
+
+    public void OnGuideMenuPress()
+    {
+        OpenGuidePanel();
+    }
+
+    public void OnGuideMenuBackPress()
+    {
+        OpenMainMenu();
     }
 
     public void OnSurrenderPress()

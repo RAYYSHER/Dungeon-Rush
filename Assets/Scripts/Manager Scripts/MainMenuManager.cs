@@ -11,12 +11,14 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject _settingsPanel;
     [SerializeField] private GameObject _creditsPanel;
     [SerializeField] private GameObject _audioSettingsPanel;
+    [SerializeField] private GameObject _GuideMenPanel;
 
     [Header("First Selected (Controller Support)")]
     [SerializeField] private GameObject _mainMenuFirst;
     [SerializeField] private GameObject _settingsFirst;
     [SerializeField] private GameObject _creditsFirst;
     [SerializeField] private GameObject _audioSettingsFirst;
+    [SerializeField] private GameObject _GuideMenuFirst;
     [SerializeField] private ButtonHighlight _creditsButtonHighlight;
 
     void Start()
@@ -45,7 +47,8 @@ public class MainMenuManager : MonoBehaviour
     // ปุ่ม BACK ใน Settings
     public void OnSettingsBackPress()
     {
-        // _mainMenuPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+
         _settingsPanel.SetActive(false);
         _creditsPanel.SetActive(false);
         StartCoroutine(SelectAfterFrame(_mainMenuFirst));
@@ -69,6 +72,7 @@ public class MainMenuManager : MonoBehaviour
     // ปุ่ม CREDITS
     public void OnCreditsPress()
     {
+        EventSystem.current.SetSelectedGameObject(null);
 
         _settingsPanel.SetActive(false);
         _mainMenuPanel.SetActive(false);
@@ -79,9 +83,29 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnCreditsBackPress()
     {
+        EventSystem.current.SetSelectedGameObject(null);
+
         _creditsPanel.SetActive(false);
         _mainMenuPanel.SetActive(true);
-        _creditsPanel.SetActive(false);
+        
+        StartCoroutine(SelectAfterFrame(_mainMenuFirst));
+    }
+
+    public void OnGuidesPress()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        _GuideMenPanel.SetActive(true);
+
+        StartCoroutine(SelectAfterFrame(_GuideMenuFirst));
+    }
+
+    public void OnGuidesBackPress()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+
+        _GuideMenPanel.SetActive(false);
+        _mainMenuPanel.SetActive(true);
         
         StartCoroutine(SelectAfterFrame(_mainMenuFirst));
     }
