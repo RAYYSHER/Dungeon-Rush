@@ -6622,7 +6622,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Aj. Puttha Sankla
+  m_text: Aj. Puttha Sangkla
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
   m_sharedMaterial: {fileID: -33742953411562080, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
