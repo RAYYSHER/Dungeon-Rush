@@ -176,6 +176,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Skill01"",
                     ""type"": ""Button"",
+                    ""id"": ""740c9857-6ef5-48aa-a158-2caeb9add1d2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill02"",
+                    ""type"": ""Button"",
                     ""id"": ""fc482f45-1c77-4421-b311-b9b685735895"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -367,7 +376,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Skill01"",
+                    ""action"": ""Skill02"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -378,7 +387,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Skill01"",
+                    ""action"": ""Skill02"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -401,6 +410,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8594cfb7-f550-4ba9-a012-40dc934d12cd"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill01"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -754,6 +774,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Skill01 = m_Player.FindAction("Skill01", throwIfNotFound: true);
+        m_Player_Skill02 = m_Player.FindAction("Skill02", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -858,6 +879,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Skill01;
+    private readonly InputAction m_Player_Skill02;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -909,6 +931,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Skill01".
         /// </summary>
         public InputAction @Skill01 => m_Wrapper.m_Player_Skill01;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Skill02".
+        /// </summary>
+        public InputAction @Skill02 => m_Wrapper.m_Player_Skill02;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -965,6 +991,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Skill01.started += instance.OnSkill01;
             @Skill01.performed += instance.OnSkill01;
             @Skill01.canceled += instance.OnSkill01;
+            @Skill02.started += instance.OnSkill02;
+            @Skill02.performed += instance.OnSkill02;
+            @Skill02.canceled += instance.OnSkill02;
         }
 
         /// <summary>
@@ -1006,6 +1035,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Skill01.started -= instance.OnSkill01;
             @Skill01.performed -= instance.OnSkill01;
             @Skill01.canceled -= instance.OnSkill01;
+            @Skill02.started -= instance.OnSkill02;
+            @Skill02.performed -= instance.OnSkill02;
+            @Skill02.canceled -= instance.OnSkill02;
         }
 
         /// <summary>
@@ -1387,6 +1419,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSkill01(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Skill02" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkill02(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

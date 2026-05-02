@@ -10,10 +10,14 @@ public class SkillLevelUpUI : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject     _panel;
     [SerializeField] private GameObject     _firstSelected;     // ปุ่มแรกที่ controller จะ focus
+    [SerializeField] private UISelectionGuard _selectionGuard;
 
-    // [Header("Skill Cards")]
-    // [SerializeField] private SkillCardUI    _cardLeft;
-    // [SerializeField] private SkillCardUI    _cardRight;
+    [Header("Skill Cards")]
+    [SerializeField] private SkillCardUI    _cardLeft;
+    [SerializeField] private SkillCardUI    _cardRight;
+
+    public bool IsShowing { get; private set; }
+
 
     // ─────────────────────────────────────────
     //  Build-in Functions
@@ -30,6 +34,7 @@ public class SkillLevelUpUI : MonoBehaviour
 
     public void Show()
     {
+        IsShowing = true;  
         _panel.SetActive(true);
         Time.timeScale = 0f;
 
@@ -51,52 +56,52 @@ public class SkillLevelUpUI : MonoBehaviour
 
     private void ShowNewSkillOffer()
     {
-        // SkillData[] offers = SkillManager.Instance.GetNewSkillOffers();
+        SkillData[] offers = SkillManager.Instance.GetNewSkillOffers();
 
-        // // offers อาจมีแค่ 1 อัน ถ้า pool เหลือน้อย
-        // bool hasLeft  = offers.Length > 0;
-        // bool hasRight = offers.Length > 1;
+        // offers อาจมีแค่ 1 อัน ถ้า pool เหลือน้อย
+        bool hasLeft  = offers.Length > 0;
+        bool hasRight = offers.Length > 1;
 
-        // _cardLeft.gameObject.SetActive(hasLeft);
-        // _cardRight.gameObject.SetActive(hasRight);
+        _cardLeft.gameObject.SetActive(hasLeft);
+        _cardRight.gameObject.SetActive(hasRight);
 
-        // if (hasLeft)
-        // {
-        //     _cardLeft.SetupNewSkill(offers[0], onChoose: () =>
-        //     {
-        //         SkillManager.Instance.AddSkill(offers[0]);
-        //         Hide();
-        //     });
-        // }
+        if (hasLeft)
+        {
+            _cardLeft.SetupNewSkill(offers[0], onChoose: () =>
+            {
+                SkillManager.Instance.AddSkill(offers[0]);
+                Hide();
+            });
+        }
 
-        // if (hasRight)
-        // {
-        //     _cardRight.SetupNewSkill(offers[1], onChoose: () =>
-        //     {
-        //         SkillManager.Instance.AddSkill(offers[1]);
-        //         Hide();
-        //     });
-        // }
+        if (hasRight)
+        {
+            _cardRight.SetupNewSkill(offers[1], onChoose: () =>
+            {
+                SkillManager.Instance.AddSkill(offers[1]);
+                Hide();
+            });
+        }
     }
 
     private void ShowUpgradeOffer()
     {
-        // SkillInstance[] slots = SkillManager.Instance.GetUpgradeOffers();
+        SkillInstance[] slots = SkillManager.Instance.GetUpgradeOffers();
 
-        // _cardLeft.gameObject.SetActive(true);
-        // _cardRight.gameObject.SetActive(true);
+        _cardLeft.gameObject.SetActive(true);
+        _cardRight.gameObject.SetActive(true);
 
-        // _cardLeft.SetupUpgrade(slots[0], onChoose: () =>
-        // {
-        //     SkillManager.Instance.UpgradeSkill(0);
-        //     Hide();
-        // });
+        _cardLeft.SetupUpgrade(slots[0], onChoose: () =>
+        {
+            SkillManager.Instance.UpgradeSkill(0);
+            Hide();
+        });
 
-        // _cardRight.SetupUpgrade(slots[1], onChoose: () =>
-        // {
-        //     SkillManager.Instance.UpgradeSkill(1);
-        //     Hide();
-        // });
+        _cardRight.SetupUpgrade(slots[1], onChoose: () =>
+        {
+            SkillManager.Instance.UpgradeSkill(1);
+            Hide();
+        });
     }
 
     // ─────────────────────────────────────────
@@ -105,9 +110,13 @@ public class SkillLevelUpUI : MonoBehaviour
 
     private void Hide()
     {
+        IsShowing = false;
         _panel.SetActive(false);
         Time.timeScale = 1f;
         EventSystem.current.SetSelectedGameObject(null);
+
+        // ตรวจสอบว่าสะสม exp ค้างไว้มั้ยระหว่างที่ panel เปิดอยู่
+        // LevelSystem จะ check ใหม่ใน GainXP ครั้งถัดไปเอง
     }
 
     // ─────────────────────────────────────────

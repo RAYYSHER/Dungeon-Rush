@@ -20,7 +20,7 @@ public class LevelSystem : MonoBehaviour
     {
         level = 1;
         exp = 0;
-        nextlevelExp = 10;
+        nextlevelExp = 15;
         if (levelBar != null)
         {
             levelBar.UpdateLevelBar(exp, nextlevelExp, level);
@@ -29,37 +29,34 @@ public class LevelSystem : MonoBehaviour
 
     public void GainXP(int xp)
     {
-        //exp = exp + xp;
         exp += xp;
 
-        if (levelBar != null)
-        {
-            levelBar.UpdateLevelBar(exp, nextlevelExp, level);
-        }
+        // Debug.Log($"[LevelSystem] GainXP: +{xp} | total exp: {exp} | nextlevelExp: {nextlevelExp}");
 
-        if (exp >= nextlevelExp)
+        if (levelBar != null)
+            levelBar.UpdateLevelBar(exp, nextlevelExp, level);
+
+        // ป้องกัน LevelUp ซ้อนกัน — ถ้า panel กำลังแสดงอยู่ให้รอก่อน
+        if (exp >= nextlevelExp && !skillLevelUpUI.IsShowing)
         {
             LevelUp();
         }
-        // Debug.Log(exp + " exp gained");
     }
 
     void LevelUp()
     {
-        level++;
-        exp = 0; //cut of excess
+        // Debug.Log($"[LevelSystem] LevelUp called → level: {level} | exp: {exp} | nextlevelExp: {nextlevelExp}");
 
-        //increase levelUpExp needed
-        nextlevelExp *= 2;              //nextLevelExp = nextlevelExp * 2;
+        level++;
+        exp = 0;
+        nextlevelExp *= 2;
 
         if (levelBar != null)
-        {
             levelBar.UpdateLevelBar(exp, nextlevelExp, level);
-        }
 
         positiveEffect?.TriggerLevelUp();
         player.IncreaseMainStat();
-        skillLevelUpUI?.Show(); 
+        skillLevelUpUI?.Show();
     } 
 
 

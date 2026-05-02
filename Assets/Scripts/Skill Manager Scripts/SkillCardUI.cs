@@ -15,6 +15,7 @@ public class SkillCardUI : MonoBehaviour
     [SerializeField] private TMP_Text   _descriptionText;
     [SerializeField] private TMP_Text   _levelText;
     [SerializeField] private Button     _chooseButton;
+    private Action _onChoose;
 
     // ─────────────────────────────────────────
     //  Build-in Functions
@@ -64,8 +65,6 @@ public class SkillCardUI : MonoBehaviour
     // ─────────────────────────────────────────
     //  Private
     // ─────────────────────────────────────────
-
-    private Action _onChoose;
 
     private void OnChooseClicked()
     {

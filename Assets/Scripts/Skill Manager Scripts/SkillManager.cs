@@ -87,6 +87,8 @@ public class SkillManager : MonoBehaviour
     {
         if (!HasEmptySlot) return;
 
+        Debug.Log($"[SkillManager] AddSkill called: {data.skillName} | count before: {_skillCount}");
+
         _slots[_skillCount] = new SkillInstance(data);
         _skillCount++;
         OnSkillsChanged?.Invoke();

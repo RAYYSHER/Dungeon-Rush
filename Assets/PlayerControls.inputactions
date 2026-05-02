@@ -90,6 +90,15 @@
                 {
                     "name": "Skill01",
                     "type": "Button",
+                    "id": "740c9857-6ef5-48aa-a158-2caeb9add1d2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill02",
+                    "type": "Button",
                     "id": "fc482f45-1c77-4421-b311-b9b685735895",
                     "expectedControlType": "",
                     "processors": "",
@@ -281,7 +290,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill01",
+                    "action": "Skill02",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -292,7 +301,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill01",
+                    "action": "Skill02",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -315,6 +324,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8594cfb7-f550-4ba9-a012-40dc934d12cd",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill01",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
     public InputActionReference jump;           //add jump keybind (from InputAction)
     public InputActionReference dash;           //add dash keybind (from InputAction)
     public InputActionReference sprint;         //add sprint keybind (from InputAction)
-    public InputActionReference skill01;        //add skill01 keybind (from InputAction)          
+    public InputActionReference skill01;        // slot 0 — ปุ่ม E
+    public InputActionReference skill02;        // slot 1 — ปุ่ม Q   
     public InputActionReference meleeAttack;    //add melee attack keybind (from InputAction)
     private Movement movement;
     private Skill skill;
@@ -166,14 +167,16 @@ public class PlayerController : MonoBehaviour
         jump.action.started += movement.Jump;
         meleeAttack.action.started += Attack;
         dash.action.started += movement.Dash;
-        skill01.action.started += _ => activeSkillExecutor.UseSkill(0);
+        skill01.action.started      += _ => activeSkillExecutor.UseSkill(0);    // slot 0
+        skill02.action.started      += _ => activeSkillExecutor.UseSkill(1);
     }   
     void OnDisable()
     {
-        jump.action.started -= movement.Jump;
-        meleeAttack.action.started -= Attack;
-        dash.action.started -= movement.Dash;
-        skill01.action.started -= skill.Heal;
+        jump.action.started         -= movement.Jump;
+        meleeAttack.action.started  -= Attack;
+        dash.action.started         -= movement.Dash;
+        skill01.action.started      -= _ => activeSkillExecutor.UseSkill(0);
+        skill02.action.started      -= _ => activeSkillExecutor.UseSkill(1);
     }
 
 

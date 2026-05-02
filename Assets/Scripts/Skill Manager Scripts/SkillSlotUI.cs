@@ -30,16 +30,19 @@ public class SkillSlotUI : MonoBehaviour
 
     void OnEnable()
     {
+        if (SkillManager.Instance == null) return;
         SkillManager.Instance.OnSkillsChanged += Refresh;
     }
 
     void OnDisable()
     {
+        if (SkillManager.Instance == null) return;
         SkillManager.Instance.OnSkillsChanged -= Refresh;
     }
 
     void Start()
     {
+        SkillManager.Instance.OnSkillsChanged += Refresh;
         Refresh();
     }
 
