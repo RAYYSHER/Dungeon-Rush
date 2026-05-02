@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ad9f7c3ba29a74994ca15f637bd33e, type: 3}
+  m_Name: Main_Heal
+  m_EditorClassIdentifier: Assembly-CSharp::SkillData
+  skillName: Heal
+  briefDescription: Restores player's health
+  icon: {fileID: 21300000, guid: 25e24bf261756e04993da5ec75d9d17d, type: 3}
+  skillType: 0
+  targetType: 0
+  stsCost: 20
+  cooldown: 15
+  duration: 0
+  castingTime: 0
+  distance: 0
+  area: 0
+  levels:
+  - capabilityDescription: Heal 6% of max HP
+    primaryValue: 0.06
+    secondaryValue: 0
+  - capabilityDescription: Heal 12% of max HP
+    primaryValue: 0.12
+    secondaryValue: 0
+  - capabilityDescription: Heal 18% of max HP
+    primaryValue: 0.18
+    secondaryValue: 0
+  - capabilityDescription: Heal 24% of max HP
+    primaryValue: 0.24
+    secondaryValue: 0
+  - capabilityDescription: Heal 30% of max HP
+    primaryValue: 0.3
+    secondaryValue: 0

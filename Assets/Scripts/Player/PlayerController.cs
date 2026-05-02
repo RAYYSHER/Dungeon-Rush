@@ -27,12 +27,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private AudioClip[] attackSoundClips;
 
+    private ActiveSkillExecutor activeSkillExecutor;
+
     void Awake()
     {
         playerAC = GetComponent<AnimatorController>();
         movement = GetComponent<Movement>();
         skill = GetComponent<Skill>();
         player = GetComponent<Player>();
+        
+        activeSkillExecutor = GetComponent<ActiveSkillExecutor>();
 
         //Sprint button (hold)
         sprint.action.performed += SprintPerformed;
@@ -162,7 +166,7 @@ public class PlayerController : MonoBehaviour
         jump.action.started += movement.Jump;
         meleeAttack.action.started += Attack;
         dash.action.started += movement.Dash;
-        skill01.action.started += skill.Heal;
+        skill01.action.started += _ => activeSkillExecutor.UseSkill(0);
     }   
     void OnDisable()
     {

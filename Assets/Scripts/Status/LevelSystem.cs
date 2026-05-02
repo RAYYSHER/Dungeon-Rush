@@ -9,6 +9,7 @@ public class LevelSystem : MonoBehaviour
     private Player player;
     [SerializeField] private LevelBar levelBar;
     private PositiveEffect positiveEffect;
+    [SerializeField] private SkillLevelUpUI skillLevelUpUI;
 
     void Awake()
     {
@@ -58,6 +59,7 @@ public class LevelSystem : MonoBehaviour
 
         positiveEffect?.TriggerLevelUp();
         player.IncreaseMainStat();
+        skillLevelUpUI?.Show(); 
     } 
 
 

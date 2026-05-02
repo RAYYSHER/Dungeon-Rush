@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IDamagable
     private HurtEffect hurtEffect;
     private LevelSystem levelSystem;
     private Stress stressSystem;
+    private PassiveSkillApplier passiveSkillApplier;
     
 
     void Awake()
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour, IDamagable
         animator = GetComponent<Animator>();
         hurtEffect = GetComponent<HurtEffect>();
         stressSystem = GetComponent<Stress>();
+        passiveSkillApplier = GetComponent<PassiveSkillApplier>();
     }
 
     //read joystick's inputActions and return to player(gameObject),
@@ -63,7 +65,11 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetXP(int xp)
     {
-        levelSystem.GainXP(xp);
+        int modifiedXP = passiveSkillApplier != null
+        ? passiveSkillApplier.ModifyEXPGain(xp)
+        : xp;
+
+        levelSystem.GainXP(modifiedXP);
         QuestManager.Instance?.NotifyEnemyKilled();
     }
 
