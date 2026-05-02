@@ -31,6 +31,7 @@ public class Stress : MonoBehaviour
     void Awake()
     {
         combat = GetComponent<Combat>();
+        _hurtEffect = GetComponent<HurtEffect>();
     }
 
     void Start()
@@ -46,39 +47,51 @@ public class Stress : MonoBehaviour
 
     void Update()
     {
-         // ---- ระหว่างโดน Penalty ----
+        // ---- ระหว่างโดน Penalty ----
         if (_isInPenalty)
         {
             _penaltyTimer -= Time.deltaTime;
- 
-            // Drain STS จาก maxSts → 0 ภายใน penaltyDuration วินาที
+
             float drainRate = maxSts / penaltyDuration;
             DecreaseSTS(drainRate * Time.deltaTime);
- 
+
             if (_penaltyTimer <= 0f)
             {
                 EndPenalty();
             }
-            return; // ข้าม logic ปกติระหว่าง penalty
+            return;
         }
- 
+
         // ---- Logic ปกติ ----
         IncreaseSTS(timeStressRate * Time.deltaTime);
- 
-        if (isUnderStress)
+
+        // [แก้] เดิมใช้ if/else ตรงๆ ทำให้เมื่อ isUnderStress = false
+        // จะเข้า else → DecreaseSTS ทันที → STS ลงจาก 100 นิดนึง
+        // → penalty check ด้านล่างไม่ติดเพราะ sts < maxSts ไปแล้ว
+        // [แก้] เลยเก็บค่า isUnderStress ไว้ใน wasSprinting ก่อน reset
+        // เพื่อให้ penalty check ทำงานได้ก่อนที่ regen จะดึง STS ลง
+        bool wasSprinting = isUnderStress;
+        
+        if (wasSprinting)
         {
             IncreaseSTS(timeStressRate * Time.deltaTime);
-            isUnderStress = false;  // reset each frame, Movement.Walk() sets it true
+            isUnderStress = false;
         }
-        else
-        {
-            DecreaseSTS(timeStressRegenRate * Time.deltaTime);
-        }
- 
-        // ตรวจว่า STS เต็มหรือยัง
+
+        // [แก้] ย้าย penalty check มาไว้ตรงนี้ก่อน regen
+        // เดิมอยู่หลัง else DecreaseSTS → ทำให้ Dash ที่เติม STS ด้วย IncreaseSTS()
+        // โดยตรงไม่เคย trigger penalty ได้เลย เพราะ regen ลดก่อนเสมอ
         if (sts >= maxSts && !_isInPenalty)
         {
             TriggerPenalty();
+            return;
+        }
+
+        // [แก้] เปลี่ยนจาก else → if (!wasSprinting)
+        // ให้ regen ทำงานต่อเนื่องจาก wasSprinting แทน isUnderStress ที่ถูก reset ไปแล้ว
+        if (!wasSprinting)
+        {
+            DecreaseSTS(timeStressRegenRate * Time.deltaTime);
         }
 
     }

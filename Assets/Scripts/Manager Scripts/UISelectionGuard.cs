@@ -15,6 +15,9 @@ void Update()
         Mouse.current.leftButton.isPressed))
         return;
 
+    // ถ้า timeScale = 0 (pause) ให้ skip — panel กำลังเปิดอยู่
+    if (Time.timeScale == 0f) return;
+
     GameObject current = EventSystem.current.currentSelectedGameObject;
 
     if (current != null && current.activeInHierarchy)

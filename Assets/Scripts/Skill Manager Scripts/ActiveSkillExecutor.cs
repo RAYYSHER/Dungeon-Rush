@@ -57,9 +57,11 @@ public class ActiveSkillExecutor : MonoBehaviour
         SkillInstance skill = SkillManager.Instance.GetSlot(slotIndex);
 
         if (skill == null)                                          return;
-        if (skill.data.skillType != SkillType.Active)              return;
+        if (skill.data.skillType != SkillType.Active)               return;
         if (_cooldownTimers[slotIndex].IsRunning())                 return;
         if (!CanAffordCost(skill.data.stsCost))                     return;
+        if (stressSystem.IsInPenalty())                             return; // [เพิ่ม] block skill ระหว่าง penalty เหมือน Dash
+
 
         // Deduct STS cost
         stressSystem.IncreaseSTS(skill.data.stsCost);

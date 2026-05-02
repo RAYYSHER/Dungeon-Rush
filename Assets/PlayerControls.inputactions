@@ -286,7 +286,7 @@
                 {
                     "name": "",
                     "id": "1ec88637-ad58-4de0-a38a-450ae52081e9",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -331,6 +331,17 @@
                     "name": "",
                     "id": "8594cfb7-f550-4ba9-a012-40dc934d12cd",
                     "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill01",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "acdc9e5e-212b-46b5-8b4c-38866b932b4b",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
