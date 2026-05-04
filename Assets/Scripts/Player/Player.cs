@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IDamagable
     private HurtEffect hurtEffect;
     private LevelSystem levelSystem;
     private Stress stressSystem;
+    private ShieldHandler shieldHandler;
     
 
     void Awake()
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour, IDamagable
         animator = GetComponent<Animator>();
         hurtEffect = GetComponent<HurtEffect>();
         stressSystem = GetComponent<Stress>();
+        shieldHandler = GetComponent<ShieldHandler>();
     }
 
     private void Update()
@@ -65,15 +67,21 @@ public class Player : MonoBehaviour, IDamagable
 
     public void Hurt(int damageAmount)
     {
-        // ไม่รับ damage ถ้ากำลัง dash (i-frame) หรือ iFrame combat ทำงานอยู่
         if (combat.IsIFrameEnable() || movement.IsDashing)
-            return;
+        return;
 
-        if (!isAttacking)
-            animator.SetTrigger("trGetHit");
+    // เช็ค shield ก่อน — รับ damage ที่เหลือหลัง shield หัก
+    int remainingDamage = shieldHandler != null
+        ? shieldHandler.AbsorbDamage(damageAmount)
+        : damageAmount;
 
-        hurtEffect.TriggerHurt();
-        combat.GetHit(damageAmount);
+    if (remainingDamage <= 0) return;   // shield รับหมด player ไม่โดน
+
+    if (!isAttacking)
+        animator.SetTrigger("trGetHit");
+
+    hurtEffect.TriggerHurt();
+    combat.GetHit(remainingDamage);
     }
     
     public void Die()

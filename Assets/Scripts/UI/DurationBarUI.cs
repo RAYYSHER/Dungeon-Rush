@@ -94,6 +94,8 @@ public class DurationBarUI : MonoBehaviour
         float remaining = _executor.GetDurationRemaining(_slotIndex);
         float total     = _executor.GetDurationTotal(_slotIndex);
 
+         Debug.Log($"[DurationBarUI] remaining: {remaining} | total: {total} | fill: {remaining / total}");  // ← เพิ่ม
+
         _durationOverlay.fillAmount = remaining / total;
     }
 }

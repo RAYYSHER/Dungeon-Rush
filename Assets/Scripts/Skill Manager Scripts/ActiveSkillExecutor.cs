@@ -76,6 +76,13 @@ public class ActiveSkillExecutor : MonoBehaviour
 
         _cooldownTimers[slotIndex] = new Timer(skill.data.cooldown);
         _cooldownTimers[slotIndex].Start();
+
+        // start duration timer ถ้า skill มี duration  ← เพิ่มทั้งบล็อกนี้
+        if (skill.data.duration > 0f)
+        {
+            _durationTimers[slotIndex] = new Timer(skill.data.duration);
+            _durationTimers[slotIndex].Start();
+        }
     }
 
     // UI can call this to show remaining cooldown
