@@ -10,12 +10,14 @@ public class ActiveSkillExecutor : MonoBehaviour
     private Stress  stressSystem;
     private Combat  combat;
     private Health  health;
+    private AOEVFXHandler _aoeVFX;
 
     // ─────────────────────────────────────────
     //  Runtime State
     // ─────────────────────────────────────────
 
     private Timer[] _cooldownTimers = new Timer[2];
+    private Timer[] _durationTimers  = new Timer[2];
     private bool    _dmgBuffActive  = false;
 
     // ─────────────────────────────────────────
@@ -27,9 +29,12 @@ public class ActiveSkillExecutor : MonoBehaviour
         stressSystem      = GetComponent<Stress>();
         combat            = GetComponent<Combat>();
         health            = GetComponent<Health>();
+        _aoeVFX           = GetComponent<AOEVFXHandler>();
 
         _cooldownTimers[0] = new Timer(0f);
         _cooldownTimers[1] = new Timer(0f);
+        _durationTimers[0] = new Timer(0f);
+        _durationTimers[1] = new Timer(0f);
     }
 
     void OnEnable()
@@ -46,6 +51,8 @@ public class ActiveSkillExecutor : MonoBehaviour
     {
         _cooldownTimers[0].Update(Time.deltaTime);
         _cooldownTimers[1].Update(Time.deltaTime);
+        _durationTimers[0].Update(Time.deltaTime);
+        _durationTimers[1].Update(Time.deltaTime);
     }
 
     // ─────────────────────────────────────────
@@ -54,22 +61,19 @@ public class ActiveSkillExecutor : MonoBehaviour
 
     public void UseSkill(int slotIndex)
     {
-        SkillInstance skill = SkillManager.Instance.GetSlot(slotIndex);
+         SkillInstance skill = SkillManager.Instance.GetSlot(slotIndex);
 
-        if (skill == null)                                          return;
-        if (skill.data.skillType != SkillType.Active)               return;
-        if (_cooldownTimers[slotIndex].IsRunning())                 return;
-        if (!CanAffordCost(skill.data.stsCost))                     return;
-        if (stressSystem.IsInPenalty())                             return; // [เพิ่ม] block skill ระหว่าง penalty เหมือน Dash
+        if (skill == null)                          return;
+        if (skill.data.skillType != SkillType.Active) return;
+        if (_cooldownTimers[slotIndex].IsRunning())  return;
+        if (stressSystem.IsInPenalty)               return;   // penalty — active skill ใช้ไม่ได้
 
-
-        // Deduct STS cost
+        // เพิ่ม STS cost — ถ้าเกินหลอด Stress.IncreaseSTS จะ Clamp ไว้ที่ maxSts
+        // แล้ว Stress.Update() จะ trigger penalty เองในเฟรมถัดไป
         stressSystem.IncreaseSTS(skill.data.stsCost);
 
-        // Execute effect
         ExecuteEffect(skill);
 
-        // Start cooldown
         _cooldownTimers[slotIndex] = new Timer(skill.data.cooldown);
         _cooldownTimers[slotIndex].Start();
     }
@@ -139,25 +143,26 @@ public class ActiveSkillExecutor : MonoBehaviour
     private void ExecuteShield(SkillLevelData levelData, float duration)
     {
         // Shield ต้องการ component แยกต่างหาก — เตรียม hook ไว้ก่อน
-        // ShieldHandler shieldHandler = GetComponent<ShieldHandler>();
-        // if (shieldHandler == null)
-        // {
-        //     Debug.LogWarning("[ActiveSkillExecutor] ShieldHandler not found on Player.");
-        //     return;
-        // }
+        ShieldHandler shieldHandler = GetComponent<ShieldHandler>();
+        if (shieldHandler == null)
+        {
+            Debug.LogWarning("[ActiveSkillExecutor] ShieldHandler not found on Player.");
+            return;
+        }
 
-        // int shieldHP = Mathf.RoundToInt(health.maxHealth * levelData.primaryValue);
-        // shieldHandler.ActivateShield(shieldHP, duration);
+        int shieldHP = Mathf.RoundToInt(health.maxHealth * levelData.primaryValue);
+        shieldHandler.ActivateShield(shieldHP, duration);
 
-        // Debug.Log($"[ActiveSkillExecutor] Shield → {shieldHP} HP | {duration}s");
+        Debug.Log($"[ActiveSkillExecutor] Shield → {shieldHP} HP | {duration}s");
 
-        Debug.LogWarning("[ActiveSkillExecutor] Shield not implemented yet.");
     }
 
     private void ExecuteAOEDamage(SkillLevelData levelData, float baseArea)
     {
         float   radius  = levelData.primaryValue;
         int     damage  = Mathf.RoundToInt(combat.attackDamage * 1.75f);
+
+        _aoeVFX?.PlayAOEFlash(radius);     // ← เพิ่ม
 
         Collider[] hits = Physics.OverlapSphere(transform.position, radius);
         foreach (Collider hit in hits)
@@ -199,9 +204,9 @@ public class ActiveSkillExecutor : MonoBehaviour
     //  Private Helpers
     // ─────────────────────────────────────────
 
-    private bool CanAffordCost(float stsCost)
+    public bool WillTriggerPenalty(float stsCost)
     {
-        return stressSystem.sts + stsCost <= stressSystem.maxSts;
+        return stressSystem.sts + stsCost >= stressSystem.maxSts;
     }
 
     // สร้าง Timer ใหม่ตาม cooldown ของ skill ปัจจุบัน
@@ -217,5 +222,40 @@ public class ActiveSkillExecutor : MonoBehaviour
             if (timerNotSet)
                 _cooldownTimers[i] = new Timer(skill.data.cooldown);
         }
+    }
+
+    // UI เรียกเพื่อรู้ว่า duration กำลัง active อยู่มั้ย
+    public bool IsDurationActive(int slotIndex)
+    {
+        SkillInstance skill = SkillManager.Instance.GetSlot(slotIndex);
+        if (skill == null) return false;
+
+        // Shield — ดูจาก ShieldHandler โดยตรง
+        if (skill.data.effectType == SkillEffectType.Shield)
+        {
+            ShieldHandler shield = GetComponent<ShieldHandler>();
+            return shield != null && shield.IsActive;
+        }
+
+        // DMG Buff และ skill อื่นที่มี duration → ดูจาก timer
+        return _durationTimers[slotIndex].IsRunning();
+    }
+
+    // UI เรียกเพื่อรู้เวลาที่เหลือของ duration
+    public float GetDurationRemaining(int slotIndex)
+    {
+        SkillInstance skill = SkillManager.Instance.GetSlot(slotIndex);
+        if (skill == null) return 0f;
+
+        return _durationTimers[slotIndex].GetTimeRemaining();
+    }
+
+    // UI เรียกเพื่อรู้ duration ทั้งหมด (สำหรับคำนวณ fill amount)
+    public float GetDurationTotal(int slotIndex)
+    {
+        SkillInstance skill = SkillManager.Instance.GetSlot(slotIndex);
+        if (skill == null) return 1f;
+
+        return skill.data.duration;
     }
 }

@@ -20,7 +20,7 @@ MonoBehaviour:
   effectType: 4
   stsCost: 30
   cooldown: 10
-  duration: 10
+  duration: 5
   castingTime: 0.5
   distance: 0
   area: 0

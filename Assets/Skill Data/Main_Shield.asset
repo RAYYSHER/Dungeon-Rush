@@ -19,7 +19,7 @@ MonoBehaviour:
   targetType: 0
   effectType: 2
   stsCost: 30
-  cooldown: 15
+  cooldown: 10
   duration: 10
   castingTime: 0
   distance: 0

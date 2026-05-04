@@ -92,6 +92,7 @@ public class SkillManager : MonoBehaviour
         _slots[_skillCount] = new SkillInstance(data);
         _skillCount++;
         OnSkillsChanged?.Invoke();
+        UpdateAOERing();
     }
 
     public void UpgradeSkill(int slotIndex)
@@ -100,7 +101,28 @@ public class SkillManager : MonoBehaviour
 
         _slots[slotIndex].Upgrade();
         OnSkillsChanged?.Invoke();
+        UpdateAOERing();
     }
+
+    private void UpdateAOERing()
+{
+    AOEVFXHandler aoeVFX = FindFirstObjectByType<AOEVFXHandler>();
+    if (aoeVFX == null) return;
+
+    for (int i = 0; i < 2; i++)
+    {
+        SkillInstance slot = _slots[i];
+        if (slot == null) continue;
+        if (slot.data.effectType != SkillEffectType.AOEDamage) continue;
+
+        float radius = slot.GetCurrentLevelData().primaryValue;
+        aoeVFX.ShowRadiusRing(radius);
+        return;
+    }
+
+    // ไม่มี AOE skill → ซ่อน ring
+    aoeVFX.HideRadiusRing();
+}
 
     public void ResetAllSkills()
     {

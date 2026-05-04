@@ -4,27 +4,25 @@ public class Player : MonoBehaviour, IDamagable
 {
     private Animator animator;
     private PlayerController controller;
+    private Movement movement;
     private Combat combat;
     private bool isAttacking = false;
     private HurtEffect hurtEffect;
     private LevelSystem levelSystem;
     private Stress stressSystem;
-    private PassiveSkillApplier passiveSkillApplier;
     
 
     void Awake()
     {
         controller = GetComponent<PlayerController>();
+        movement = GetComponent<Movement>();
         combat = GetComponent<Combat>();
         levelSystem = GetComponent<LevelSystem>();
         animator = GetComponent<Animator>();
         hurtEffect = GetComponent<HurtEffect>();
         stressSystem = GetComponent<Stress>();
-        passiveSkillApplier = GetComponent<PassiveSkillApplier>();
     }
 
-    //read joystick's inputActions and return to player(gameObject),
-    // making player moves in the desire direction.
     private void Update()
     {
         controller.HandleJoystickInput();
@@ -37,15 +35,12 @@ public class Player : MonoBehaviour, IDamagable
 
     public void IncreaseMainStat()
     {
-        
-        combat.HealMissingHealth(0.1);             //heal missing health
-        combat.UpgradeMaxHealth();                  //increase maxhealth
-        combat.UpgradeCombatDMG();                  //increase combatdamage
-        combat.UpgradeBaseDMGReduction();           //increase damage reduction       
-        //increase health regen
-        stressSystem.ApplySTStoDMGReduction();      // applying to combat
-        stressSystem.DecreaseSTSPercent(0.20f);     // Decrease flat amount of STS immediately
-
+        combat.HealMissingHealth(0.1);
+        combat.UpgradeMaxHealth();
+        combat.UpgradeCombatDMG();
+        combat.UpgradeBaseDMGReduction();
+        stressSystem.ApplySTStoDMGReduction();
+        stressSystem.DecreaseSTSPercent(0.20f);
     }
 
     public void SetAttacking(bool value)
@@ -55,7 +50,7 @@ public class Player : MonoBehaviour, IDamagable
 
     public bool IsAttacking()
     {
-      return isAttacking;   
+        return isAttacking;
     }
 
     public void OnAttackEnd()
@@ -65,39 +60,25 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetXP(int xp)
     {
-        int modifiedXP = passiveSkillApplier != null
-        ? passiveSkillApplier.ModifyEXPGain(xp)
-        : xp;
-
-        levelSystem.GainXP(modifiedXP);
-        QuestManager.Instance?.NotifyEnemyKilled();
+        levelSystem.GainXP(xp);
     }
 
     public void Hurt(int damageAmount)
-    {  
-       if (combat.IsIFrameEnable() == false)
-       {
-            if (!isAttacking)
-            {
-                animator.SetTrigger("trGetHit");  
-            }
-            hurtEffect.TriggerHurt();  
-            combat.GetHit(damageAmount);
-       } 
+    {
+        // ไม่รับ damage ถ้ากำลัง dash (i-frame) หรือ iFrame combat ทำงานอยู่
+        if (combat.IsIFrameEnable() || movement.IsDashing)
+            return;
+
+        if (!isAttacking)
+            animator.SetTrigger("trGetHit");
+
+        hurtEffect.TriggerHurt();
+        combat.GetHit(damageAmount);
     }
     
     public void Die()
     {
-        // wait for anination
-
-        GameStatTracker.Instance?.StopTimer();
-
-        //Panel result showed
         FindFirstObjectByType<GameResultUI>().ShowResult(false);
-
-        // close the player code
         gameObject.SetActive(false);
-
-
     }
 }

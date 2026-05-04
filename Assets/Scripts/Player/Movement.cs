@@ -4,10 +4,9 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+    #region Groundcheck
 
-    #region Groundcheck (Jump only ground)
-
-    [Header ("Groundcheck")]
+    [Header("Groundcheck")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundMask;
@@ -16,25 +15,40 @@ public class Movement : MonoBehaviour
     #endregion
 
     #region Attributes
-    private Rigidbody body;                     //add player's physic (from Rigidbody's component in Inspector)
-    public float moveSpeed;                     //add player's movement speed (adjustable, use for increase velocity.)
+
+    private Rigidbody body;
+    public float moveSpeed;
     public float speedMultiplier = 2f;
-    private float currentSpeed;                  
     public int jumpForce;
-    public int dashForce;
     private Stress stressSystem;
     private PlayerController controls;
+    private Vector3 _lastMoveDirection;
 
     #endregion
 
-    #region Build-in Function
+    #region Dash Settings
+
+    [Header("Dash")]
+    public float dashingPower    = 24f;
+    public float dashingTime     = 0.2f;
+    public float dashingCooldown = 0.7f;
+
+    [Header("Penalty")]
+    [Range(0.1f, 1f)]
+    public float penaltySpeedMultiplier = 0.5f;  // 0.5 = เดินได้ครึ่งความเร็ว
+
+    public bool IsDashing { get; private set; }
+    private bool _canDash = true;
+
+    #endregion
+
+    #region Unity Methods
 
     void Awake()
     {
-        body = GetComponent<Rigidbody>();
-        controls = GetComponent<PlayerController>();
+        body         = GetComponent<Rigidbody>();
+        controls     = GetComponent<PlayerController>();
         stressSystem = GetComponent<Stress>();
-        currentSpeed = moveSpeed;
 
         body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
     }
@@ -42,86 +56,103 @@ public class Movement : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
-        
     }
 
     #endregion
 
-    #region Method
+    #region Public Methods
+
     public void Walk(Vector3 direction, bool isSprinting)
     {
-        bool penaltyActive = stressSystem != null && stressSystem.IsInPenalty();
- 
-        float currentSpeed;
-        if (penaltyActive)
+        if (IsDashing) return;
+
+        float speed;
+        if (stressSystem.IsInPenalty)
         {
-            // Penalty: ลด speed 50%, ไม่สามารถ sprint ได้
-            currentSpeed = moveSpeed * 0.5f;
+            // penalty — เดินได้แต่ช้าลง, sprint ปิด
+            speed = moveSpeed * penaltySpeedMultiplier;
         }
         else
         {
-            currentSpeed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
+            speed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
+            if (isSprinting)
+                stressSystem.SetUnderStress();
         }
-        
-        body.MovePosition(transform.position + direction * currentSpeed * Time.deltaTime);
 
-        if (isSprinting == true)
-        {
-            // sprinting = stress, let Update() handle it
-            // walking — do nothing, passive regen in Update() handles decrease
-            stressSystem.SetUnderStress();
-        }
-        
+        body.MovePosition(transform.position + direction * speed * Time.deltaTime);
+
+        if (direction.magnitude > 0.01f)
+            _lastMoveDirection = direction.normalized;
     }
 
-    public void Rotate(Vector2 InputJoystick)
+    public void Rotate(Vector2 input)
     {
-        float angle = Mathf.Atan2(InputJoystick.x, InputJoystick.y) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, angle, 0);
     }
 
-    public void RotateTo(Vector3 position)
+    public void RotateTo(Vector3 direction)
     {
-        float angle = Mathf.Atan2(position.x, position.z) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, angle, 0);
     }
-      //Jump keybind
+
     public void Jump(InputAction.CallbackContext context)
     {
-        if (isGrounded == false)
-        {
-            return;
-        }
-
+        if (!isGrounded) return;
         body.constraints = RigidbodyConstraints.FreezeRotation;
-        body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);   //add push force in Y axis, making player can jump.
-        StartCoroutine(LockYAfterjump());
-
+        body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        StartCoroutine(LockYAfterJump());
     }
 
     public void Dash(InputAction.CallbackContext context)
     {
-        // Penalty: ไม่สามารถ dash ได้
-        if (stressSystem != null && stressSystem.IsInPenalty())
-            return;
+        if (!_canDash) return;
+        if (stressSystem.IsInPenalty) return;   // penalty — dash ไม่ได้
 
-        body.AddForce(transform.forward * dashForce);   //add push force in x axis, making player can dash.
-        // Debug.Log("dashed");
+        Vector3 dashDir = _lastMoveDirection.magnitude > 0.01f
+            ? _lastMoveDirection
+            : transform.forward;
 
+        StartCoroutine(DashCoroutine(dashDir));
         stressSystem.IncreaseSTS(10f);
     }
 
     #endregion
 
-    #region Coroutine
+    #region Coroutines
 
-    IEnumerator LockYAfterjump()
+    IEnumerator DashCoroutine(Vector3 direction)
+    {
+        IsDashing = true;
+        _canDash  = false;
+
+        RotateTo(direction);
+
+        float elapsed = 0f;
+        while (elapsed < dashingTime)
+        {
+            // abort ถ้า penalty trigger ตอน mid-dash
+            if (stressSystem.IsInPenalty)
+                break;
+
+            body.MovePosition(body.position + direction * dashingPower * Time.fixedDeltaTime);
+            elapsed += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        IsDashing = false;
+
+        yield return new WaitForSeconds(dashingCooldown);
+        _canDash = true;
+    }
+
+    IEnumerator LockYAfterJump()
     {
         yield return new WaitForSeconds(0.1f);
-        yield return new WaitUntil (() => isGrounded);
+        yield return new WaitUntil(() => isGrounded);
         body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
     }
 
     #endregion
-
 }

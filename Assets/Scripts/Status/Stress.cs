@@ -14,35 +14,34 @@ public class Stress : MonoBehaviour
 
     private Combat combat;
 
-
     #endregion
 
     #region Penalty
-    
+
     [Header("Stress Penalty")]
-    public float penaltyDuration = 5f;          // แก้ได้ใน Inspector
+    public float penaltyDuration = 5f;
     private bool _isInPenalty = false;
     private float _penaltyTimer = 0f;
     private HurtEffect _hurtEffect;
 
+    // Property ให้ script อื่นอ่านได้ง่าย
+    public bool IsInPenalty => _isInPenalty;
+
     #endregion
 
     #region Build-in function
+
     void Awake()
     {
-        combat = GetComponent<Combat>();
+        combat      = GetComponent<Combat>();
         _hurtEffect = GetComponent<HurtEffect>();
     }
 
     void Start()
     {
         sts = 0;
-
-
         if (stressBar != null)
-        {
             stressBar.UpdateStressBar(sts, maxSts);
-        }
     }
 
     void Update()
@@ -53,47 +52,33 @@ public class Stress : MonoBehaviour
             _penaltyTimer -= Time.deltaTime;
 
             float drainRate = maxSts / penaltyDuration;
-            DecreaseSTS(drainRate * Time.deltaTime);
+            DecreaseSTS(drainRate * Time.deltaTime);    // drain ลงเรื่อยๆ
 
             if (_penaltyTimer <= 0f)
-            {
                 EndPenalty();
-            }
-            return;
+
+            return;     // ไม่รัน logic ปกติระหว่าง penalty
         }
 
         // ---- Logic ปกติ ----
         IncreaseSTS(timeStressRate * Time.deltaTime);
 
-        // [แก้] เดิมใช้ if/else ตรงๆ ทำให้เมื่อ isUnderStress = false
-        // จะเข้า else → DecreaseSTS ทันที → STS ลงจาก 100 นิดนึง
-        // → penalty check ด้านล่างไม่ติดเพราะ sts < maxSts ไปแล้ว
-        // [แก้] เลยเก็บค่า isUnderStress ไว้ใน wasSprinting ก่อน reset
-        // เพื่อให้ penalty check ทำงานได้ก่อนที่ regen จะดึง STS ลง
         bool wasSprinting = isUnderStress;
-        
         if (wasSprinting)
         {
             IncreaseSTS(timeStressRate * Time.deltaTime);
             isUnderStress = false;
         }
 
-        // [แก้] ย้าย penalty check มาไว้ตรงนี้ก่อน regen
-        // เดิมอยู่หลัง else DecreaseSTS → ทำให้ Dash ที่เติม STS ด้วย IncreaseSTS()
-        // โดยตรงไม่เคย trigger penalty ได้เลย เพราะ regen ลดก่อนเสมอ
+        // เช็ค penalty ก่อน regen — ป้องกัน regen ลด STS จนไม่ trigger
         if (sts >= maxSts && !_isInPenalty)
         {
             TriggerPenalty();
             return;
         }
 
-        // [แก้] เปลี่ยนจาก else → if (!wasSprinting)
-        // ให้ regen ทำงานต่อเนื่องจาก wasSprinting แทน isUnderStress ที่ถูก reset ไปแล้ว
         if (!wasSprinting)
-        {
             DecreaseSTS(timeStressRegenRate * Time.deltaTime);
-        }
-
     }
 
     #endregion
@@ -102,13 +87,13 @@ public class Stress : MonoBehaviour
 
     public void IncreaseSTS(float amount)
     {
+        if (_isInPenalty) return;   // penalty กำลัง drain อยู่ — ห้ามเพิ่ม STS จากภายนอก
+
         sts = Mathf.Clamp(sts + amount, 0, maxSts);
         ApplySTStoDMGReduction();
 
         if (stressBar != null)
-        {
             stressBar.UpdateStressBar(sts, maxSts);
-        }
     }
 
     public void DecreaseSTS(float amount)
@@ -117,13 +102,12 @@ public class Stress : MonoBehaviour
         ApplySTStoDMGReduction();
 
         if (stressBar != null)
-        {
             stressBar.UpdateStressBar(sts, maxSts);
-        }
     }
-    
+
     public void SetUnderStress()
     {
+        if (_isInPenalty) return;   // penalty อยู่ — ไม่รับ sprint stress
         isUnderStress = true;
     }
 
@@ -133,7 +117,6 @@ public class Stress : MonoBehaviour
         DecreaseSTS(amount);
     }
 
-
     public void ApplySTStoDMGReduction()
     {
         float stressRatio = 1f - (sts / maxSts);
@@ -142,30 +125,29 @@ public class Stress : MonoBehaviour
 
     #endregion
 
-     #region Penalty
- 
+    #region Penalty
+
     void TriggerPenalty()
     {
-        _isInPenalty = true;
+        _isInPenalty  = true;
         _penaltyTimer = penaltyDuration;
-        _hurtEffect?.TriggerStressPenalty(penaltyDuration);
+        _hurtEffect?.TriggerStressPenalty(penaltyDuration);   // แสงม่วงกะพริบตลอด penalty
         Debug.Log("[Stress] Penalty triggered!");
     }
- 
+
     void EndPenalty()
     {
         _isInPenalty = false;
-        sts = 0f;                           // force STS → 0 เมื่อหมด penalty
- 
+        sts          = 0f;
+
+        _hurtEffect?.StopStressPenalty();                     // หยุดแสงม่วง
+
         if (stressBar != null)
             stressBar.UpdateStressBar(sts, maxSts);
- 
+
         ApplySTStoDMGReduction();
         Debug.Log("[Stress] Penalty ended.");
     }
- 
-    /// <summary>ให้ Movement / Controller ถามว่ากำลังโดน penalty อยู่ไหม</summary>
-    public bool IsInPenalty() => _isInPenalty;
- 
+
     #endregion
 }
