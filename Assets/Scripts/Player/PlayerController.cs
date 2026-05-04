@@ -106,6 +106,7 @@ public class PlayerController : MonoBehaviour
         }
         else if(InputJoystickLeft.magnitude == 0) // Idle/ not moving
         {
+            movement.Stop();
             playerAC.SetIdle();
         }
     }

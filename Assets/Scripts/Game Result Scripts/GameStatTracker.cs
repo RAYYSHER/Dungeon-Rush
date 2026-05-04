@@ -11,6 +11,7 @@ public class GameStatTracker : MonoBehaviour
     public int   Eliminations    { get; private set; }
     public float ClearTime       { get; private set; }
     public float AverageSTS      { get; private set; }
+    public int PenaltyCount      { get; private set; }
 
     #endregion
 
@@ -96,11 +97,13 @@ public class GameStatTracker : MonoBehaviour
     // Returns STS score 0–100 (higher = calmer = better)
     public float GetSTSScore()
     {
-        if (_stressSystem == null) return 100f;
-
+        if (_stressSystem == null) return 0f;
         if (_stsSnapshots.Count == 0) return 0f;
-        
-        return (1f - (AverageSTS / _stressSystem.maxSts)) * 100f;
+
+        float baseScore = (1f - (AverageSTS / _stressSystem.maxSts)) * 100f;
+        float penaltyDeduction = PenaltyCount * 15f;
+
+        return Mathf.Clamp(baseScore - penaltyDeduction, 0f, 100f);
     }
 
     // Returns time score 0–100 (shorter clear time = higher score)
@@ -109,6 +112,12 @@ public class GameStatTracker : MonoBehaviour
     {
         float ratio = Mathf.Clamp01(ClearTime / maxExpectedSeconds);
         return (1f - ratio) * 100f;
+    }
+
+    public void AddPenalty()
+    {
+        PenaltyCount++;
+        Debug.Log($"[GameStatTracker] Penalty count: {PenaltyCount}");
     }
 
     #endregion
@@ -120,6 +129,7 @@ public class GameStatTracker : MonoBehaviour
         Eliminations      = 0;
         ClearTime         = 0f;
         AverageSTS        = 0f;
+        PenaltyCount      = 0;
         _timerRunning     = false;
         _stsSnapshotTimer = _stsSnapshotInterval;
         _stsSnapshots.Clear();
@@ -133,8 +143,15 @@ public class GameStatTracker : MonoBehaviour
 
     void TakeSTSSnapshot()
     {
-        if (_stressSystem == null) return;
-        _stsSnapshots.Add(_stressSystem.sts);
+        if (_stressSystem == null) 
+        {
+            Debug.Log("[Snapshot] _stressSystem is NULL");
+            return;
+        }
+
+        float value = _stressSystem.IsInPenalty ? _stressSystem.maxSts : _stressSystem.sts;
+        _stsSnapshots.Add(value);
+        Debug.Log($"[Snapshot] sts: {value:F1} | IsInPenalty: {_stressSystem.IsInPenalty} | Total snapshots: {_stsSnapshots.Count}");
     }
 
     void CalculateAverageSTS()

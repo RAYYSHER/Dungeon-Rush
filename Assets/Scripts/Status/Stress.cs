@@ -131,6 +131,7 @@ public class Stress : MonoBehaviour
     {
         _isInPenalty  = true;
         _penaltyTimer = penaltyDuration;
+        GameStatTracker.Instance?.AddPenalty(); 
         _hurtEffect?.TriggerStressPenalty(penaltyDuration);   // แสงม่วงกะพริบตลอด penalty
         Debug.Log("[Stress] Penalty triggered!");
     }

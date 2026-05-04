@@ -79,10 +79,16 @@ public class Movement : MonoBehaviour
                 stressSystem.SetUnderStress();
         }
 
-        body.MovePosition(transform.position + direction * speed * Time.deltaTime);
+        Vector3 targetVelocity = direction * speed;
+        body.linearVelocity = new Vector3(targetVelocity.x, body.linearVelocity.y, targetVelocity.z);
 
         if (direction.magnitude > 0.01f)
             _lastMoveDirection = direction.normalized;
+    }
+
+    public void Stop()
+    {
+        body.linearVelocity = new Vector3(0, body.linearVelocity.y, 0);
     }
 
     public void Rotate(Vector2 input)
