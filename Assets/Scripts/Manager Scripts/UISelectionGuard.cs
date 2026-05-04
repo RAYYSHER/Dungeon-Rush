@@ -9,6 +9,8 @@ public class UISelectionGuard : MonoBehaviour
 void Update()
 {
     if (EventSystem.current == null) return;
+    
+    if (!gameObject.activeInHierarchy) return;
 
     if (Mouse.current != null && (
         Mouse.current.delta.ReadValue() != Vector2.zero ||

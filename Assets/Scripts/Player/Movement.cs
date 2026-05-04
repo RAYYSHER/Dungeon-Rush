@@ -23,6 +23,7 @@ public class Movement : MonoBehaviour
     private Stress stressSystem;
     private PlayerController controls;
     private Vector3 _lastMoveDirection;
+    private Vector3 _dashVelocity = Vector3.zero;
 
     #endregion
 
@@ -56,6 +57,11 @@ public class Movement : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
+
+        if (stressSystem.IsInPenalty)
+        {
+            Debug.Log($"[Movement Update] velocity: {body.linearVelocity} | constraints: {body.constraints} | isKinematic: {body.isKinematic}");
+        }
     }
 
     #endregion
@@ -64,12 +70,18 @@ public class Movement : MonoBehaviour
 
     public void Walk(Vector3 direction, bool isSprinting)
     {
-        if (IsDashing) return;
+        if (IsDashing)
+        {
+            body.linearVelocity = new Vector3(_dashVelocity.x, body.linearVelocity.y, _dashVelocity.z);
+            return;
+        }
 
         float speed;
         if (stressSystem.IsInPenalty)
         {
             // penalty — เดินได้แต่ช้าลง, sprint ปิด
+            Debug.Log($"[Walk] Penalty active | direction: {direction} | magnitude: {direction.magnitude}");
+            Debug.Log($"[Walk] timeScale: {Time.timeScale} | direction: {direction}");
             speed = moveSpeed * penaltySpeedMultiplier;
         }
         else
@@ -82,12 +94,18 @@ public class Movement : MonoBehaviour
         Vector3 targetVelocity = direction * speed;
         body.linearVelocity = new Vector3(targetVelocity.x, body.linearVelocity.y, targetVelocity.z);
 
+        if (stressSystem.IsInPenalty)
+        {
+            Debug.Log($"[Walk] velocity after set: {body.linearVelocity} | speed was: {speed}");
+        }         
+
         if (direction.magnitude > 0.01f)
             _lastMoveDirection = direction.normalized;
     }
 
     public void Stop()
     {
+        Debug.Log("[Movement] Stop() called!");
         body.linearVelocity = new Vector3(0, body.linearVelocity.y, 0);
     }
 
@@ -120,6 +138,8 @@ public class Movement : MonoBehaviour
             ? _lastMoveDirection
             : transform.forward;
 
+        Debug.Log($"[Dash] moveSpeed: {moveSpeed} | sprint: {moveSpeed * speedMultiplier} | dashPower: {dashingPower}");
+
         StartCoroutine(DashCoroutine(dashDir));
         stressSystem.IncreaseSTS(10f);
     }
@@ -132,21 +152,20 @@ public class Movement : MonoBehaviour
     {
         IsDashing = true;
         _canDash  = false;
+        _dashVelocity = direction * dashingPower;
 
         RotateTo(direction);
 
+        // แก้จาก yield return new WaitForSeconds(dashingTime)
         float elapsed = 0f;
         while (elapsed < dashingTime)
         {
-            // abort ถ้า penalty trigger ตอน mid-dash
-            if (stressSystem.IsInPenalty)
-                break;
-
-            body.MovePosition(body.position + direction * dashingPower * Time.fixedDeltaTime);
+            if (stressSystem.IsInPenalty) break;  // หยุดทันทีถ้าโดน penalty
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
+        _dashVelocity = Vector3.zero;
         IsDashing = false;
 
         yield return new WaitForSeconds(dashingCooldown);

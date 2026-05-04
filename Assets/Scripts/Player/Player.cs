@@ -25,13 +25,9 @@ public class Player : MonoBehaviour, IDamagable
         shieldHandler = GetComponent<ShieldHandler>();
     }
 
-    private void Update()
-    {
-        controller.HandleJoystickInput();
-    }
-
     private void FixedUpdate()
     {
+        controller.HandleJoystickInput();
         controller.Control();
     }
 

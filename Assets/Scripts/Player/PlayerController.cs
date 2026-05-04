@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour 
@@ -73,6 +74,12 @@ public class PlayerController : MonoBehaviour
     {
         InputJoystickLeft = move.action.ReadValue<Vector2>();
         InputJoystickRight = look.action.ReadValue<Vector2>();
+
+        if (InputJoystickLeft.magnitude == 0)
+        {
+            GameObject selected = EventSystem.current?.currentSelectedGameObject;
+            Debug.Log($"[Input] ZERO | Selected UI: {(selected != null ? selected.name : "NULL")}");
+        }
     }
 
     public void Move()
@@ -106,7 +113,10 @@ public class PlayerController : MonoBehaviour
         }
         else if(InputJoystickLeft.magnitude == 0) // Idle/ not moving
         {
-            movement.Stop();
+            if (!movement.IsDashing)
+            {
+                movement.Stop();
+            }
             playerAC.SetIdle();
         }
     }
