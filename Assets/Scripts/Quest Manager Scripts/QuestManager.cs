@@ -34,7 +34,9 @@ public class QuestManager : MonoBehaviour
         instance.OnProgressChanged += OnProgressChanged;
         instance.OnCompleted += OnQuestCompleted;
         activeQuests.Add(instance);
-        questTrackerPanel.AddEntry(instance);
+
+        IQuestTimer timer = board.GetQuestTimer();   // ← เพิ่ม
+        questTrackerPanel.AddEntry(instance, timer);
     }
 
     // Called by Player.GetXP() — fires every time any enemy dies.

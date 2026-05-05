@@ -57,6 +57,13 @@ public class QuestBoard : MonoBehaviour
         zoneMarker?.StartZone();       // ← ย้ายมาไว้ตรงนี้
     }
 
+    public IQuestTimer GetQuestTimer()
+    {
+        if (surviveZone != null) return surviveZone;
+        if (zoneMarker  != null) return zoneMarker;
+        return null;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Player Entered");

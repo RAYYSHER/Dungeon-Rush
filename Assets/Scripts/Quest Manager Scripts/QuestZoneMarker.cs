@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class QuestZoneMarker : MonoBehaviour
+public class QuestZoneMarker : MonoBehaviour, IQuestTimer
 {
     [Header("Settings")]
     public float requiredDuration = 30f;    // อยู่ครบกี่วินาทีถึงสำเร็จ
@@ -12,6 +12,11 @@ public class QuestZoneMarker : MonoBehaviour
     private bool  playerInside = false;
     private bool  isActive     = false;
     private bool  isComplete   = false;
+
+    void Start()
+    {
+        zoneVisual?.SetActive(false);
+    }
 
     void Update()
     {
@@ -41,6 +46,11 @@ public class QuestZoneMarker : MonoBehaviour
         QuestManager.Instance?.NotifyZoneComplete();
         Debug.Log("[QuestZoneMarker] Complete");
     }
+
+    public float GetTimeRemaining()  => Mathf.Max(requiredDuration - elapsed, 0f);
+    public float GetTotalDuration()  => requiredDuration;
+    public bool  IsTimerActive()     => isActive && !isComplete;
+
 
     void OnTriggerEnter(Collider other)
     {

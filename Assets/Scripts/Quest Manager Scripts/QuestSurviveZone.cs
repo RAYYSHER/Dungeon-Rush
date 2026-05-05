@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class QuestSurviveZone : MonoBehaviour
+public class QuestSurviveZone : MonoBehaviour, IQuestTimer
 {
     [Header("References")]
     [SerializeField] private RoomLock    roomLock;
@@ -72,4 +72,8 @@ public class QuestSurviveZone : MonoBehaviour
         triggerZoneObject?.SetActive(true);   // เปิดคืน
         Debug.Log("[QuestSurviveZone] Complete");
     }
+
+    public float GetTimeRemaining()  => surviveTimer.GetTimeRemaining();
+    public float GetTotalDuration()  => surviveDuration;
+    public bool  IsTimerActive()     => isActive;   
 }

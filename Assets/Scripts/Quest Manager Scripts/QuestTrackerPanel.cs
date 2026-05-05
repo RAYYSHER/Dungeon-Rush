@@ -10,14 +10,13 @@ public class QuestTrackerPanel : MonoBehaviour
 
     void Awake() => gameObject.SetActive(false);
 
-    public void AddEntry(QuestInstance quest)
+    public void AddEntry(QuestInstance quest, IQuestTimer timer = null)
     {
         var entry = Instantiate(entryPrefab, content);
-        entry.Init(quest);
+        entry.Init(quest, timer);
         entries[quest] = entry;
         gameObject.SetActive(true);
     }
-
     public void UpdateEntry(QuestInstance quest)
     {
         if (entries.TryGetValue(quest, out var entry))
