@@ -45,4 +45,28 @@ public class QuestInstance
         IsComplete = true;
         OnCompleted?.Invoke(this);
     }
+
+    public void RegisterSurvive()
+    {
+        if (IsComplete) return;
+        for (int i = 0; i < data.goals.Length; i++)
+        {
+            if (data.goals[i].type == QuestGoalType.Survive)
+                goalProgress[i] = data.goals[i].targetCount;
+        }
+        OnProgressChanged?.Invoke(this);
+        CheckCompletion();
+    }
+
+    public void RegisterZoneComplete()
+    {
+        if (IsComplete) return;
+        for (int i = 0; i < data.goals.Length; i++)
+        {
+            if (data.goals[i].type == QuestGoalType.StayInZone)
+                goalProgress[i] = data.goals[i].targetCount;
+        }
+        OnProgressChanged?.Invoke(this);
+        CheckCompletion();
+    }
 }

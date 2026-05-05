@@ -44,6 +44,18 @@ public class QuestManager : MonoBehaviour
             quest.RegisterKill();
     }
 
+    public void NotifySurviveComplete()
+    {
+        foreach (var quest in activeQuests)
+            quest.RegisterSurvive();
+    }
+
+    public void NotifyZoneComplete()
+    {
+        foreach (var quest in activeQuests)
+            quest.RegisterZoneComplete();
+    }
+
     void OnProgressChanged(QuestInstance quest)
     {
         questTrackerPanel.UpdateEntry(quest);

@@ -14,6 +14,9 @@ public class QuestBoard : MonoBehaviour
     bool isLocked;
     QuestData selectedQuest;
 
+    [SerializeField] QuestSurviveZone surviveZone;   // optional — ลากใส่ถ้าเป็น survive quest
+    [SerializeField] QuestZoneMarker zoneMarker;
+
     void Start()
     {
         selectedQuest = questPool[Random.Range(0, questPool.Length)]; 
@@ -42,12 +45,16 @@ public class QuestBoard : MonoBehaviour
         Debug.Log("Quest Selected");
     }
 
+
     // Called by QuestManager when quest is accepted.
     public void Lock()
     {
         isLocked = true;
         if (interactPrompt) 
             interactPrompt.SetActive(false);
+
+        surviveZone?.StartSurvive();   // ← ย้ายมาไว้ตรงนี้
+        zoneMarker?.StartZone();       // ← ย้ายมาไว้ตรงนี้
     }
 
     void OnTriggerEnter(Collider other)

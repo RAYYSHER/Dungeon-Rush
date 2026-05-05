@@ -9,6 +9,7 @@ public class WorldTimer : MonoBehaviour
     private int lastMinuteRecorded;
     private bool timerEnded = false;
     public Transform bossRoomSpawnPoint;
+    public bool SpawningOverridden { get; set; } = false;
 
     [Header("Zombie Spawning")]
     
@@ -44,20 +45,7 @@ public class WorldTimer : MonoBehaviour
             TeleportPlayerToBoss();
         }
 
-        // //Spawn Zombie wave every 30 secs (stop at World timer ended)
-        // if (!timerEnded)
-        // {
-        //     spawnTimer -= Time.deltaTime;
-        //     if (spawnTimer <= 0f)
-        //     {
-        //         spawnTimer = spawnInterval;
-        //         foreach (var spawner in zombieSpawners)
-        //         {
-        //             spawner.SpawnWave();
-        //         }
-        //     }
-        // }
-
+        
 
         //check is a full minute has passed
         int currentMinute = Mathf.CeilToInt(remaining / 60f);

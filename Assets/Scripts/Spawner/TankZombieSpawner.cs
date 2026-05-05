@@ -43,28 +43,4 @@ public class TankZombieSpawner : MonoBehaviour
         TankZombie tankZombie = Instantiate(tankZombiePrefab, position, Quaternion.identity, this.transform);
         zombieLists.Add(tankZombie);
     }
-
-    void OnTriggerEnter(Collider other)
-    {
-        // Debug.Log($"[EazyZombieSpawner] OnTriggerEnter fired! Tag: {other.tag}");
-
-        if (other.CompareTag("Player") == true)
-        {
-
-            // Debug.Log($"[EazyZombieSpawner] Player detected! Timer running: {spawnTimer.IsRunning()}, spawnAmount: {spawnAmount}");
-            
-            if ( !(spawnTimer.IsRunning() && spawnTimer.GetTimeRemaining() > 0) )
-            {
-                SpawnWave();
-            }
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") == true)
-        {
-            spawnTimer.Start();
-        }
-    }
 }

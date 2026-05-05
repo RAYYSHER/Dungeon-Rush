@@ -1,5 +1,6 @@
 public enum QuestGoalType { 
     KillCount,
     Survive,
-    PressButton
+    PressButton,
+    StayInZone
 }

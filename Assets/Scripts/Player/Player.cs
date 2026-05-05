@@ -58,6 +58,7 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetXP(int xp)
     {
+        QuestManager.Instance?.NotifyEnemyKilled(); 
         levelSystem.GainXP(xp);
     }
 

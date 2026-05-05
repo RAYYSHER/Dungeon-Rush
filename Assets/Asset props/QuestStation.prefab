@@ -504,18 +504,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestBoard
   questPool:
   - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
+  - {fileID: 11400000, guid: 0ceaba46501538642a05fe04f5ed50f6, type: 2}
+  - {fileID: 11400000, guid: 57c4e3cb28d578f4dac2389f50685c0f, type: 2}
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactPrompt: {fileID: 0}
   questSign: {fileID: 2012949695371150629}
+  surviveZone: {fileID: 0}
+  zoneMarker: {fileID: 0}
 --- !u!135 &3522108631548090068
 SphereCollider:
   m_ObjectHideFlags: 0
