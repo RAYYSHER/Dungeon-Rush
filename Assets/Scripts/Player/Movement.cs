@@ -4,22 +4,11 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    #region Groundcheck
-
-    [Header("Groundcheck")]
-    public Transform groundCheck;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundMask;
-    private bool isGrounded;
-
-    #endregion
-
     #region Attributes
 
     private Rigidbody body;
     public float moveSpeed;
     public float speedMultiplier = 2f;
-    public int jumpForce;
     private Stress stressSystem;
     private PlayerController controls;
     private Vector3 _lastMoveDirection;
@@ -27,19 +16,21 @@ public class Movement : MonoBehaviour
 
     #endregion
 
-    #region Dash Settings
+    #region Dash
 
     [Header("Dash")]
-    public float dashingPower    = 24f;
-    public float dashingTime     = 0.2f;
+    public float dashingPower    = 32f;
+    public float dashingTime     = 0.25f;
     public float dashingCooldown = 0.7f;
+    public float dashSTSCost     = 10f;
 
     [Header("Penalty")]
     [Range(0.1f, 1f)]
-    public float penaltySpeedMultiplier = 0.5f;  // 0.5 = เดินได้ครึ่งความเร็ว
+    public float penaltySpeedMultiplier = 0.5f;
 
-    public bool IsDashing { get; private set; }
+    public bool IsDashing { get; private set; } = false;
     private bool _canDash = true;
+    private Animator animator;
 
     #endregion
 
@@ -50,18 +41,9 @@ public class Movement : MonoBehaviour
         body         = GetComponent<Rigidbody>();
         controls     = GetComponent<PlayerController>();
         stressSystem = GetComponent<Stress>();
+        animator = GetComponent<Animator>();
 
         body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-    }
-
-    void Update()
-    {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
-
-        if (stressSystem.IsInPenalty)
-        {
-            Debug.Log($"[Movement Update] velocity: {body.linearVelocity} | constraints: {body.constraints} | isKinematic: {body.isKinematic}");
-        }
     }
 
     #endregion
@@ -76,28 +58,29 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        float speed;
         if (stressSystem.IsInPenalty)
         {
-            // penalty — เดินได้แต่ช้าลง, sprint ปิด
-            Debug.Log($"[Walk] Penalty active | direction: {direction} | magnitude: {direction.magnitude}");
-            Debug.Log($"[Walk] timeScale: {Time.timeScale} | direction: {direction}");
-            speed = moveSpeed * penaltySpeedMultiplier;
-        }
-        else
-        {
-            speed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
-            if (isSprinting)
-                stressSystem.SetUnderStress();
+            body.linearVelocity = new Vector3(0f, body.linearVelocity.y, 0f);
+
+            if (direction.magnitude > 0.01f)
+            {
+                float penaltySpeed = moveSpeed * penaltySpeedMultiplier;
+                body.MovePosition(body.position +
+                    new Vector3(direction.x, 0f, direction.z) * penaltySpeed * Time.fixedDeltaTime);
+                _lastMoveDirection = direction.normalized;
+            }
+            return;
         }
 
-        Vector3 targetVelocity = direction * speed;
-        body.linearVelocity = new Vector3(targetVelocity.x, body.linearVelocity.y, targetVelocity.z);
+        float speed = isSprinting ? moveSpeed * speedMultiplier : moveSpeed;
+        if (isSprinting)
+            stressSystem.SetUnderStress();
 
-        if (stressSystem.IsInPenalty)
-        {
-            Debug.Log($"[Walk] velocity after set: {body.linearVelocity} | speed was: {speed}");
-        }         
+        body.linearVelocity = new Vector3(
+            direction.x * speed,
+            body.linearVelocity.y,
+            direction.z * speed
+        );
 
         if (direction.magnitude > 0.01f)
             _lastMoveDirection = direction.normalized;
@@ -105,7 +88,7 @@ public class Movement : MonoBehaviour
 
     public void Stop()
     {
-        Debug.Log("[Movement] Stop() called!");
+        if (IsDashing) return;
         body.linearVelocity = new Vector3(0, body.linearVelocity.y, 0);
     }
 
@@ -121,27 +104,17 @@ public class Movement : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, angle, 0);
     }
 
-    public void Jump(InputAction.CallbackContext context)
-    {
-        if (!isGrounded) return;
-        body.constraints = RigidbodyConstraints.FreezeRotation;
-        body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        StartCoroutine(LockYAfterJump());
-    }
-
     public void Dash(InputAction.CallbackContext context)
     {
         if (!_canDash) return;
-        if (stressSystem.IsInPenalty) return;   // penalty — dash ไม่ได้
+        if (stressSystem.IsInPenalty) return;
 
         Vector3 dashDir = _lastMoveDirection.magnitude > 0.01f
             ? _lastMoveDirection
             : transform.forward;
 
-        Debug.Log($"[Dash] moveSpeed: {moveSpeed} | sprint: {moveSpeed * speedMultiplier} | dashPower: {dashingPower}");
-
+        stressSystem.IncreaseSTS(dashSTSCost);
         StartCoroutine(DashCoroutine(dashDir));
-        stressSystem.IncreaseSTS(10f);
     }
 
     #endregion
@@ -150,33 +123,24 @@ public class Movement : MonoBehaviour
 
     IEnumerator DashCoroutine(Vector3 direction)
     {
-        IsDashing = true;
-        _canDash  = false;
+        IsDashing     = true;
+        _canDash      = false;
         _dashVelocity = direction * dashingPower;
 
         RotateTo(direction);
 
-        // แก้จาก yield return new WaitForSeconds(dashingTime)
         float elapsed = 0f;
         while (elapsed < dashingTime)
         {
-            if (stressSystem.IsInPenalty) break;  // หยุดทันทีถ้าโดน penalty
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
         _dashVelocity = Vector3.zero;
-        IsDashing = false;
+        IsDashing     = false;
 
         yield return new WaitForSeconds(dashingCooldown);
         _canDash = true;
-    }
-
-    IEnumerator LockYAfterJump()
-    {
-        yield return new WaitForSeconds(0.1f);
-        yield return new WaitUntil(() => isGrounded);
-        body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
     }
 
     #endregion
