@@ -50,19 +50,32 @@ public class QuestBoard : MonoBehaviour
     public void Lock()
     {
         isLocked = true;
-        if (interactPrompt) 
+        if (interactPrompt)
             interactPrompt.SetActive(false);
 
-        surviveZone?.StartSurvive();   // ← ย้ายมาไว้ตรงนี้
-        zoneMarker?.StartZone();       // ← ย้ายมาไว้ตรงนี้
+        switch (selectedQuest.questType)
+        {
+            case QuestType.Survive:
+                surviveZone?.StartSurvive();
+                break;
+            case QuestType.StayInZone:
+                zoneMarker?.StartZone();
+                break;
+            case QuestType.KillCount:
+                // ไม่ต้องทำอะไรเพิ่ม
+                break;
+        }
     }
 
-    public IQuestTimer GetQuestTimer()
+public IQuestTimer GetQuestTimer()
+{
+    switch (selectedQuest.questType)
     {
-        if (surviveZone != null) return surviveZone;
-        if (zoneMarker  != null) return zoneMarker;
-        return null;
+        case QuestType.Survive:    return surviveZone;
+        case QuestType.StayInZone: return zoneMarker;
+        default:                   return null;
     }
+}
 
     void OnTriggerEnter(Collider other)
     {

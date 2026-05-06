@@ -19,3 +19,4 @@ MonoBehaviour:
     description: Survive the wave
     targetCount: 1
   rewardDescription: 
+  questType: 1

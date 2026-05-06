@@ -19,3 +19,4 @@ MonoBehaviour:
     description: Stay within the zone
     targetCount: 1
   rewardDescription: 
+  questType: 2

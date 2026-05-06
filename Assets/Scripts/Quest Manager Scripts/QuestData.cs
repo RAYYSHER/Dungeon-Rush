@@ -1,5 +1,6 @@
 using UnityEngine;
 
+public enum QuestType { KillCount, Survive, StayInZone }
 [CreateAssetMenu(fileName = "NewQuest", menuName = "Quests/Quest Data")]
 public class QuestData : ScriptableObject
 {
@@ -7,4 +8,5 @@ public class QuestData : ScriptableObject
     [TextArea] public string description;
     public QuestGoal[] goals;
     public string rewardDescription; // placeholder until skill system is implemented
+    public QuestType questType; 
 }
