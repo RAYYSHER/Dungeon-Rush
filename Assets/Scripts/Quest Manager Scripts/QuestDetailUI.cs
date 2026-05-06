@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class QuestDetailUI : MonoBehaviour
 {
-    [SerializeField] TMP_Text questNameText;
-    [SerializeField] TMP_Text descriptionText;
-    [SerializeField] TMP_Text goalsText;
-    [SerializeField] TMP_Text rewardText;
-    [SerializeField] Button acceptButton;
-    [SerializeField] Button rejectButton;
+    [SerializeField] TMP_Text  questNameText;
+    [SerializeField] TMP_Text  descriptionText;
+    [SerializeField] TMP_Text  goalsText;
+    [SerializeField] Button    acceptButton;
+    [SerializeField] Button    rejectButton;
+
+    [Header("Reward Preview")]
+    [SerializeField] SkillCardUI _rewardCard;   // drag SkillCardUI ใน panel นี้มาใส่
 
     Action onAccept;
     Action onReject;
@@ -23,12 +25,12 @@ public class QuestDetailUI : MonoBehaviour
         rejectButton.onClick.AddListener(OnRejectClicked);
     }
 
-    public void Show(QuestData data, Action onAccept, Action onReject)
+    public void Show(QuestData data, QuestReward reward, Action onAccept, Action onReject)
     {
         this.onAccept = onAccept;
         this.onReject = onReject;
 
-        questNameText.text = data.questName;
+        questNameText.text   = data.questName;
         descriptionText.text = data.description;
 
         var sb = new StringBuilder();
@@ -36,9 +38,19 @@ public class QuestDetailUI : MonoBehaviour
             sb.AppendLine($"• {goal.description} (0/{goal.targetCount})");
         goalsText.text = sb.ToString().TrimEnd();
 
-        rewardText.text = string.IsNullOrEmpty(data.rewardDescription)
-            ? "Reward: ???"
-            : $"Reward: {data.rewardDescription}";
+        // ★ แสดง reward preview
+        if (_rewardCard != null)
+        {
+            if (reward != null)
+            {
+                _rewardCard.gameObject.SetActive(true);
+                _rewardCard.SetupQuestReward(reward);
+            }
+            else
+            {
+                _rewardCard.gameObject.SetActive(false);
+            }
+        }
 
         gameObject.SetActive(true);
         Time.timeScale = 0f;

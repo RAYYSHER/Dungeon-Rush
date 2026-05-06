@@ -51,4 +51,9 @@ public class Timer
         return isRunning;
     }
 
+    public void AddTime(float seconds)
+    {
+        timeRemaining += seconds;
+    }
+
 }

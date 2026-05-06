@@ -18,8 +18,11 @@ public class QuestManager : MonoBehaviour
 
     public void ShowQuestOffer(QuestData data, QuestBoard board)
     {
-        questDetailUI.Show(data,
-            onAccept: () => AcceptQuest(data, board),
+        // ★ Generate reward ตอน offer — แสดงให้ผู้เล่นเห็นก่อนตัดสินใจ
+        QuestReward reward = QuestRewardGenerator.Instance.Generate();
+
+        questDetailUI.Show(data, reward,
+            onAccept: () => AcceptQuest(data, board, reward),
             onReject: () => { }
         );
     }
@@ -39,7 +42,8 @@ public class QuestManager : MonoBehaviour
         foreach (var quest in activeQuests) quest.RegisterZoneComplete();
     }
 
-    void AcceptQuest(QuestData data, QuestBoard board)
+    // ★ รับ reward เข้ามาด้วย เก็บไว้ใช้ตอน complete
+    void AcceptQuest(QuestData data, QuestBoard board, QuestReward reward)
     {
         board.Lock();
         var instance = new QuestInstance(data);
@@ -47,6 +51,9 @@ public class QuestManager : MonoBehaviour
         instance.OnCompleted       += OnQuestCompleted;
         activeQuests.Add(instance);
         questTrackerPanel.AddEntry(instance, board.GetQuestTimer());
+
+        // ★ เก็บ reward ที่ generate ไว้แล้วตอน offer
+        pendingRewards[instance] = reward;
     }
 
     void OnProgressChanged(QuestInstance quest)
@@ -56,8 +63,7 @@ public class QuestManager : MonoBehaviour
 
     void OnQuestCompleted(QuestInstance quest)
     {
-        // Generate reward ตอน complete ทันที
-        pendingRewards[quest] = QuestRewardGenerator.Generate();
+        // ★ ไม่ generate ใหม่ — ใช้ reward ที่เก็บไว้ตอน offer
         completionQueue.Enqueue(quest);
         TryShowNextComplete();
     }
@@ -72,7 +78,6 @@ public class QuestManager : MonoBehaviour
         pendingRewards.TryGetValue(quest, out QuestReward reward);
         pendingRewards.Remove(quest);
 
-        // ★ ส่ง reward เข้าไปด้วย
         questCompleteUI.Show(quest, reward, () => FinishQuest(quest));
     }
 

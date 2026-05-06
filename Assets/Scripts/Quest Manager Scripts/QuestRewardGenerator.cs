@@ -1,14 +1,35 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Slot ว่าง  → สุ่ม skill ที่ยังไม่มี + สุ่ม level 1–max
-/// Slot เต็ม  → สุ่ม skill ที่มีอยู่ + สุ่ม level ที่สูงกว่า current เสมอ
-/// ทุก skill max → return null (QuestCompleteUI จะซ่อน card อัตโนมัติ)
-/// </summary>
-public static class QuestRewardGenerator
+[System.Serializable]
+public class AlternativeRewardConfig
 {
-    public static QuestReward Generate()
+    public Sprite    icon;
+    public string    label;
+    [TextArea] 
+    public string    description;
+    public float     value;
+}
+
+public class QuestRewardGenerator : MonoBehaviour
+{
+    public static QuestRewardGenerator Instance { get; private set; }
+
+    [Header("Alternative Rewards")]
+    [SerializeField] private AlternativeRewardConfig restoreHP;
+    [SerializeField] private AlternativeRewardConfig reduceStress;
+    [SerializeField] private AlternativeRewardConfig extendTime;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
+    }
+
+    // ── Public ───────────────────────────────────────────────────────────────
+
+    
+
+    public QuestReward Generate()
     {
         if (SkillManager.Instance == null) return null;
 
@@ -17,16 +38,37 @@ public static class QuestRewardGenerator
             : GenerateUpgradeReward();
     }
 
-    private static QuestReward GenerateNewSkillReward()
+    public QuestReward GenerateAlternative()
     {
-        SkillData[] pool = SkillManager.Instance.GetSkillPool();
+        int roll = Random.Range(0, 3);
+        AlternativeRewardConfig config = roll switch
+        {
+            0 => restoreHP,
+            1 => reduceStress,
+            _ => extendTime
+        };
 
-        List<SkillData> available = new List<SkillData>();
+        RewardType type = roll switch
+        {
+            0 => RewardType.RestoreHP,
+            1 => RewardType.ReduceStress,
+            _ => RewardType.ExtendTime
+        };
+
+        return QuestReward.ForAlternative(type, config.value, config.label, config.description, config.icon);
+    }
+
+    // ── Private ──────────────────────────────────────────────────────────────
+
+    private QuestReward GenerateNewSkillReward()
+    {
+        var pool = SkillManager.Instance.GetSkillPool();
+        var available = new System.Collections.Generic.List<SkillData>();
+
         foreach (SkillData skill in pool)
             if (!SkillManager.Instance.IsSkillOwned(skill))
                 available.Add(skill);
 
-        // ถ้า pool หมดแล้ว fallback ไป upgrade
         if (available.Count == 0)
             return GenerateUpgradeReward();
 
@@ -37,9 +79,9 @@ public static class QuestRewardGenerator
         return QuestReward.ForNewSkill(chosen, targetLevel);
     }
 
-    private static QuestReward GenerateUpgradeReward()
+    private QuestReward GenerateUpgradeReward()
     {
-        List<int> upgradeable = new List<int>();
+        var upgradeable = new System.Collections.Generic.List<int>();
         for (int i = 0; i < 2; i++)
         {
             SkillInstance slot = SkillManager.Instance.GetSlot(i);
@@ -47,9 +89,8 @@ public static class QuestRewardGenerator
                 upgradeable.Add(i);
         }
 
-        // ทุก skill max → null (ไม่มี reward)
         if (upgradeable.Count == 0)
-            return null;
+            return GenerateAlternative();
 
         int           chosenIndex = upgradeable[Random.Range(0, upgradeable.Count)];
         SkillInstance chosen      = SkillManager.Instance.GetSlot(chosenIndex);

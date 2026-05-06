@@ -1,21 +1,39 @@
-/// <summary>
-/// Holds the resolved reward granted when a quest is claimed.
-/// </summary>
+using UnityEngine;
+
+public enum RewardType
+{
+    Skill,          // skill ใหม่หรือ upgrade
+    RestoreHP,
+    ReduceStress,
+    ExtendTime
+}
+
 public class QuestReward
 {
-    public SkillData SkillData   { get; private set; }
-    public int       TargetLevel { get; private set; }  // 0-based
-    public bool      IsUpgrade   { get; private set; }  // true = upgrading existing slot
-    public int       SlotIndex   { get; private set; }  // valid only when IsUpgrade = true
+    public RewardType RewardType  { get; private set; }
 
-    public static QuestReward ForNewSkill(SkillData data, int targetLevel)
+    // Skill reward
+    public SkillData  SkillData   { get; private set; }
+    public int        TargetLevel { get; private set; }  // 0-based
+    public bool       IsUpgrade   { get; private set; }
+    public int        SlotIndex   { get; private set; }
+
+    // Alternative reward
+    public float      Value       { get; private set; }  // HP / STS / seconds
+    public string     Label       { get; private set; }  // ชื่อที่แสดงใน UI
+    public string  Description    { get; private set; }
+    public Sprite     Icon        { get; private set; }
+
+    // ── Skill ────────────────────────────────────────────────────────────────
+    public static QuestReward ForAlternative(RewardType type, float value, string label, string description, Sprite icon)
     {
         return new QuestReward
         {
-            SkillData   = data,
-            TargetLevel = targetLevel,
-            IsUpgrade   = false,
-            SlotIndex   = -1
+            RewardType  = type,
+            Value       = value,
+            Label       = label,
+            Description = description,
+            Icon        = icon
         };
     }
 
@@ -23,6 +41,7 @@ public class QuestReward
     {
         return new QuestReward
         {
+            RewardType  = RewardType.Skill,
             SkillData   = data,
             TargetLevel = targetLevel,
             IsUpgrade   = true,
@@ -30,6 +49,32 @@ public class QuestReward
         };
     }
 
-    public int    GetDisplayLevel()      => TargetLevel + 1;
-    public string GetLevelDescription()  => SkillData.levels[TargetLevel].capabilityDescription;
+        public static QuestReward ForNewSkill(SkillData data, int targetLevel)
+    {
+        return new QuestReward
+        {
+            RewardType  = RewardType.Skill,
+            SkillData   = data,
+            TargetLevel = targetLevel,
+            IsUpgrade   = false,
+            SlotIndex   = -1
+        };
+    }
+
+
+    public static QuestReward ForAlternative(RewardType type, float value, string label, string description)
+    {
+        return new QuestReward
+        {
+            RewardType  = type,
+            Value       = value,
+            Label       = label,
+            Description = description
+        };
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    public int    GetDisplayLevel()     => TargetLevel + 1;
+    public string GetLevelDescription() => SkillData.levels[TargetLevel].capabilityDescription;
 }

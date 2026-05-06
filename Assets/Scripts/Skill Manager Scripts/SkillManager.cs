@@ -79,6 +79,35 @@ public class SkillManager : MonoBehaviour
     {
         if (reward == null) return;
 
+        switch (reward.RewardType)
+        {
+            case RewardType.Skill:
+                ApplySkillReward(reward);
+                break;
+
+            case RewardType.RestoreHP:
+                Health health = FindFirstObjectByType<Player>().GetComponent<Health>();
+                int healAmount = Mathf.RoundToInt(health.maxHealth * reward.Value);
+                health.IncreaseHealth(healAmount);
+                Debug.Log($"[SkillManager] Quest reward: Restore HP +{healAmount}");
+                break;
+
+            case RewardType.ReduceStress:
+                Stress stress = FindFirstObjectByType<Stress>();
+                stress.DecreaseSTS(stress.maxSts * reward.Value);
+                Debug.Log($"[SkillManager] Quest reward: Reduce Stress {reward.Value * 100f:0}%");
+                break;
+
+            case RewardType.ExtendTime:
+                WorldTimer worldTimer = FindFirstObjectByType<WorldTimer>();
+                worldTimer.AddTime(reward.Value);
+                Debug.Log($"[SkillManager] Quest reward: Extend Time +{reward.Value}s");
+                break;
+        }
+    }
+
+    private void ApplySkillReward(QuestReward reward)
+    {
         if (!reward.IsUpgrade)
         {
             if (!HasEmptySlot) return;
@@ -95,7 +124,7 @@ public class SkillManager : MonoBehaviour
                 _slots[idx].Upgrade();
         }
 
-        Debug.Log($"[SkillManager] Quest reward applied: {reward.SkillData.skillName} Lv.{reward.GetDisplayLevel()}");
+        Debug.Log($"[SkillManager] Quest reward: {reward.SkillData.skillName} Lv.{reward.GetDisplayLevel()}");
         OnSkillsChanged?.Invoke();
         UpdateAOERing();
     }

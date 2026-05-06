@@ -15,6 +15,7 @@ public class SkillCardUI : MonoBehaviour
 
     void Awake()
     {
+        if (_chooseButton != null)
         _chooseButton.onClick.AddListener(OnChooseClicked);
     }
 
@@ -52,6 +53,13 @@ public class SkillCardUI : MonoBehaviour
     // ★ ใหม่ — Quest Reward panel (ไม่มี Choose button เพราะใช้ Claim แทน)
     public void SetupQuestReward(QuestReward reward)
     {
+        // ★ ถ้าเป็น alternative reward → ใช้ method ใหม่
+        if (reward.RewardType != RewardType.Skill)
+        {
+            SetupAlternativeReward(reward);
+            return;
+        }
+
         _onChoose             = null;
         _icon.sprite          = reward.SkillData.icon;
         _nameText.text        = reward.SkillData.skillName;
@@ -69,9 +77,33 @@ public class SkillCardUI : MonoBehaviour
                 ? "NEW  Lv.1"
                 : $"NEW  Lv.{reward.GetDisplayLevel()}";
         }
-        // ★ เพิ่ม null check
+
         if (_chooseButton != null)
             _chooseButton.gameObject.SetActive(false);
+    }
+
+    
+    // ★ ใหม่ — Alternative Reward (HP / STS / Time)
+    public void SetupAlternativeReward(QuestReward reward)
+    {
+        _onChoose             = null;
+        _icon.sprite = reward.Icon;
+        _nameText.text        = reward.Label;
+        _levelText.text       = "";
+        _descriptionText.text = reward.Description;
+
+        if (_chooseButton != null)
+            _chooseButton.gameObject.SetActive(false);
+    }
+
+    public void SetupChooseCallback(Action onChoose)
+    {
+        _onChoose = onChoose;
+        if (_chooseButton != null)
+        {
+            _chooseButton.gameObject.SetActive(true);
+            _chooseButton.interactable = true;
+        }
     }
 
     private void OnChooseClicked() => _onChoose?.Invoke();

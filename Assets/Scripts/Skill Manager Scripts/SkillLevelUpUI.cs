@@ -34,7 +34,7 @@ public class SkillLevelUpUI : MonoBehaviour
 
     public void Show()
     {
-        IsShowing = true;  
+        IsShowing = true;
         _panel.SetActive(true);
         Time.timeScale = 0f;
 
@@ -44,7 +44,16 @@ public class SkillLevelUpUI : MonoBehaviour
         }
         else
         {
-            ShowUpgradeOffer();
+            // ★ เช็ค all-max ก่อน
+            SkillInstance[] slots = SkillManager.Instance.GetUpgradeOffers();
+            if (slots[0].IsMaxLevel && slots[1].IsMaxLevel)
+            {
+                ShowAlternativeReward();
+            }
+            else
+            {
+                ShowUpgradeOffer();
+            }
         }
 
         StartCoroutine(SelectAfterFrame(_firstSelected));
@@ -100,6 +109,24 @@ public class SkillLevelUpUI : MonoBehaviour
         _cardRight.SetupUpgrade(slots[1], onChoose: () =>
         {
             SkillManager.Instance.UpgradeSkill(1);
+            Hide();
+        });
+    }
+
+    private void ShowAlternativeReward()
+    {
+        QuestReward reward = QuestRewardGenerator.Instance.GenerateAlternative();
+
+        // แสดงแค่ card ซ้าย ซ่อนขวา
+        _cardLeft.gameObject.SetActive(true);
+        _cardRight.gameObject.SetActive(false);
+
+        _cardLeft.SetupAlternativeReward(reward);
+
+        // ★ Choose button ต้องกดได้เพื่อรับ reward และปิด panel
+        _cardLeft.SetupChooseCallback(() =>
+        {
+            SkillManager.Instance.ApplyReward(reward);
             Hide();
         });
     }

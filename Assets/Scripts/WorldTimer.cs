@@ -16,13 +16,13 @@ public class WorldTimer : MonoBehaviour
     public float spawnInterval = 30f;
     private float spawnTimer = 0f;
 
+    [Header("Boss Room Lock")]
+    [SerializeField] private RoomLock bossRoomLock; 
+
     void Awake()
     {
         timer = new Timer(timerDurationInMinutes * 60);
         lastMinuteRecorded = timerDurationInMinutes;
-
-        
-        // Debug.Log($"[WorldTimer] Found {zombieSpawners.Length} ZombieSpawners");
     }
 
     void Start()
@@ -86,21 +86,14 @@ public class WorldTimer : MonoBehaviour
 
     void TeleportPlayerToBoss()
     {
-        // Debug.Log("TeleportPlayerToBoss called");
-
         Player player = FindFirstObjectByType<Player>();
-        // Debug.Log($"Player found: {player != null}");
-        // Debug.Log($"SpawnPoint assigned: {bossRoomSpawnPoint != null}");
 
         if (player != null && bossRoomSpawnPoint != null)
         {
             var rb = player.GetComponent<Rigidbody>();
             
-            // Debug.Log($"Rigidbody found: {rb != null}");
-
             if (rb != null)
             {
-                // rb.position = bossRoomSpawnPoint.position;
 
                 rb.isKinematic = true;
                 player.transform.position = bossRoomSpawnPoint.position;
@@ -114,8 +107,20 @@ public class WorldTimer : MonoBehaviour
             {
                 player.transform.position = bossRoomSpawnPoint.position;
             }
+
+            if (bossRoomLock != null)
+            {
+                bossRoomLock.Lock();
+            }
+
         }
     }
     #endregion
+
+    public void AddTime(float seconds)
+    {
+        timer.AddTime(seconds);
+        Debug.Log($"[WorldTimer] Extended +{seconds}s");
+    }
 
 }
