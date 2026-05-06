@@ -67,9 +67,14 @@ public class QuestSurviveZone : MonoBehaviour, IQuestTimer
         roomLock?.Unlock();
         worldTimer.SpawningOverridden = false;
 
-        QuestManager.Instance?.NotifySurviveComplete();
+        // reset cooldown ก่อน activate trigger คืน
+        easySpawner?.spawnTimer.Start();
+        tankSpawner?.spawnTimer.Start();
+        waveSpawner?.spawnTimer.Start();
 
+        QuestManager.Instance?.NotifySurviveComplete();
         triggerZoneObject?.SetActive(true);   // เปิดคืน
+
         Debug.Log("[QuestSurviveZone] Complete");
     }
 

@@ -10,7 +10,7 @@ public class SpawnerTriggerZone : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        if (zombieSpawner != null)
+        if (zombieSpawner != null && !(zombieSpawner.spawnTimer.IsRunning() && zombieSpawner.spawnTimer.GetTimeRemaining() > 0))
             zombieSpawner.SpawnWave();
 
         if (easySpawner != null && !(easySpawner.spawnTimer.IsRunning() && easySpawner.spawnTimer.GetTimeRemaining() > 0))
@@ -24,6 +24,7 @@ public class SpawnerTriggerZone : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
+        zombieSpawner?.spawnTimer.Start();
         easySpawner?.spawnTimer.Start();
         tankSpawner?.spawnTimer.Start();
     }
