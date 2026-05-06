@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cdd180db8d36f64fa8c63c86a0a3010, type: 3}
   m_Name: MQ_Survive
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
-  questName: Hold the Line
+  questName: Test from Above
   description: Seal the room and survive the onslaught.
   goals:
   - type: 1

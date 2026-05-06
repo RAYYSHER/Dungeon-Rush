@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ad9f7c3ba29a74994ca15f637bd33e, type: 3}
   m_Name: Main_IncreaseEXP
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: Increase EXP
+  skillName: Files of Knowledge
   briefDescription: Gains more experience points
   icon: {fileID: 21300000, guid: c10801c42e533d744a3de91bd7efd504, type: 3}
   skillType: 1

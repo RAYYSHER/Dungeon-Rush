@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cdd180db8d36f64fa8c63c86a0a3010, type: 3}
   m_Name: MQ_KillCount
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
-  questName: Eliminate Threats
-  description: Clear the hostiles in this sector.
+  questName: Eliminate threats
+  description: Clear the hostiles in this room
   goals:
   - type: 0
     description: Eliminate 10 enemies
     targetCount: 10
   rewardDescription: '[Skill Name]'
+  questType: 0

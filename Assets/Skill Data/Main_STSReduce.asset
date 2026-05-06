@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ad9f7c3ba29a74994ca15f637bd33e, type: 3}
   m_Name: Main_STSReduce
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: STS Reduce
+  skillName: Stabilization
   briefDescription: Significantly reduce stress from the stress bar
   icon: {fileID: 21300000, guid: d96b30c94c48e864a9dcfbf767a31176, type: 3}
   skillType: 0

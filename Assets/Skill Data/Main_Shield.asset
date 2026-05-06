@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ad9f7c3ba29a74994ca15f637bd33e, type: 3}
   m_Name: Main_Shield
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: Shield
-  briefDescription: Creates a shield to block attacks
+  skillName: Barrier Capsule
+  briefDescription: Creates a capsule-shape barrier shield to block attacks
   icon: {fileID: 21300000, guid: 23ee477e695eb5e4a84299660f757bcb, type: 3}
   skillType: 0
   targetType: 0

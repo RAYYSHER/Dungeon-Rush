@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ad9f7c3ba29a74994ca15f637bd33e, type: 3}
   m_Name: Main_AOEDamage
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: AOE Damage
+  skillName: Fission Dome
   briefDescription: Deals area damage around the player
   icon: {fileID: 21300000, guid: b1dedf772c5914a49bed927279880976, type: 3}
   skillType: 0
