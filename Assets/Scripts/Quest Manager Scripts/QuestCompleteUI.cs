@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class QuestCompleteUI : MonoBehaviour
 {
-    [SerializeField] TMP_Text questNameText;
-    [SerializeField] TMP_Text rewardText;
-    [SerializeField] Button claimButton; // replaced by skill button when skill system is ready
+    [SerializeField] Button      claimButton;
 
-    Action onClaim;
+    [Header("Reward")]
+    [SerializeField] SkillCardUI _rewardSkillCard;  // drag SkillCardUI ที่อยู่ใน panel นี้มาใส่
+
+    private Action      _onClaim;
+    private QuestReward _pendingReward;
 
     void Awake()
     {
@@ -17,22 +19,39 @@ public class QuestCompleteUI : MonoBehaviour
         claimButton.onClick.AddListener(OnClaimClicked);
     }
 
-    public void Show(QuestInstance quest, Action onClaim)
+    public void Show(QuestInstance quest, QuestReward reward, Action onClaim)
     {
-        this.onClaim = onClaim;
+        _onClaim       = onClaim;
+        _pendingReward = reward;
 
-        // questNameText.text = $"{quest.data.questName} — Complete!";
-        // rewardText.text = string.IsNullOrEmpty(quest.data.rewardDescription)
-        //     ? "Reward: ???"
-        //     : $"Reward: {quest.data.rewardDescription}";
+
+        if (_rewardSkillCard != null)
+        {
+            if (reward != null)
+            {
+                _rewardSkillCard.gameObject.SetActive(true);
+                _rewardSkillCard.SetupQuestReward(reward);
+            }
+            else
+            {
+                // ทุก skill max แล้ว — ซ่อน card
+                _rewardSkillCard.gameObject.SetActive(false);
+            }
+        }
 
         gameObject.SetActive(true);
         Time.timeScale = 0f;
     }
 
-    void OnClaimClicked()
+    private void OnClaimClicked()
     {
-        onClaim?.Invoke();
+        if (_pendingReward != null)
+        {
+            SkillManager.Instance.ApplyReward(_pendingReward);
+            _pendingReward = null;
+        }
+
+        _onClaim?.Invoke();
         gameObject.SetActive(false);
         Time.timeScale = 1f;
     }

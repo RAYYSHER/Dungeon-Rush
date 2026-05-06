@@ -6,89 +6,60 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance { get; private set; }
 
-    // ─────────────────────────────────────────
-    //  Inspector
-    // ─────────────────────────────────────────
-
     [Header("Main Skill Pool")]
-    [SerializeField] private SkillData[] mainSkillPool;     // ลาก ScriptableObject ทั้ง 6 ใส่ใน Inspector
-
-    // ─────────────────────────────────────────
-    //  Runtime State
-    // ─────────────────────────────────────────
+    [SerializeField] private SkillData[] mainSkillPool;
 
     private SkillInstance[] _slots      = new SkillInstance[2];
     private int             _skillCount = 0;
 
-    // ─────────────────────────────────────────
-    //  Events
-    // ─────────────────────────────────────────
-
-    public event Action OnSkillsChanged;    // UI ฟังตรงนี้เพื่ออัปเดต HUD
-
-    // ─────────────────────────────────────────
-    //  Build-in Functions
-    // ─────────────────────────────────────────
+    public event Action OnSkillsChanged;
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
     }
 
-    // ─────────────────────────────────────────
-    //  Queries
-    // ─────────────────────────────────────────
+    // ── Queries ──────────────────────────────────────────────────────────────
 
     public bool HasEmptySlot            => _skillCount < 2;
     public int  SkillCount              => _skillCount;
     public SkillInstance GetSlot(int i) => (i >= 0 && i < 2) ? _slots[i] : null;
 
-    // ─────────────────────────────────────────
-    //  Level Up Offers
-    // ─────────────────────────────────────────
+    // ★ ใหม่ — ให้ QuestRewardGenerator อ่าน pool ได้
+    public SkillData[] GetSkillPool() => mainSkillPool;
 
-    // เรียกเมื่อ slot ว่างอยู่ → ส่ง SkillData ใหม่ 2 อันที่ยังไม่ได้เลือก
+    // ★ ใหม่ — เช็คว่า player มี skill นี้อยู่แล้วหรือเปล่า
+    public bool IsSkillOwned(SkillData data)
+    {
+        for (int i = 0; i < _skillCount; i++)
+            if (_slots[i].data == data) return true;
+        return false;
+    }
+
+    // ── Level-Up Offers ──────────────────────────────────────────────────────
+
     public SkillData[] GetNewSkillOffers()
     {
         List<SkillData> available = new List<SkillData>();
-
         foreach (SkillData skill in mainSkillPool)
-        {
-            if (!IsOwned(skill))
+            if (!IsSkillOwned(skill))
                 available.Add(skill);
-        }
 
         ShuffleList(available);
-
         int count = Mathf.Min(2, available.Count);
         SkillData[] offers = new SkillData[count];
-        for (int i = 0; i < count; i++)
-            offers[i] = available[i];
-
+        for (int i = 0; i < count; i++) offers[i] = available[i];
         return offers;
     }
 
-    // เรียกเมื่อ slot เต็ม → ส่ง skill ที่มีอยู่ทั้ง 2 มาให้เลือกอัปเกรด
-    public SkillInstance[] GetUpgradeOffers()
-    {
-        return new SkillInstance[] { _slots[0], _slots[1] };
-    }
+    public SkillInstance[] GetUpgradeOffers() => new SkillInstance[] { _slots[0], _slots[1] };
 
-    // ─────────────────────────────────────────
-    //  Actions
-    // ─────────────────────────────────────────
+    // ── Actions — Level-Up panel ─────────────────────────────────────────────
 
     public void AddSkill(SkillData data)
     {
         if (!HasEmptySlot) return;
-
-        Debug.Log($"[SkillManager] AddSkill called: {data.skillName} | count before: {_skillCount}");
-
         _slots[_skillCount] = new SkillInstance(data);
         _skillCount++;
         OnSkillsChanged?.Invoke();
@@ -98,51 +69,57 @@ public class SkillManager : MonoBehaviour
     public void UpgradeSkill(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= _skillCount) return;
-
         _slots[slotIndex].Upgrade();
         OnSkillsChanged?.Invoke();
         UpdateAOERing();
     }
 
-    private void UpdateAOERing()
-{
-    AOEVFXHandler aoeVFX = FindFirstObjectByType<AOEVFXHandler>();
-    if (aoeVFX == null) return;
-
-    for (int i = 0; i < 2; i++)
+    // ★ ใหม่ — apply quest reward (new skill หรือ upgrade) ที่ target level ทันที
+    public void ApplyReward(QuestReward reward)
     {
-        SkillInstance slot = _slots[i];
-        if (slot == null) continue;
-        if (slot.data.effectType != SkillEffectType.AOEDamage) continue;
+        if (reward == null) return;
 
-        float radius = slot.GetCurrentLevelData().primaryValue;
-        aoeVFX.ShowRadiusRing(radius);
-        return;
+        if (!reward.IsUpgrade)
+        {
+            if (!HasEmptySlot) return;
+            _slots[_skillCount] = new SkillInstance(reward.SkillData);
+            while (_slots[_skillCount].CurrentLevel < reward.TargetLevel)
+                _slots[_skillCount].Upgrade();
+            _skillCount++;
+        }
+        else
+        {
+            int idx = reward.SlotIndex;
+            if (idx < 0 || idx >= _skillCount) return;
+            while (_slots[idx].CurrentLevel < reward.TargetLevel)
+                _slots[idx].Upgrade();
+        }
+
+        Debug.Log($"[SkillManager] Quest reward applied: {reward.SkillData.skillName} Lv.{reward.GetDisplayLevel()}");
+        OnSkillsChanged?.Invoke();
+        UpdateAOERing();
     }
 
-    // ไม่มี AOE skill → ซ่อน ring
-    aoeVFX.HideRadiusRing();
-}
+    // ── Misc ─────────────────────────────────────────────────────────────────
 
     public void ResetAllSkills()
     {
-        _slots[0]    = null;
-        _slots[1]    = null;
-        _skillCount  = 0;
+        _slots[0] = null; _slots[1] = null; _skillCount = 0;
         OnSkillsChanged?.Invoke();
     }
 
-    // ─────────────────────────────────────────
-    //  Private Helpers
-    // ─────────────────────────────────────────
-
-    private bool IsOwned(SkillData data)
+    private void UpdateAOERing()
     {
-        for (int i = 0; i < _skillCount; i++)
+        AOEVFXHandler aoeVFX = FindFirstObjectByType<AOEVFXHandler>();
+        if (aoeVFX == null) return;
+        for (int i = 0; i < 2; i++)
         {
-            if (_slots[i].data == data) return true;
+            SkillInstance slot = _slots[i];
+            if (slot == null || slot.data.effectType != SkillEffectType.AOEDamage) continue;
+            aoeVFX.ShowRadiusRing(slot.GetCurrentLevelData().primaryValue);
+            return;
         }
-        return false;
+        aoeVFX.HideRadiusRing();
     }
 
     private void ShuffleList(List<SkillData> list)

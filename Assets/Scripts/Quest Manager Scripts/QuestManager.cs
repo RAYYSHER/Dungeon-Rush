@@ -5,20 +5,17 @@ public class QuestManager : MonoBehaviour
 {
     public static QuestManager Instance { get; private set; }
 
-    [SerializeField] QuestDetailUI questDetailUI;
+    [SerializeField] QuestDetailUI     questDetailUI;
     [SerializeField] QuestTrackerPanel questTrackerPanel;
-    [SerializeField] QuestCompleteUI questCompleteUI;
+    [SerializeField] QuestCompleteUI   questCompleteUI;
 
-    readonly List<QuestInstance> activeQuests = new();
-    readonly Queue<QuestInstance> completionQueue = new();
+    readonly List<QuestInstance>                    activeQuests    = new();
+    readonly Queue<QuestInstance>                   completionQueue = new();
+    readonly Dictionary<QuestInstance, QuestReward> pendingRewards  = new();
     bool isShowingComplete;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() { Instance = this; }
 
-    // Called by QuestBoard when player interacts with it.
     public void ShowQuestOffer(QuestData data, QuestBoard board)
     {
         questDetailUI.Show(data,
@@ -27,35 +24,29 @@ public class QuestManager : MonoBehaviour
         );
     }
 
+    public void NotifyEnemyKilled()
+    {
+        foreach (var quest in activeQuests) quest.RegisterKill();
+    }
+
+    public void NotifySurviveComplete()
+    {
+        foreach (var quest in activeQuests) quest.RegisterSurvive();
+    }
+
+    public void NotifyZoneComplete()
+    {
+        foreach (var quest in activeQuests) quest.RegisterZoneComplete();
+    }
+
     void AcceptQuest(QuestData data, QuestBoard board)
     {
         board.Lock();
         var instance = new QuestInstance(data);
         instance.OnProgressChanged += OnProgressChanged;
-        instance.OnCompleted += OnQuestCompleted;
+        instance.OnCompleted       += OnQuestCompleted;
         activeQuests.Add(instance);
-
-        IQuestTimer timer = board.GetQuestTimer();   // ← เพิ่ม
-        questTrackerPanel.AddEntry(instance, timer);
-    }
-
-    // Called by Player.GetXP() — fires every time any enemy dies.
-    public void NotifyEnemyKilled()
-    {
-        foreach (var quest in activeQuests)
-            quest.RegisterKill();
-    }
-
-    public void NotifySurviveComplete()
-    {
-        foreach (var quest in activeQuests)
-            quest.RegisterSurvive();
-    }
-
-    public void NotifyZoneComplete()
-    {
-        foreach (var quest in activeQuests)
-            quest.RegisterZoneComplete();
+        questTrackerPanel.AddEntry(instance, board.GetQuestTimer());
     }
 
     void OnProgressChanged(QuestInstance quest)
@@ -65,17 +56,24 @@ public class QuestManager : MonoBehaviour
 
     void OnQuestCompleted(QuestInstance quest)
     {
+        // Generate reward ตอน complete ทันที
+        pendingRewards[quest] = QuestRewardGenerator.Generate();
         completionQueue.Enqueue(quest);
         TryShowNextComplete();
     }
 
     void TryShowNextComplete()
     {
-        if (isShowingComplete || completionQueue.Count == 0) 
-            return;
+        if (isShowingComplete || completionQueue.Count == 0) return;
+
         isShowingComplete = true;
         var quest = completionQueue.Dequeue();
-        questCompleteUI.Show(quest, () => FinishQuest(quest));
+
+        pendingRewards.TryGetValue(quest, out QuestReward reward);
+        pendingRewards.Remove(quest);
+
+        // ★ ส่ง reward เข้าไปด้วย
+        questCompleteUI.Show(quest, reward, () => FinishQuest(quest));
     }
 
     void FinishQuest(QuestInstance quest)
