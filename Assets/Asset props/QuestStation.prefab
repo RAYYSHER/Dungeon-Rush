@@ -385,13 +385,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5907226429590053114}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.62, z: 0}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.901, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8600492593962089360}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!212 &6329207194961261081
 SpriteRenderer:
   serializedVersion: 2
@@ -441,7 +441,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 638e50a8e0b947f4eb221abb42990fe3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1fe94bb3282296f48b31d445ab3d17c5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -504,8 +504,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestBoard
   questPool:
   - {fileID: 11400000, guid: 3d79fdea7fbfa124287e46916ea0b465, type: 2}
-  - {fileID: 11400000, guid: 0ceaba46501538642a05fe04f5ed50f6, type: 2}
-  - {fileID: 11400000, guid: 57c4e3cb28d578f4dac2389f50685c0f, type: 2}
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   interactPrompt: {fileID: 0}
   questSign: {fileID: 2012949695371150629}
