@@ -3,6 +3,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class QuestDetailUI : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class QuestDetailUI : MonoBehaviour
 
     [Header("Reward Preview")]
     [SerializeField] SkillCardUI _rewardCard;   // drag SkillCardUI ใน panel นี้มาใส่
+
+    [Header("Controller")]
+    [SerializeField] private GameObject _firstSelected;  // ลาก AcceptButton ใส่
 
     Action onAccept;
     Action onReject;
@@ -54,6 +58,7 @@ public class QuestDetailUI : MonoBehaviour
 
         gameObject.SetActive(true);
         Time.timeScale = 0f;
+        StartCoroutine(SelectAfterFrame(_firstSelected));
     }
 
     void Hide()
@@ -72,5 +77,11 @@ public class QuestDetailUI : MonoBehaviour
     {
         onReject?.Invoke();
         Hide();
+    }
+
+    private System.Collections.IEnumerator SelectAfterFrame(GameObject target)
+    {
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(target);
     }
 }
