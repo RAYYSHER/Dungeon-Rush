@@ -15,6 +15,17 @@ public class GameStatTracker : MonoBehaviour
 
     #endregion
 
+    #region Score Settings
+
+    [Header("Time Score Settings")]
+    [Tooltip("เวลา (วินาที) ที่ถือว่าดีมาก → ได้ 100 คะแนน")]
+    [SerializeField] private float _excellentClearTime  = 60f;
+
+    [Tooltip("เวลา (วินาที) สูงสุดที่คาดไว้ → ได้ 0 คะแนน  (ควรตรงกับ WorldTimer)")]
+    [SerializeField] private float _maxExpectedSeconds  = 300f;
+
+    #endregion
+
     #region Private
 
     private bool  _timerRunning        = false;
@@ -82,8 +93,6 @@ public class GameStatTracker : MonoBehaviour
 
         _timerRunning = false;
 
-        // snapshot ครั้งสุดท้ายเฉพาะเมื่อมีข้อมูลอยู่แล้ว
-        // ถ้าไม่มีเลย = เกมเพิ่งเริ่ม = ไม่มีข้อมูลพอ
         if (_stsSnapshots.Count > 0)
         {
             TakeSTSSnapshot();
@@ -95,22 +104,28 @@ public class GameStatTracker : MonoBehaviour
     }
 
     // Returns STS score 0–100 (higher = calmer = better)
+    // ใช้ stress ratio ล้วนๆ ก่อน — penalty deduction ไว้ใส่ใน update หน้า
     public float GetSTSScore()
     {
         if (_stressSystem == null) return 0f;
         if (_stsSnapshots.Count == 0) return 0f;
 
         float baseScore = (1f - (AverageSTS / _stressSystem.maxSts)) * 100f;
-        float penaltyDeduction = PenaltyCount * 15f;
-
-        return Mathf.Clamp(baseScore - penaltyDeduction, 0f, 100f);
+        return Mathf.Clamp(baseScore, 0f, 100f);
     }
 
-    // Returns time score 0–100 (shorter clear time = higher score)
-    // maxExpectedSeconds should match WorldTimer.timerDurationInMinutes × 60
-    public float GetTimeScore(float maxExpectedSeconds = 300f)
+    // Returns time score 0–100
+    // ถ้า clear ใน excellentTime → 100 คะแนน
+    // หลังจากนั้น decay เป็น linear จนถึง 0 ที่ maxExpectedSeconds
+    public float GetTimeScore()
     {
-        float ratio = Mathf.Clamp01(ClearTime / maxExpectedSeconds);
+        if (ClearTime <= _excellentClearTime)
+            return 100f;
+
+        float window = _maxExpectedSeconds - _excellentClearTime;
+        if (window <= 0f) return 0f;
+
+        float ratio = Mathf.Clamp01((ClearTime - _excellentClearTime) / window);
         return (1f - ratio) * 100f;
     }
 
@@ -184,7 +199,7 @@ public class GameStatTracker : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _stressSystem = FindFirstObjectByType<Stress>(); // หา Stress ใหม่เพราะ object ถูก destroy
+        _stressSystem = FindFirstObjectByType<Stress>();
         ResetStats();
         StartTimer();
     }

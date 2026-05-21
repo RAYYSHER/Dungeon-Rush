@@ -77,7 +77,6 @@ public class MenuManager : MonoBehaviour
         _AudioMenuCanvasGO.SetActive(false); 
         _GuidePanelCanvasGO.SetActive(false);
 
-        // EventSystem.current.SetSelectedGameObject(_mainMenuFirst);
         StartCoroutine(SelectAfterFrame(_mainMenuFirst));
     }
 
@@ -89,7 +88,6 @@ public class MenuManager : MonoBehaviour
         _settingMenuCanvasGO.SetActive(true);
         _AudioMenuCanvasGO.SetActive(false); 
 
-        // EventSystem.current.SetSelectedGameObject(_settingsMenuFirst);
         StartCoroutine(SelectAfterFrame(_settingsMenuFirst));
     }
 
@@ -123,8 +121,10 @@ public class MenuManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 
+    // แจ้ง Guard ก่อน 1 frame เสมอ เพื่อไม่ให้ restore ผิดจังหวะ
     private IEnumerator SelectAfterFrame(GameObject target)
     {
+        _selectionGuard?.SuppressFor(1);
         EventSystem.current.SetSelectedGameObject(null);
         yield return null;
         EventSystem.current.SetSelectedGameObject(target);

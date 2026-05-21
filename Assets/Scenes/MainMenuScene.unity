@@ -729,7 +729,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 347.5598, y: -134.86829}
+  m_AnchoredPosition: {x: 446, y: -134.86829}
   m_SizeDelta: {x: 230.1827, y: 123.808}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &234432726
@@ -752,11 +752,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player 04
+  m_text: 'wan
 
-    Player 05
+    MEDOOR
 
-    Player 06'
+    Rainny
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
   m_sharedMaterial: {fileID: -33742953411562080, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
@@ -1170,7 +1172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0459d44e90e240f4a8627b5b0131a82c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc5361b1d3c0bf841becb8fa84b6cedb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1947,8 +1949,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 115.78047, y: -134.86366}
-  m_SizeDelta: {x: 233.3886, y: 123.8194}
+  m_AnchoredPosition: {x: 160.438, y: -134.86366}
+  m_SizeDelta: {x: 322.703, y: 123.819}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &612777489
 MonoBehaviour:
@@ -1970,11 +1972,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player 01
+  m_text: 'NcDayS
 
-    Player 02
+    peach34298zaza
 
-    Player 03'
+    MugXy'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
   m_sharedMaterial: {fileID: -33742953411562080, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
@@ -2672,7 +2674,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Nuttakrit Lalert
+  m_text: Nattakrit Lalert
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
   m_sharedMaterial: {fileID: -33742953411562080, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
@@ -3883,7 +3885,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Aj. Phuree Jiwaluk
+  m_text: Aj. Bhuree Jiwaluk
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
   m_sharedMaterial: {fileID: -33742953411562080, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
@@ -5132,7 +5134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 577.7355, y: -134.86366}
+  m_AnchoredPosition: {x: 676.1756, y: -134.86366}
   m_SizeDelta: {x: 230.1827, y: 123.8194}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1486514813
@@ -5155,11 +5157,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player 07
+  m_text: 'FumuloFun
 
-    Player 08
-
-    Player 09'
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
   m_sharedMaterial: {fileID: -33742953411562080, guid: ed1f99739b9e5cd4e98499d216cdc870, type: 2}
@@ -8168,7 +8168,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 851027d28dcd8f84d830d85bbd06cac8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 22a2adb9a4ce3ec4c801d31bb7800ea0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

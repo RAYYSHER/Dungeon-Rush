@@ -16,7 +16,8 @@ public class RankCalculator
     {
         float levelMultiplier = 1.0f; // placeholder รอ skill system
 
-        FinalScore = ((timeScore * 0.6f) + (stsScore * 0.4f)) * levelMultiplier;
+        // Time เป็น primary (70%), Stress เป็น secondary (30%)
+        FinalScore = ((timeScore * 0.7f) + (stsScore * 0.3f)) * levelMultiplier;
 
         if (!isWin)
         {
@@ -41,17 +42,17 @@ public class RankCalculator
             RankLetter = "S";
             RankLabel  = "Excellent";
         }
-        else if (score >= 71f)
+        else if (score >= 70f)
         {
             RankLetter = "A";
             RankLabel  = "Great";
         }
-        else if (score >= 56f)
+        else if (score >= 55f)
         {
             RankLetter = "B";
             RankLabel  = "Good";
         }
-        else if (score >= 41f)
+        else if (score >= 38f)
         {
             RankLetter = "C";
             RankLabel  = "Normal";
